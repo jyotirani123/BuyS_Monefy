@@ -15,7 +15,7 @@ app.listen(3001, () => {
 });
 
 app.get("/" , (req, res) => {
-    res.send("Hello");
+    res.send("Hello world");
 })
 
 // just for testing purpose
