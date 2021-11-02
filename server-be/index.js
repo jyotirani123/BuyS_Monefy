@@ -11,7 +11,7 @@ const db = mysql.createConnection({
 });
 
 app.listen(3001, () => {
-    console.log("Backend running at 3001");
+    console.log("Backend running at 3001 port");
 });
 
 app.get("/" , (req, res) => {
