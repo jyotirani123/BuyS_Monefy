@@ -3,14 +3,19 @@ const mysql = require('mysql');
 const DATABASE = require('./utilities/createDB');
 const TABLES = require('./utilities/createTables');
 const cred = require('./utilities/credentials');
-
+const bodyParser = require('body-parser');
+const cors = require('cors');
 class BUYSMONEFY {
 
     constructor(port, app) {
 
         this.port = port;
         this.app = app;
+        this.app.use(cors())
+// used to grab frontend infor to backend
+        this.app.use(bodyParser.urlencoded({extended:true}));
         this.app.use(express.json())
+
         this.temp = 0;
 
         //Initialize Database
@@ -27,6 +32,20 @@ class BUYSMONEFY {
     }
 
     get() {
+        this.app.get('./loginValidate', (req, res) => {
+            const userName = req.body.userName;
+            const password = req.body.password;
+            const userType  = req.body.userType;
+            let sql = `SELECT * FROM login where userName = '${userName}' and password = '${password}' and type = '${userType}'`;
+            this.db.query(sql, (err, result) => {
+                if(err)
+                    console.log(err);
+                else
+                    console.log("Successfully login");
+                res.send(result);
+            });
+        });
+
 // Will change all the query later after verification - written just for example
         //GET LIST OF ALL BUYERS
         this.app.get('/api/getBuyers', (req, res) => {
