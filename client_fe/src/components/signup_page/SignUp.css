@@ -1,0 +1,15 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+.heading{
+    color: rgb(66, 136, 228);
+}
+.inputBox div{
+    height: 40px;
+}
+.inputBox select{
+    height: 57px;
+    width: 526px;
+}
