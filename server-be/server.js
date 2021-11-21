@@ -5,6 +5,7 @@ const TABLES = require('./utilities/createTables');
 const cred = require('./utilities/credentials');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const { password } = require('./utilities/credentials');
 class BUYSMONEFY {
 
     constructor(port, app) {
@@ -32,7 +33,34 @@ class BUYSMONEFY {
     }
 
     get() {
-        this.app.get('./loginValidate', (req, res) => {
+
+        /**
+         * login credential submit
+         */
+
+         this.app.post('./api/submitLogin', (req, res) => {
+             console.log("funcation caLLed");
+            const dto = req.body;
+            const userName = dto.userName;
+            const password = dto.password;
+            const userType  = dto.userType;
+
+            let sqlQuery = `INSERT INTO login(userName, password, type) VALUES (${userName}, ${password} , ${type});`;
+
+                    this.db.query(sqlQuery, (err, result) => {
+                        if(err){
+                            console.log("Couldn't add");
+                        }
+                        else
+                            console.log("Successfully inserted");
+                    });
+                
+        });
+
+
+
+        this.app.get('/api/loginValidate', (req, res) => {
+            console.log("login validate backend");
             const userName = req.body.userName;
             const password = req.body.password;
             const userType  = req.body.userType;
@@ -49,7 +77,7 @@ class BUYSMONEFY {
 // Will change all the query later after verification - written just for example
         //GET LIST OF ALL BUYERS
         this.app.get('/api/getBuyers', (req, res) => {
-            let sql = `SELECT * FROM buyerDetails`;
+            let sql = `SELECT * FROM login`;
             this.db.query(sql, (err, result) => {
                 if(err)
                     console.log(err);
@@ -88,8 +116,68 @@ class BUYSMONEFY {
                         break;
                 }
         });
+        
+            
+        
     }
 
+    
+    post(){
+        
+    this.app.post('/api/signup', (req, res) => {
+        const fname = req.body.fname;
+        const lname = req.body.lname;
+        const phn = req.body.phn;
+        const email = req.body.email;
+        const username = req.body.username;
+        const password = req.body.password;
+        const cpassword = req.body.cpassword;
+        const userType = req.body.userType;
+        if(password !== cpassword){
+            console.log("password not matched!!");
+        }
+        else{
+        console.log("data signup inserted!!");
+        let sql = `INSERT INTO signup (fname, lname, phn, email, username, password, cpassword, userType) VALUES (?,?,?,?,?,?,?,?)`;
+        
+        this.db.query(sql, [fname, lname, phn, email, username, password, cpassword, userType], (err, result) => {
+            if(err) throw err;
+            else {
+            console.log('record inserted');
+
+            let sqlLogin = `INSERT INTO LOGIN (userName,password,type) values (?,?,?)`;
+            this.db.query(sqlLogin, [username,password,userType],(err, result) => {
+                    if(err) throw err;
+                    else {
+                    console.log('record inserted in login');}
+            });
+
+            // loginInsertion(username, password, userType);
+            }
+        });
+        }
+    });
+
+    this.app.post('/loginValidate', (req, res) => {
+        const username = req.body.userName;
+        const password = req.body.password;
+        const userType = req.body.userType;
+        let sql = `SELECT * FROM login log where log.userName in (?) and log.password in (?) and log.type in (?)`;
+        this.db.query(sql, [username, password, userType], (err, result) => {
+            // if(err) throw err;
+            if(result.length>0) {
+                console.log(result);
+                // alert("jfbdjbvhhjd");
+                // res.send(result);
+                res.redirect("https://www.google.com/");
+            }
+            else{
+                res.send({ message : 'Wrong username/ password combination'});
+                console.log({ message : 'Wrong username/ password combination'});
+            }
+        });
+    });
+}
     listen() {
         this.app.listen(this.port, (err) => {
             if(err)
@@ -104,3 +192,4 @@ class BUYSMONEFY {
 let buysmonefy = new BUYSMONEFY(3001, express());
 buysmonefy.get();
 buysmonefy.listen();
+buysmonefy.post();

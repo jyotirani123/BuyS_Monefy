@@ -11,7 +11,7 @@ class DATABASE {
     initDB() {
         this.db.query(this.sql, (err, result) => {
             if(err)
-                console.log("Couldn't create database");
+                console.log(err);
             else
                 console.log(`Successfully created database `);
         })
