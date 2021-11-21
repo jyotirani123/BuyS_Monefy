@@ -5,18 +5,18 @@
   box-sizing: border-box;
   font-family: "Poppins", sans-serif;
 }
-body{
+/* .login{
   margin: 0;
   padding: 0;
-  /* background: linear-gradient(120deg,#2980b9, #8e44ad); */
+  background: linear-gradient(120deg,#2980b9, #8e44ad);
   background-color: aqua;
   width:100vh;
   height: 100vh;
   overflow: hidden;
-}
+} */
 .login{
   position: absolute;
-  top: 50%;
+  top: 60%;
   left: 50%;
   transform: translate(-50%, -50%);
   width: 400px;
@@ -25,9 +25,13 @@ body{
   box-shadow: 10px 10px 15px rgba(0,0,0,0.05);
 }
 .login h1{
-  text-align: center;
+  position: relative;
+  left:0;
+  right:0;
+ 
   padding: 20px 0;
   border-bottom: 1px solid silver;
+  
 }
 .center form{
   padding: 0 25px;
