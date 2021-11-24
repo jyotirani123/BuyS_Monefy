@@ -168,13 +168,45 @@ class BUYSMONEFY {
             this.db.query(sqlLogin, [username,password,userType],(err, result) => {
                     if(err) throw err;
                     else {
-                    console.log('record inserted in login');}
+                    console.log('record inserted in login');
+                    res.send(result);
+                }
             });
 
             // loginInsertion(username, password, userType);
             }
-        });
+        })
+        // .then( () => {
+        //     res.redirect('/');
+        // })
         }
+    });
+
+    this.app.post('/api/buyer_transaction',(req, res) => {
+        const busername = req.body.busername;
+        const susername = req.body.susername;
+        const item = req.body.item;
+        const itemcount = req.body.itemcount;
+        const amount = req.body.amount;
+        const date = req.body.date;
+        console.log("entered in function");
+        let sql = `INSERT INTO buyer_transaction (busername,susername,item,itemcount,amount,date) VALUES (?,?,?,?,?,?)`;
+        console.log(sql);
+        this.db.query(sql,[busername,susername,item,itemcount,amount,date],(err,result)=>{
+            if(err) throw err;
+            else {
+            console.log('record inserted in buyer_transaction');
+        }
+        })
+    });
+
+    this.app.post('/api/item', (req, res) => {
+        const sname = req.body.sname; 
+        const itname = req.body.itname;
+        const itemid = req.body.itemid;
+        const itemno = req.body.itemno;
+        const amount = req.body.amount;
+       
     });
 
     this.app.post('/api/loginValidate', (req, res) => {
@@ -188,7 +220,7 @@ class BUYSMONEFY {
             if(result.length>0) {
                 console.log(result);
                 res.send({msg:true});
-                //res.redirect("https://www.google.com/");
+
             }
             else{
                 res.send({ message : 'Wrong username/ password combination'});

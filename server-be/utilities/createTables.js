@@ -15,8 +15,9 @@ class TABLES {
             signup: 'CREATE TABLE IF NOT EXISTS signup(fname varchar(100), lname varchar(100), phn bigint(20), email varchar(100), username varchar(100), password varchar(100), cpassword varchar(100), userType int, primary key (username))',
             buyerItemPurchase : 'CREATE TABLE IF NOT EXISTS buyer_item_purchase(bname varchar(200), itemId int, sname varchar(200), noOfItems int, totalPrice bigint(20) , modeOfPayment varchar(200) , primary key (bname, itemId, sname))',
             supplierItemTransaction: 'CREATE TABLE IF NOT EXISTS supplier_item_transaction(itemId int , sname varchar(200), availableItems bigint(20), itemPrice bigint(20), brand varchar(100), primary key (itemId,sname))',
-            itemDetails : 'CREATE TABLE IF NOT EXISTS item_details(itemId int NOT NULL AUTO_INCREMENT, itemName varchar(100) , primary key (itemId))'
-
+            itemDetails : 'CREATE TABLE IF NOT EXISTS item_details(itemId int NOT NULL AUTO_INCREMENT, itemName varchar(100) , primary key (itemId))',
+            additem: 'CREATE TABLE IF NOT EXISTS additem(sname varchar(100), itname varchar(100), itemid varchar(100), itemno varchar(100), amount varchar(100), primary key (itemid))',
+            buyer_transaction : 'CREATE TABLE IF NOT EXISTS buyer_transaction(busername varchar(100), susername varchar(100), item varchar(100), itemcount int(10), amount double, date varchar(20), primary key (busername,susername,item))'
         };
         
     }

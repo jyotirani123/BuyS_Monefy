@@ -2,8 +2,13 @@ import React, {useState} from 'react';
 import {options} from '../../Constants';
 import './SignUp.css';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 function SignUp() {
+
+  let navigate = useNavigate();
+
+  // const [isSignedUp, setIsSignedUp] = useState(false);
 
   const [user, setUser] = useState({
     fname : "",
@@ -25,6 +30,7 @@ function SignUp() {
     setUser({...user, [name] : value});
   }
   const submitDetails = () => {
+    var signupdone;
     axios.post("http://localhost:3001/api/signup", 
     {
       fname : user.fname , 
@@ -35,10 +41,35 @@ function SignUp() {
       password : user.password,
       cpassword : user.cpassword,
       userType : user.userType
-    },).then(() => {
-      console.log("post body");
+    },).then((res) => {
+      console.log(res.data);
+      console.log(res);
+      // if(res.data.message){
+      //   signupdone = true;
+      // }
+      // else{
+      //   signupdone = false;
+      // }
+      // setIsSignedUp('true');
     }).catch((err) => { console.log('Axios Error:', err); })
+    // if(user.fname.length === 0 || user.lname.length === 0 || user.phn.length === 0 || user.email.length === 0 || user.username.length === 0 || user.password.length === 0 || user.cpassword.length === 0 || user.userType.length === 0 || user.password !== user.cpassword){
+    //   alert("please fill up correct details vrna taayi maar degi");
+    // }
+    // else{
+    //   navigate('/login');
+      
+    // }
+    
+    
   };
+
+  // if (isSignedUp) {
+  //   return <Navigate to='/Login' />
+  //  }
+
+  // stateChanger = () => {
+  //   setIsSignedUp('true');
+  // }
 
     return (
         <div className="container">
