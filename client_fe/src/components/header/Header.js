@@ -12,6 +12,8 @@ function Header() {
             <span className="home__navInfo1">Sign Up</span></Link>
             <Link to='/login' style={{ textDecoration: 'none' }}  >
             <span className="home__navInfo2" >Login</span></Link>
+            <Link to='/buyer_transaction' style={{ textDecoration: 'none' }}  >
+            <span className="home__navInfo2" >BuyerTrans</span></Link>
             </div>
             </div>
     )
