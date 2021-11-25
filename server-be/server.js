@@ -34,42 +34,20 @@ class BUYSMONEFY {
 
     get() {
 
-        /**
-         * login credential submit
-         */
-
-         this.app.post('./api/submitLogin', (req, res) => {
-             console.log("funcation caLLed");
-            const dto = req.body;
-            const userName = dto.userName;
-            const password = dto.password;
-            const userType  = dto.userType;
-
-            let sqlQuery = `INSERT INTO login(userName, password, type) VALUES (${userName}, ${password} , ${type});`;
-
-                    this.db.query(sqlQuery, (err, result) => {
-                        if(err){
-                            console.log("Couldn't add");
-                        }
-                        else
-                            console.log("Successfully inserted");
-                    });
-                
-        });
-
-
-
         this.app.get('/api/loginValidate', (req, res) => {
             console.log("login validate backend");
-            const userName = req.body.userName;
-            const password = req.body.password;
-            const userType  = req.body.userType;
-            let sql = `SELECT * FROM login where userName = '${userName}' and password = '${password}' and type = '${userType}'`;
-            this.db.query(sql, (err, result) => {
+          
+            const userName = req.query.userName;
+            const password = req.query.password;
+            const userType  = req.query.userType;
+            
+            let sqlSelect = `SELECT * FROM login where userName = '${userName}' and password = '${password}' and type = ${userType}`;
+            this.db.query(sqlSelect, (err, result) => {
+
                 if(err)
                     console.log(err);
                 else
-                    console.log("Successfully login");
+                    console.log(result);
                 res.send(result);
             });
         });

@@ -9,6 +9,7 @@ function Login() {
     password : "",
     userType : ""
   });
+  
   let name, value;
   const handleInput = (e) => {
     console.log(e);
@@ -17,15 +18,20 @@ function Login() {
 
     setLogin({...login, [name] : value});
   }
-  const loginValidate = () => {
-    axios.post("http://localhost:3001/loginValidate", 
-    {
+  const loginValidate = () =>{
+    axios.get("http://localhost:3001/api/loginValidate", 
+    { params : {
       userName : login.userName , 
       password : login.password,
       userType : login.userType,
-    }).then ((res) => {
-      console.log(res);
-    });
+    }}).then ((response) => {
+    console.log(response.json());
+    console.log(response.data);
+    console.log(response.status);
+    console.log(response.statusText);
+    console.log(response.headers);
+    console.log(response.config);
+    }).catch(err => console.log(err));
   };
 
   return (
