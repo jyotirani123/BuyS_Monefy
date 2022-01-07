@@ -15,7 +15,7 @@ function Buyer() {
             <nav class="navbar navbar-expand-lg navbar-light bg-light">
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav mr-auto">
-                        <Link to='/purchaseItem' style={{ textDecoration: 'none' }} >
+                        <Link to='/PurchaseItem' style={{ textDecoration: 'none' }} >
                             <span className="nav-link">Purchase Item</span></Link>
                         <li class="nav-item">
                             <a class="nav-link" href="#">Create Bank Account</a>
