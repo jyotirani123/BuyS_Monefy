@@ -1,9 +1,13 @@
 import './Login.css';
-import options from '../../Constants';
 import React , {useState,useEffect} from "react";
+import {options, sessionConst} from '../../Constants'
 import axios from 'axios';
+import {useNavigate} from 'react-router-dom';
+
 
 function Login() {
+
+  let navigate = useNavigate();
   const [login, setLogin] = useState({
     userName : "",
     password : "",
@@ -12,28 +16,40 @@ function Login() {
   
   let name, value;
   const handleInput = (e) => {
+    
     console.log(e);
     name = e.target.name;
     value = e.target.value;
 
     setLogin({...login, [name] : value});
   }
-  const loginValidate = () =>{
-    axios.get("http://localhost:3001/api/loginValidate", 
+  const loginValidate = async (e) =>{
+    // console.log(login.userName);
+    e.preventDefault();
+    let response = await axios.get("http://localhost:3001/api/loginValidate", 
     { params : {
       userName : login.userName , 
       password : login.password,
       userType : login.userType,
-    }}).then ((response) => {
-    console.log(response.json());
-    console.log(response.data);
-    console.log(response.status);
-    console.log(response.statusText);
-    console.log(response.headers);
-    console.log(response.config);
-    }).catch(err => console.log(err));
-  };
+    }})
 
+    // let data = await response.json();
+    // console.log(data);
+    .then ((response) => {
+    
+    window.sessionStorage.setItem(sessionConst.userName , login.userName);
+
+    if(login.userType === "2"){
+      navigate("/Buyer")
+    }
+    })};
+    // if(data.status === 200){
+    //   alert("response");
+    // }
+    // }).catch(err => console.log(err));
+    // navigate("https://www.google.com");
+    
+  
   return (
     <div className="login">
         <h1>Login</h1>
@@ -57,8 +73,9 @@ function Login() {
                     options.map((option, index)=> (<option key={index} value = {option.typeId}>{option.userType}</option>))
                 }
             </select>
-            <input type = "submit" value = "Login" onClick = {loginValidate}></input>
-            <div className="signup_link">Not a member? <a href="#">SignUp</a></div>
+            <input type = "submit" value = "Login" onClick = {(e) => loginValidate(e)}></input>
+            
+            <div className="signup_link">Not a member? <a href="SignUp">SignUp</a></div>
         </form>
     </div>
   );

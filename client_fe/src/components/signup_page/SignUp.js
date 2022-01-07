@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
+import {options} from '../../Constants';
 import './SignUp.css';
-import options from '../../Constants';
 import axios from 'axios';
 
 function SignUp() {

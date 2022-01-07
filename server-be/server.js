@@ -34,8 +34,32 @@ class BUYSMONEFY {
 
     get() {
 
+        this.app.get('/api/getItems', (req,res) => {
+            const sqlSelect = "Select itemId,itemName from item_details";
+            this.db.query(sqlSelect,(err,result) => {
+                // console.log(result);
+                res.send(result);
+            })
+        })
+
+        this.app.get('/api/getBuyerPurchaseData', (req,res) => {
+            const sqlSelect = "Select bname,sname,itemName,noOfItems,totalPrice,modeOfPayment from buyer_item_purchase natural join item_details";
+            this.db.query(sqlSelect,(err,result) => {
+                console.log(result);
+                res.send(result);
+            })
+        })
+
+        this.app.get('/api/getSupplierItems', (req,res) => {
+            const sqlSelect = "Select itemId,sname,itemPrice,availableItems from supplier_item_transaction";
+            this.db.query(sqlSelect,(err,result) => {
+                // console.log(result);
+                res.send(result);
+            })
+        })
+
         this.app.get('/api/loginValidate', (req, res) => {
-            console.log("login validate backend");
+            
           
             const userName = req.query.userName;
             const password = req.query.password;
@@ -44,8 +68,10 @@ class BUYSMONEFY {
             let sqlSelect = `SELECT * FROM login where userName = '${userName}' and password = '${password}' and type = ${userType}`;
             this.db.query(sqlSelect, (err, result) => {
 
-                if(err)
+                if(err){
                     console.log(err);
+                    console.log("login validate backend");
+                }
                 else
                     console.log(result);
                 res.send(result);
@@ -101,7 +127,22 @@ class BUYSMONEFY {
 
     
     post(){
-        
+    
+    this.app.post('/api/submitBuyerPurchase' , (req,res) => {
+        const bname = req.body.bname;
+        const itemId = req.body.itemId;
+        const sname = req.body.sname;
+        const noOfItems = req.body.noOfItems;
+        const totalPrice = req.body.totalPrice;
+        const modeOfPayment = req.body.modeOfPayment;
+        let sql = `Insert into buyer_item_purchase (bname,itemId,sname,noOfItems,totalPrice,modeOfPayment) values (?,?,?,?,?,?)`;
+        this.db.query(sql,[bname,itemId,sname,noOfItems,totalPrice,modeOfPayment],(err,result) => {
+            if(err) throw err;
+            else
+                console.log("record inserted in buyer_item_purchase");
+        })
+    })
+    
     this.app.post('/api/signup', (req, res) => {
         const fname = req.body.fname;
         const lname = req.body.lname;
@@ -136,18 +177,18 @@ class BUYSMONEFY {
         }
     });
 
-    this.app.post('/loginValidate', (req, res) => {
+    this.app.post('/api/loginValidate', (req, res) => {
         const username = req.body.userName;
         const password = req.body.password;
         const userType = req.body.userType;
         let sql = `SELECT * FROM login log where log.userName in (?) and log.password in (?) and log.type in (?)`;
         this.db.query(sql, [username, password, userType], (err, result) => {
             // if(err) throw err;
+            // also use boolean operator (!!)
             if(result.length>0) {
                 console.log(result);
-                // alert("jfbdjbvhhjd");
-                // res.send(result);
-                res.redirect("https://www.google.com/");
+                res.send({msg:true});
+                //res.redirect("https://www.google.com/");
             }
             else{
                 res.send({ message : 'Wrong username/ password combination'});
@@ -171,3 +212,4 @@ let buysmonefy = new BUYSMONEFY(3001, express());
 buysmonefy.get();
 buysmonefy.listen();
 buysmonefy.post();
+buysmonefy.get();

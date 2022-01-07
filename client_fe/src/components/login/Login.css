@@ -5,24 +5,16 @@
   box-sizing: border-box;
   font-family: "Poppins", sans-serif;
 }
-/* .login{
-  margin: 0;
-  padding: 0;
-  background: linear-gradient(120deg,#2980b9, #8e44ad);
-  background-color: aqua;
-  width:100vh;
-  height: 100vh;
-  overflow: hidden;
-} */
 .login{
   position: absolute;
-  top: 60%;
+  top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   width: 400px;
   background: white;
   border-radius: 10px;
-  box-shadow: 10px 10px 15px rgba(0,0,0,0.05);
+  /* box-shadow: 15px 15px 15px rgba(0.5,0.5,0.5,0.5); */
+  box-shadow: -1px 1px 5px 9px rgba(0,0,0,0.3);
 }
 .login h1{
   position: relative;
