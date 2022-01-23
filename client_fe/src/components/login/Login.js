@@ -2,12 +2,8 @@ import './Login.css';
 import React , {useState,useEffect} from "react";
 import {options, sessionConst} from '../../Constants'
 import {useNavigate} from 'react-router-dom';
-import { options, sessionConst } from '../../Constants';
 import Header from '../header/Header';
- import {useStateValue} from '../banker/StateProvider';
 import axios from 'axios';
-import BankDashboard from '../banker/BankDashboard';
-
 
 function Login() {
   let navigate = useNavigate();

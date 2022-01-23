@@ -1,16 +1,9 @@
 import React, {useState} from 'react';
 import './Buyer_transaction.css';
-import items from '../../Constants';
-// import {options} from '../../Constants';
 import axios from 'axios';
-import Login from '../login/Login';
-import {Routes, Link, Route, useParams, useNavigate } from 'react-router-dom';
 
 function Buyer_transaction(props) {
   
-  // const params = useParams();
-  // const {loginuserName} = useParams();
-  // console.log(props.loginuserName);
   const loginuserName = localStorage.getItem('userName');
   console.log(loginuserName);
   const logout = localStorage.removeItem('userName');
