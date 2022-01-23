@@ -6,6 +6,8 @@ const cred = require('./utilities/credentials');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const { password } = require('./utilities/credentials');
+
+
 class BUYSMONEFY {
 
     constructor(port, app) {
@@ -29,8 +31,32 @@ class BUYSMONEFY {
             ...cred,
             database: 'buysmonefy'
         });
+        
+        // this.loginInsertion = loginInsertion;
+
+
 
     }
+
+
+
+    // this.loginInsertion = function(username, password, userType) {
+    //     let sqlLogin = `INSERT INTO LOGIN (userName,password,type) values (?,?,?)`;
+    //         this.db.query(sqlLogin, [username,password,userType],(err, result) => {
+    //                 if(err) throw err;
+    //                 else {
+    //                 console.log('record inserted in login');
+    //                 let sqldata = 'Select userName, type from login where userName = ?';
+    //                 this.db.query(sqldata, [username], (err, data) => {
+    //                     if(err) throw err;
+    //                     else{
+    //                         res.send(data);
+    //                         // res.redirect(307,'/login');
+    //                     }
+    //                 });
+    //             }
+    //         });
+    // }
 
     get() {
 
@@ -75,6 +101,17 @@ class BUYSMONEFY {
                 else
                     console.log(result);
                 res.send(result);
+            });
+        });
+
+
+        this.app.get('/api/getItem', (req, res) => {
+            let sql = `SELECT * FROM item_details`;
+            this.db.query(sql, (err, result) => {
+                if(err)
+                    console.log(err);
+                else
+                    res.send(result);
             });
         });
 
@@ -126,6 +163,7 @@ class BUYSMONEFY {
     }
 
     
+    
     post(){
     
     this.app.post('/api/submitBuyerPurchase' , (req,res) => {
@@ -166,12 +204,20 @@ class BUYSMONEFY {
 
             let sqlLogin = `INSERT INTO LOGIN (userName,password,type) values (?,?,?)`;
             this.db.query(sqlLogin, [username,password,userType],(err, result) => {
-                    if(err) throw err;
+                    if(err) res.status(400);
                     else {
                     console.log('record inserted in login');
-                    res.send(result);
+                    let sqldata = 'Select userName, type from login where userName = ?';
+                    this.db.query(sqldata, [username], (err, data) => {
+                        if(err) res.status(400);
+                        else{
+                            res.send(data);
+                            // res.redirect(307,'/login');
+                        }
+                    });
                 }
-            });
+            })
+            // res.send(result);
 
             // loginInsertion(username, password, userType);
             }
@@ -200,13 +246,73 @@ class BUYSMONEFY {
         })
     });
 
+    this.app.post('/api/loggedUserDetails', (req, res) => {
+        const userName = req.body.username;
+        let sql = 'SELECT fname, lname, phn, email, userType from signup where username = ?';
+        this.db.query(sql, [userName], (err, data) => {
+            if(err) res.status(400);
+            else{
+                res.send(data);
+            }
+        })
+    });
+
+    this.app.post('/api/newItem', (req, res) => {
+        const itemName = req.body.itemName;
+        let sql =  `SELECT * FROM item_details where itemName = ?`;
+        this.db.query(sql, [itemName], (err, data) => {
+            if(err) res.status(400);
+            else{
+                console.log("data length: "+data.length);
+                if(data.length == 0){
+                    let sql1 = `INSERT INTO item_details(itemName) VALUES (?)`;
+                    this.db.query(sql1, [itemName],(err, result) => {
+                        if(err) res.status(400);
+                        else {
+                            console.log('record inserted in item_details');
+                            let sql1 = `SELECT * FROM item_details`;
+                            this.db.query(sql1, (err, result) => {
+                                if(err)
+                                    console.log(err);
+                                else
+                                    res.send(result);
+                            });
+                        }
+                    })
+                }
+            }
+        });
+    })
+
+    this.app.post('/api/itemid', (req, res) => {
+        const selectedItem = req.body.selectedItem;
+        let sql = 'SELECT itemId FROM item_details WHERE itemName = ?';
+        this.db.query(sql, [selectedItem], (err, result) => {
+            if(err)
+                console.log(err);
+            else{
+                console.log(result);
+                res.send(result);
+            }
+        });
+    });
+
     this.app.post('/api/item', (req, res) => {
-        const sname = req.body.sname; 
-        const itname = req.body.itname;
+        console.log("hi");
         const itemid = req.body.itemid;
-        const itemno = req.body.itemno;
-        const amount = req.body.amount;
-       
+        const sname = req.body.sname; 
+        const availableItems = req.body.availableItems;
+        const itemPrice = req.body.itemPrice;
+        const brand = req.body.brand;
+        
+        let sql = `INSERT INTO supplier_item_transaction VALUES (?, ?, ?, ?, ?)`;
+        this.db.query(sql, [itemid, sname, availableItems, itemPrice, brand],(err, result) => {
+            if(err) res.status(400);
+            else {
+                console.log('record inserted in item_details');
+                console.log(result);
+            }
+        })
     });
 
     this.app.post('/api/loginValidate', (req, res) => {
@@ -219,8 +325,7 @@ class BUYSMONEFY {
             // also use boolean operator (!!)
             if(result.length>0) {
                 console.log(result);
-                res.send({msg:true});
-
+                res.send(result);
             }
             else{
                 res.send({ message : 'Wrong username/ password combination'});

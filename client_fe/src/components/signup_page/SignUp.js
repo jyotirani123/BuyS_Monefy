@@ -3,6 +3,7 @@ import {options} from '../../Constants';
 import './SignUp.css';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import Header from '../header/Header';
 
 function SignUp() {
 
@@ -29,9 +30,9 @@ function SignUp() {
 
     setUser({...user, [name] : value});
   }
-  const submitDetails = () => {
-    var signupdone;
-    axios.post("http://localhost:3001/api/signup", 
+  const submitDetails = async(e) => {
+    e.preventDefault();
+    let response = await axios.post("http://localhost:3001/api/signup", 
     {
       fname : user.fname , 
       lname : user.lname,
@@ -42,36 +43,26 @@ function SignUp() {
       cpassword : user.cpassword,
       userType : user.userType
     },).then((res) => {
-      console.log(res.data);
-      console.log(res);
-      // if(res.data.message){
-      //   signupdone = true;
-      // }
-      // else{
-      //   signupdone = false;
-      // }
-      // setIsSignedUp('true');
-    }).catch((err) => { console.log('Axios Error:', err); })
-    // if(user.fname.length === 0 || user.lname.length === 0 || user.phn.length === 0 || user.email.length === 0 || user.username.length === 0 || user.password.length === 0 || user.cpassword.length === 0 || user.userType.length === 0 || user.password !== user.cpassword){
-    //   alert("please fill up correct details vrna taayi maar degi");
-    // }
-    // else{
-    //   navigate('/login');
-      
-    // }
-    
-    
+        console.log(res.data[0]);
+        var loguser = res.data[0].userName;
+        var logpass = res.data[0].password;
+        if(res.status === 200){
+          // setLoginUser({userlogin : loguser});
+          // setLoginUser({passlogin : res.data[0].password});
+          navigate('/login');
+
+        }
+     
+    }).catch((err) => { 
+      console.log('Axios Error:', err);
+      // navigate('/signup');
+    })
+ 
   };
 
-  // if (isSignedUp) {
-  //   return <Navigate to='/Login' />
-  //  }
-
-  // stateChanger = () => {
-  //   setIsSignedUp('true');
-  // }
-
     return (
+      <>
+      <Header />
         <div className="container">
           <form className="row justify-content-center" method="post">
             <div className="col-12 col-md-8 col-lg-6 col-xl-5">
@@ -143,6 +134,7 @@ function SignUp() {
           </div>
         </form>
       </div>
+      </>
     );
 
 }

@@ -17,6 +17,7 @@ export const options = [
     }
 ];
 
+
 export const modeOfPayment = [
     {
         mode : "Transfer Instantly",

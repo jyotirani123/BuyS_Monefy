@@ -4,10 +4,13 @@ import './Home.css'
 
 function Home() {
     return (
+        <>
+        <Header />
     <div className="home">
     <Header/>
     <h1>Buys Monefy</h1>
     </div>
+    </>
     )
 }
 

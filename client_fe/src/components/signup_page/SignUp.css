@@ -18,7 +18,7 @@
     color: rgb(66, 136, 228);   
 }
 .inputBox div{
-    height: 40px;
+    height: unset !important;
 }
 .inputBox select{
     height: 57px;

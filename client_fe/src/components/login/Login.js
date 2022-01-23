@@ -4,16 +4,16 @@ import {options, sessionConst} from '../../Constants'
 import axios from 'axios';
 import {useNavigate} from 'react-router-dom';
 
+import { options, sessionConst } from '../../Constants';
+import Header from '../header/Header';
 
 function Login() {
-
   let navigate = useNavigate();
   const [login, setLogin] = useState({
     userName : "",
     password : "",
     userType : ""
   });
-  
   let name, value;
   const handleInput = (e) => {
     
@@ -23,6 +23,7 @@ function Login() {
 
     setLogin({...login, [name] : value});
   }
+
   const loginValidate = async (e) =>{
     // console.log(login.userName);
     e.preventDefault();
@@ -32,9 +33,6 @@ function Login() {
       password : login.password,
       userType : login.userType,
     }})
-
-    // let data = await response.json();
-    // console.log(data);
     .then ((response) => {
     
     window.sessionStorage.setItem(sessionConst.userName , login.userName);
@@ -43,14 +41,10 @@ function Login() {
       navigate("/Buyer")
     }
     })};
-    // if(data.status === 200){
-    //   alert("response");
-    // }
-    // }).catch(err => console.log(err));
-    // navigate("https://www.google.com");
-    
-  
+   
   return (
+    <>
+    <Header />
     <div className="login">
         <h1>Login</h1>
         <form method="get">
@@ -78,6 +72,7 @@ function Login() {
             <div className="signup_link">Not a member? <a href="SignUp">SignUp</a></div>
         </form>
     </div>
+    </>
   );
 }
 
