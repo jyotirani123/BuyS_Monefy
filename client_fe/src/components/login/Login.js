@@ -1,14 +1,20 @@
 import './Login.css';
-import options from '../../Constants';
 import React , {useState,useEffect} from "react";
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+// import Supplier from '../supplier_data/Supplier';
+// import Buyer_transaction from '../buyer_transaction/Buyer_transaction';
+import { options, sessionConst } from '../../Constants';
+import Header from '../header/Header';
 
 function Login() {
+  let navigate = useNavigate();
   const [login, setLogin] = useState({
     userName : "",
     password : "",
     userType : ""
   });
+
   let name, value;
   const handleInput = (e) => {
     console.log(e);
@@ -17,18 +23,24 @@ function Login() {
 
     setLogin({...login, [name] : value});
   }
-  const loginValidate = () => {
-    axios.post("http://localhost:3001/loginValidate", 
+  const loginValidate = async(e) => {
+    e.preventDefault();
+    await axios.post("http://localhost:3001/loginValidate", 
     {
       userName : login.userName , 
       password : login.password,
       userType : login.userType,
     }).then ((res) => {
-      console.log(res);
+      window.sessionStorage.setItem(sessionConst.userName , login.userName);
+      if(login.userType === "3"){
+        navigate('/UserProfile');
+      }
     });
   };
 
   return (
+    <>
+    <Header />
     <div className="login">
         <h1>Login</h1>
         <form method="get">
@@ -55,6 +67,7 @@ function Login() {
             <div className="signup_link">Not a member? <a href="#">SignUp</a></div>
         </form>
     </div>
+    </>
   );
 }
 

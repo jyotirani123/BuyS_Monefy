@@ -13,7 +13,7 @@
  
 //  module.exports =  Constants
 
-const options = [
+export const options = [
     {
         userType : "ADMIN",
         typeId : 1,
@@ -32,4 +32,7 @@ const options = [
     }
 ];
 
-export default options;
+export const sessionConst = {
+    userName : "userName",
+    loginPwd : "password"
+};

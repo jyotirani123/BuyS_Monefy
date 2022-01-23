@@ -19,7 +19,7 @@
    
 }
 .inputBox div{
-    height: 40px;
+    height: unset !important;
 }
 .inputBox select{
     height: 57px;
