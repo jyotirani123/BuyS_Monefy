@@ -33,9 +33,6 @@ function PurchaseItem() {
     axios.get("http://localhost:3001/api/getSupplierItems").then((response) => {
       setSupplierItemTransactionDetails(response.data);
     });
-
-    
-
   }, []);
   let name, value;
   const handleInput = (e) => {
