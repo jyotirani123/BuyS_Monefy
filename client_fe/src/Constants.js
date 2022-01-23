@@ -1,19 +1,4 @@
-// class Constants{
-//     constructor(userType, typeId){
-//          this.userType = userType;
-//          this.typeId = typeId;
-//     }
-//     allConstants(){
-//         Constants("ADMIN" , 1);
-//         Constants("BUYER" , 2);
-//         Constants("SUPPLIER" , 3);
-//         Constants("BANK" , 4);
-//     }
-//  }
- 
-//  module.exports =  Constants
-
-const options = [
+export const options = [
     {
         userType : "ADMIN",
         typeId : 1,
@@ -31,5 +16,22 @@ const options = [
         typeId : 4,
     }
 ];
+
+
+export const modeOfPayment = [
+    {
+        mode : "Transfer Instantly",
+        modeId : 1,
+    },
+    {
+        mode : "Take a Loan",
+        modeId : 2,
+    }
+]
+
+export const sessionConst = {
+    userName : "userName",
+    loginPwd : "password"
+};
 
 export default options;

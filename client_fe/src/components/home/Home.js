@@ -1,12 +1,15 @@
-import React from 'react'
-import './Home.css'
-
+import React from 'react';
+import './Home.css';
+import Header from '../header/Header';
 function Home() {
     return (
+        <>
+        <Header />
     <div className="home">
-        
+        <Header />
     <h1>Buys Monefy</h1>
     </div>
+    </>
     )
 }
 

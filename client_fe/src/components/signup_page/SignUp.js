@@ -1,9 +1,15 @@
 import React, {useState} from 'react';
+import {options} from '../../Constants';
 import './SignUp.css';
-import options from '../../Constants';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import Header from '../header/Header';
 
 function SignUp() {
+
+  let navigate = useNavigate();
+
+  // const [isSignedUp, setIsSignedUp] = useState(false);
 
   const [user, setUser] = useState({
     fname : "",
@@ -24,8 +30,9 @@ function SignUp() {
 
     setUser({...user, [name] : value});
   }
-  const submitDetails = () => {
-    axios.post("http://localhost:3001/api/signup", 
+  const submitDetails = async(e) => {
+    e.preventDefault();
+    let response = await axios.post("http://localhost:3001/api/signup", 
     {
       fname : user.fname , 
       lname : user.lname,
@@ -35,12 +42,27 @@ function SignUp() {
       password : user.password,
       cpassword : user.cpassword,
       userType : user.userType
-    },).then(() => {
-      console.log("post body");
-    }).catch((err) => { console.log('Axios Error:', err); })
+    },).then((res) => {
+        console.log(res.data[0]);
+        var loguser = res.data[0].userName;
+        var logpass = res.data[0].password;
+        if(res.status === 200){
+          // setLoginUser({userlogin : loguser});
+          // setLoginUser({passlogin : res.data[0].password});
+          navigate('/login');
+
+        }
+     
+    }).catch((err) => { 
+      console.log('Axios Error:', err);
+      // navigate('/signup');
+    })
+ 
   };
 
     return (
+      <>
+      <Header />
         <div className="container">
           <form className="row justify-content-center" method="post">
             <div className="col-12 col-md-8 col-lg-6 col-xl-5">
@@ -112,6 +134,7 @@ function SignUp() {
           </div>
         </form>
       </div>
+      </>
     );
 
 }
