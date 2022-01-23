@@ -1,11 +1,13 @@
 import './Login.css';
 import React , {useState,useEffect} from "react";
 import {options, sessionConst} from '../../Constants'
-import axios from 'axios';
 import {useNavigate} from 'react-router-dom';
-
 import { options, sessionConst } from '../../Constants';
 import Header from '../header/Header';
+ import {useStateValue} from '../banker/StateProvider';
+import axios from 'axios';
+import BankDashboard from '../banker/BankDashboard';
+
 
 function Login() {
   let navigate = useNavigate();
@@ -27,7 +29,19 @@ function Login() {
   const loginValidate = async (e) =>{
     // console.log(login.userName);
     e.preventDefault();
-    let response = await axios.get("http://localhost:3001/api/loginValidate", 
+    // let response = await axios.get("http://localhost:3001/api/loginValidate", )
+   const res= await axios.get("http://localhost:3001/api/createAccount", 
+  )
+        //  window.sessionStorage.setItem("bankaccounts",res.data[0]);
+         console.log("FRESH:  ",res.data);
+
+    window.sessionStorage.setItem("acc",JSON.stringify(res.data));
+    
+    
+
+    
+    
+     const response=await axios.get("http://localhost:3001/api/loginValidate", 
     { params : {
       userName : login.userName , 
       password : login.password,
@@ -67,9 +81,8 @@ function Login() {
                     options.map((option, index)=> (<option key={index} value = {option.typeId}>{option.userType}</option>))
                 }
             </select>
-            <input type = "submit" value = "Login" onClick = {(e) => loginValidate(e)}></input>
-            
-            <div className="signup_link">Not a member? <a href="SignUp">SignUp</a></div>
+            <input type = "submit" value = "Login" onClick = {(e)=>{loginValidate(e)}}></input>
+            <div className="signup_link">Not a member? <a href="#">SignUp</a></div>
         </form>
     </div>
     </>

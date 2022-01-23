@@ -33,3 +33,5 @@ export const sessionConst = {
     userName : "userName",
     loginPwd : "password"
 };
+
+export default options;
