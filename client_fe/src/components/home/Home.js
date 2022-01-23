@@ -1,13 +1,12 @@
-import React from 'react'
-import Header from '../header/Header'
-import './Home.css'
-
+import React from 'react';
+import './Home.css';
+import Header from '../header/Header';
 function Home() {
     return (
         <>
         <Header />
     <div className="home">
-    <Header/>
+        <Header />
     <h1>Buys Monefy</h1>
     </div>
     </>

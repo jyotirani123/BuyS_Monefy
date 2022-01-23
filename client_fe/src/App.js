@@ -12,19 +12,12 @@ import Buyer_transaction from './components/buyer_transaction/Buyer_transaction'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import UserProfile from './components/supplierProfile/UserProfile';
 
+import RegisterBank from './components/banker/RegisterBank';
+import BankDashboard from './components/banker/BankDashboard';
+import CustomerInfo from './components/banker/CustomerInfo';
+import CreateAccount from './components/banker/CreateAccount';
+
 function App() {
-
-  // const [loginUser, setLoginUser] = useState({
-  //   userlogin : "",
-  //   passlogin : ""
-  // });
-
-  // handleUser = (user, userpas) => {
-  //   setLoginUser({
-  //       userlogin: user,    //We can also write !inputText because typecasting is possible in javascript
-  //       passlogin: userpas,
-  //   });
-  // };
 
   return (
   <Router>
@@ -37,10 +30,15 @@ function App() {
           <Route exact path="/signup" element={<SignUp/>}/>
           <Route exact path ="/buyer" element={<Buyer/>}/>
           <Route exact path ="/purchaseItem" element={<PurchaseItem/>}/>
-          <Route exact path="/buyer_transaction" element={<Buyer_transaction/>}/>
+<Route exact path="/buyer_transaction" element={<Buyer_transaction/>}/>
           <Route exact path = "/ItemDetails" element = {<Supplier />} />
           <Route exact path = "/UserProfile" element = {<UserProfile />} />
-
+          <Route exact path="/createaccount" element={<CreateAccount/>}/>
+          <Route exact path="/customerInfo" element={<CustomerInfo/>}/>
+          <Route exact path="/bankdashboard" element={<BankDashboard/>}/>
+          <Route exact path="/registerb" element={<RegisterBank/>}/>
+          <Route exact path="/login" element={<Login/>}/>
+          <Route exact path="/signup" element={<SignUp/>}/>
     </Routes>
      
      

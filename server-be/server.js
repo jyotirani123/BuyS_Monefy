@@ -38,26 +38,6 @@ class BUYSMONEFY {
 
     }
 
-
-
-    // this.loginInsertion = function(username, password, userType) {
-    //     let sqlLogin = `INSERT INTO LOGIN (userName,password,type) values (?,?,?)`;
-    //         this.db.query(sqlLogin, [username,password,userType],(err, result) => {
-    //                 if(err) throw err;
-    //                 else {
-    //                 console.log('record inserted in login');
-    //                 let sqldata = 'Select userName, type from login where userName = ?';
-    //                 this.db.query(sqldata, [username], (err, data) => {
-    //                     if(err) throw err;
-    //                     else{
-    //                         res.send(data);
-    //                         // res.redirect(307,'/login');
-    //                     }
-    //                 });
-    //             }
-    //         });
-    // }
-
     get() {
 
         this.app.get('/api/getItems', (req,res) => {
@@ -127,7 +107,16 @@ class BUYSMONEFY {
                 res.send(result);
             });
         });
-
+        // this.app.get('/api/createAccount', (req, res) => {
+        //     let sql = `SELECT * FROM createAccount`;
+        //     this.db.query(sql, (err, result) => {
+        //         if(err)
+        //             console.log(err);
+        //         else
+        //             console.log("Successfully extracted accounts");
+        //         res.send(result);
+        //     });
+        // });
         //GET LIST OF ALL BUYER FOR SUPPLIER
         this.app.get('/api/getBuyers/:id', (req, res) => {
             let sql = `SELECT * FROM buyerSupplierTrns where supplierId = '${req.params.id}'`;
@@ -227,6 +216,61 @@ class BUYSMONEFY {
         // })
         }
     });
+     //Register bank TABLE...
+     this.app.post('/api/registerbank', (req, res) => {
+        const bankname = req.body.bankname;
+        const bankid = req.body.bankid;
+        const ifsc = req.body.ifsc;
+        const address = req.body.address;
+       const branchcode = req.body.branchcode;
+       const interest=req.body.interest;
+       const password=req.body.password;
+  const userType=req.body.usertype;
+     
+       
+        console.log("ok");
+        let sql = `INSERT INTO RegisterBank (bankname,bankid,ifsc,address,branchCode,interest,password) VALUES (?,?,?,?,?,?,?)`;
+        
+        this.db.query(sql, [bankname, bankid, ifsc, address,branchcode,interest,password], (err, result) => {
+            if(err) throw err;
+            else {res.send(result);
+            console.log('record inserted in registerBank table');
+                }
+        });
+
+        //insert bank details in login table
+        let loginsql = `INSERT INTO login (username,password,type) VALUES (?,?,?)`;
+        
+        this.db.query(loginsql, [bankname,password,userType], (err, result) => {
+            if(err) throw err;
+            else {
+            console.log('record inserted in registerBank table login');
+           
+                }
+        });
+     
+    });
+
+    //create account in bank details
+    this.app.post('/api/createAccount', (req, res) => {
+       
+        const customername = req.body.customername;
+        const accnum = req.body.accnum;
+        const bankname = req.body.bankname;
+        const ifsc = req.body.ifsc;
+        
+        
+        console.log("ok");
+        let sql = `INSERT INTO createAccount (customername,bankname,accnum,ifsc) VALUES (?,?,?,?)`;
+        
+        this.db.query(sql, [customername,bankname,accnum,ifsc], (err, result) => {
+            if(err) throw err;
+            else {res.send(result);
+            console.log('record inserted in createAccount table');
+                }
+        });
+
+     });
 
     this.app.post('/api/buyer_transaction',(req, res) => {
         const busername = req.body.busername;
