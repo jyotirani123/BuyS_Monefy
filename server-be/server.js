@@ -107,17 +107,22 @@ class BUYSMONEFY {
                 res.send(result);
             });
         });
-        // this.app.get('/api/createAccount', (req, res) => {
-        //     let sql = `SELECT * FROM createAccount`;
-        //     this.db.query(sql, (err, result) => {
-        //         if(err)
-        //             console.log(err);
-        //         else
-        //             console.log("Successfully extracted accounts");
-        //         res.send(result);
-        //     });
-        // });
-        //GET LIST OF ALL BUYER FOR SUPPLIER
+
+        this.app.get('/api/createAccount', (req, res) => {
+            let sqlSelect = `SELECT * FROM createaccount`;
+            this.db.query(sqlSelect, (err, result) => {
+                if(err){
+                    console.log(err);
+                 }
+                else
+                    console.log("create Account backend");
+                    console.log(result);
+                    res.send(result);
+                // window.sessionStorage.setItem("accounts",result);
+            });
+       
+        });
+
         this.app.get('/api/getBuyers/:id', (req, res) => {
             let sql = `SELECT * FROM buyerSupplierTrns where supplierId = '${req.params.id}'`;
             this.db.query(sql, (err, result) => {
