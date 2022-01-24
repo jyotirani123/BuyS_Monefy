@@ -14,9 +14,6 @@ const UserProfile = () => {
     email: "",
     userType: ""
   })
-
-  
-
   useEffect(() => {
 
     let n = window.sessionStorage.getItem(sessionConst.userName);

@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import { sessionConst } from '../../Constants';
 import './BankDashboard.css';
 import BankNav from './BankNav';
 import Item from './Item';
@@ -7,7 +8,7 @@ function BankDashboard() {
         const data=JSON.parse(window.sessionStorage.getItem("acc"));
     
     const [accounts,setaccounts]=useState(data);
-    const username =window.sessionStorage.getItem("username");
+    const username =window.sessionStorage.getItem(sessionConst.userName);
     console.log(username,data);
     const accArray=accounts.filter((acc,i)=>{if(acc.bankname===username){return acc;}},username)
     console.log("accArray: ",accArray);    

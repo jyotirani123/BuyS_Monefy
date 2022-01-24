@@ -17,9 +17,8 @@ function Buyer() {
                     <ul class="navbar-nav mr-auto">
                         <Link to='/PurchaseItem' style={{ textDecoration: 'none' }} >
                             <span className="nav-link">Purchase Item</span></Link>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Create Bank Account</a>
-                        </li>
+                            <Link to='/createaccount' style={{ textDecoration: 'none' }} >
+                            <span className="nav-link">Create Bank Account</span></Link>
                         <li class="nav-item">
                             <a class="nav-link" href="#">View Transactions</a>
                         </li>

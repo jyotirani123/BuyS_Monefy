@@ -4,7 +4,6 @@ import Header from '../header/Header';
 function Home() {
     return (
         <>
-        <Header />
     <div className="home">
         <Header />
     <h1>Buys Monefy</h1>
