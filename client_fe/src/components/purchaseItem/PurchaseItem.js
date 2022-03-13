@@ -1,5 +1,5 @@
 import React, {useState,useEffect} from 'react';
-import './PurchaseItem.css';
+import './PurchaseItem.module.css';
 import axios, { Axios } from 'axios';
 import { sessionConst, modeOfPayment } from '../../Constants';
 
@@ -114,7 +114,7 @@ function PurchaseItem() {
     return (
         <div className="container">
           <form className="row justify-content-center" method="post">
-            <div className="col-12 col-md-8 col-lg-6 col-xl-5">
+            <div className="col-5 col-md-8 col-lg-6 col-xl-5">
               <div className="row mt-2">
                 <div className="col text-center">
                   <h1 className="heading">Purchase Item</h1>
@@ -122,7 +122,7 @@ function PurchaseItem() {
                 </div>
               </div>
               <div className="row align-items-center inputBox">
-                <div className="col mt-2 form-floating">
+                <div className="col mt-1 form-floating">
                   <input type="text" disabled = 'true'  className="form-control" id="b-name" name="bname" value={userName} onChange={handleInput} placeholder="Enter your first name" required />
                   <label className="mx-3" htmlFor="bname">Buyer Name</label>
                 </div>
