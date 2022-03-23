@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import './Supplier.css';
+// import './Supplier.css';
 import axios from 'axios';
 import { sessionConst } from '../../Constants';
 import SupplierHomeNavbar from '../SupplierHome/SupplierHomeNavbar';

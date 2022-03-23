@@ -1,5 +1,5 @@
 import React, {useState,useEffect} from 'react';
-import './PurchaseItem.module.css';
+// import './PurchaseItem.module.css';
 import axios, { Axios } from 'axios';
 import { sessionConst, modeOfPayment } from '../../Constants';
 

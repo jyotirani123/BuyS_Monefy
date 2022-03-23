@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import './Buyer_transaction.css';
+// import './Buyer_transaction.css';
 import axios from 'axios';
 
 function Buyer_transaction(props) {

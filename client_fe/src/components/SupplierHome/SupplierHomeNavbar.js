@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import './SupplierHomeNavbar.css';
+// import './SupplierHomeNavbar.css';
 import {Link, useLocation} from 'react-router-dom';
 import Supplier from '../supplier_data/Supplier';
 

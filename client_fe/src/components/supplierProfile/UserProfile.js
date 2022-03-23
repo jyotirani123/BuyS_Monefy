@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import SupplierHomeNavbar from '../SupplierHome/SupplierHomeNavbar';
 import { sessionConst } from '../../Constants';
-import './UserProfile.css';
+// import './UserProfile.css';
 import axios from 'axios';
 
 const UserProfile = () => {

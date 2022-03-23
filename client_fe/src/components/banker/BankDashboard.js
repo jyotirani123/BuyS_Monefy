@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import { sessionConst } from '../../Constants';
-import './BankDashboard.css';
+// import './BankDashboard.css';
 import BankNav from './BankNav';
 import Item from './Item';
 

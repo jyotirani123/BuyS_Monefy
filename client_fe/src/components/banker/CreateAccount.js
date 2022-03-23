@@ -1,5 +1,5 @@
 import React ,{useState} from 'react'
-import './CreateAccount.css';
+// import './CreateAccount.css';
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
 import {useStateValue} from "./StateProvider";
