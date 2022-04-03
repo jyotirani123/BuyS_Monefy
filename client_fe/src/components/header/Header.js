@@ -1,8 +1,11 @@
 import React from 'react';
 import styles from './Header.module.css';
 import {Link} from 'react-router-dom';
-import logo from '../../assets/logo.png'
+import logo from '../../assets/logo.png';
+import {sessionConst } from '../../Constants';
 function Header() {
+  const usertype=sessionStorage.getItem(sessionConst.userType);
+  console.log(usertype);
     return (
         <>
         {/* <div className="home__nav"> */}
@@ -23,9 +26,9 @@ function Header() {
 <nav class="navbar navbar-expand-lg navbar-light bg-white">
 <div className={`d-flex align-items-center justify-content-center ${styles["header-nav-container"]}`}>
 
-  <a class="navbar-brand">
+  <Link  to="/" class="navbar-brand">
     <img src={logo} class="navbar-brand-img" id={styles["logo-img"]} alt="logo" />
-  </a>
+  </Link>
 
   <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
@@ -39,39 +42,47 @@ function Header() {
 
     <ul class="navbar-nav ms-auto">
       <li class="nav-item">
-        <a class={`nav-link ${styles["nav-link"]}`} id="navbarLandings" href="#">
+        {usertype==2?<Link to="/Buyer" class={`nav-link ${styles["nav-link"]}`} id="navbarLandings" >
+          Buyer Dashboard
+        </Link>:<Link to="/" class={`nav-link ${styles["nav-link"]}`} id="navbarLandings" >
           Home
-        </a>
+        </Link>}
       </li>
       <li class="nav-item">
-        <a class={`nav-link ${styles["nav-link"]}`} id="navbarPages" href="#">
+        {usertype==2?<Link to="/PurchaseItem" class={`nav-link ${styles["nav-link"]}`} id="navbarPages" >
+         Purchase Item
+        </Link>:<Link to="/" class={`nav-link ${styles["nav-link"]}`} id="navbarPages" >
           About
-        </a>
+        </Link>}
       </li>
       <li class="nav-item">
-        <a class={`nav-link ${styles["nav-link"]}`} id="navbarAccount" href="#">
+        {usertype==2?<Link to="/createaccount" class={`nav-link ${styles["nav-link"]}`} id="navbarAccount">
+          Create Bank Account
+        </Link>:<Link to="/" class={`nav-link ${styles["nav-link"]}`} id="navbarAccount">
           Services
-        </a>
+        </Link>}
       </li>
       <li class="nav-item">
-        <a class={`nav-link ${styles["nav-link"]}`} id="navbarDocumentation" href="#">
-          Contact
-        </a>
+       { usertype==2?<Link to="/Buyer" class={`nav-link ${styles["nav-link"]}`} id="navbarDocumentation" >
+          View Transactions
+        </Link>:<Link to="/" class={`nav-link ${styles["nav-link"]}`} id="navbarAccount">
+          Services
+        </Link>}
         
       </li>
     </ul>
 
-    <div className={styles['header-butns']}>
-    <a class="navbar-btn btn btn-sm btn-primary lift ms-auto mx-2" href="https://themes.getbootstrap.com/product/landkit/" target="_blank">
+   {!usertype && <div className={styles['header-butns']}>
+    <Link to="/Login" class="navbar-btn btn btn-sm btn-primary lift ms-auto mx-2"  >
       Login
-    </a>
-    <a class="navbar-btn btn btn-sm btn-primary lift ms-auto mx-2" href="https://themes.getbootstrap.com/product/landkit/" target="_blank">
+    </Link>
+    <Link to="/signup" class="navbar-btn btn btn-sm btn-primary lift ms-auto mx-2" >
       Sign Up
-    </a>
-    <a class="navbar-btn btn btn-sm btn-primary lift ms-auto mx-2" href="https://themes.getbootstrap.com/product/landkit/" target="_blank">
+    </Link>
+    <Link to="/registerb" class="navbar-btn btn btn-sm btn-primary lift ms-auto mx-2" >
       Register Bank
-    </a>
-    </div>
+    </Link>
+    </div>}
 
   </div>
 

@@ -19,7 +19,11 @@ function SignUp() {
     username : "",
     password : "",
     cpassword : "",
-    userType : ""
+    userType : "",
+    city: "",
+    state:"",
+    address:"",
+    pincode:"",
   });
 
   let name, value;
@@ -41,7 +45,11 @@ function SignUp() {
       username : user.username,
       password : user.password,
       cpassword : user.cpassword,
-      userType : user.userType
+      userType : user.userType,
+      city:user.city,
+      state:user.state,
+      address:user.address,
+      pincode:user.pincode
     },).then((res) => {
         console.log(res.data[0]);
         var loguser = res.data[0].userName;
@@ -66,7 +74,7 @@ function SignUp() {
         <div className="container">
           <form className="row justify-content-center" method="post">
             <div className="col-12 col-md-8 col-lg-6 col-xl-5">
-              <div className="row mt-5">
+              <div className="row">
                 <div className="col text-center">
                   <h1 className="heading">Sign Up</h1>
                   <p className="text-h3">Please fill in this form to create an account.</p>
@@ -96,6 +104,30 @@ function SignUp() {
                   <label className="mx-3" htmlFor="email">Email Id</label>
                 </div>
               </div>
+              <div className="row align-items-center inputBox">
+                <div className="col mt-3 form-floating">
+                  <input type="text" className="form-control" id="city" name="city" value={user.city} onChange={handleInput} placeholder="Enter city" required />
+                  <label className="mx-3" htmlFor="city">City</label>
+                </div>
+              </div>
+              <div className="row align-items-center inputBox">
+                <div className="col mt-3 form-floating">
+                  <input type="text" className="form-control" id="state" name="state" value={user.state} onChange={handleInput} placeholder="Enter state" required />
+                  <label className="mx-3" htmlFor="state">State</label>
+                </div>
+              </div>
+              <div className="row align-items-center inputBox">
+                <div className="col mt-3 form-floating">
+                  <input type="text" className="form-control" id="address" name="address" value={user.address} onChange={handleInput} placeholder="Enter address" required />
+                  <label className="mx-3" htmlFor="fname">Address</label>
+                </div>
+              </div>
+              <div className="row align-items-center inputBox">
+                <div className="col mt-3 form-floating">
+                  <input type="text" className="form-control" id="pincode" name="pincode" value={user.pincode} onChange={handleInput} placeholder="Enter pincode" required />
+                  <label className="mx-3" htmlFor="fname">Pincode</label>
+                </div>
+              </div>
               <div className="row align-items-center mt-4 inputBox">
                 <div className="col mt-1 form-floating">
                   <input type="text" className="form-control" id="uname" name="username" value={user.username} onChange={handleInput} placeholder="Enter your username" required />
@@ -121,7 +153,7 @@ function SignUp() {
                 </select>
               </div>
               <div className="row justify-content-start mt-3">
-                <div className="col">
+                <div className="col  d-flex flex-column justify-content-center align-items-center">
                   <div className="form-check">
                     <label className="form-check-label">
                       <input type="checkbox" className="form-check-input" required />

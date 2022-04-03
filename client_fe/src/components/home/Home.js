@@ -5,6 +5,8 @@ import bgimage from '../../assets/im.png'
 import aboutimage from '../../assets/about.png';
 import contactimage from '../../assets/contact.png';
 import logo from '../../assets/logo.png';
+import t1 from "../../assets/testimonials/testimonials-1.jpg";
+import { Link } from 'react-router-dom';
 function Home() {
     return (
         <>
@@ -24,14 +26,15 @@ function Home() {
                         <p class="lead text-center text-md-start text-muted mb-6 mb-lg-8">
                             A website to settle buyer and supplier payment.
                         </p>
-                        <a href="overview.html" class="btn btn-lg btn-primary shadow lift me-1">
+                        <Link to="./Login" class="btn btn-lg btn-primary shadow lift me-1">
                             Login
-                        </a>
+                      </Link>
+
                     </div>
                     <img src={bgimage} />
                 </div>
-                <div className='about py-5 my-3 d-flex flex-column align-items-center'>
-                    <h1 class="display-3 text-md-start text-primary my-4">About</h1>
+                <div className='about py-5 my-3 d-flex flex-column align-items-center' id="about">
+                    <h1 class="display-3 text-md-start text-primary my-4" >About</h1>
                     <div className='d-flex justify-content-between align-items-center'>
                         <img src={aboutimage} />
                         <p className='lead text-center text-md-start text-muted mb-6 mb-lg-8'>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).</p>
@@ -83,6 +86,76 @@ function Home() {
                         </div>
                     </div>
                 </div>
+        {/* testimonials section */}
+    {/* <section id="testimonials" class="testimonials section-bg">
+      <div class="container">
+
+        <div class="section-title">
+          <h2>Testimonials</h2>
+          <p>Magnam dolores commodi suscipit. Necessitatibus eius consequatur ex aliquid fuga eum quidem. Sit sint consectetur velit. Quisquam quos quisquam cupiditate. Et nemo qui impedit suscipit alias ea. Quia fugiat sit in iste officiis commodi quidem hic quas.</p>
+        </div>
+
+        <div class="owl-carousel testimonials-carousel">
+
+          <div class="testimonial-item" data-aos="fade-up">
+            <p>
+              <i class="bx bxs-quote-alt-left quote-icon-left"></i>
+              Proin iaculis purus consequat sem cure digni ssim donec porttitora entum suscipit rhoncus. Accusantium quam, ultricies eget id, aliquam eget nibh et. Maecen aliquam, risus at semper.
+              <i class="bx bxs-quote-alt-right quote-icon-right"></i>
+            </p>
+            <img src={t1} class="testimonial-img" alt="" />
+            <h3>Saul Goodman</h3>
+            <h4>Ceo &amp; Founder</h4>
+          </div>
+
+          <div class="testimonial-item" data-aos="fade-up" data-aos-delay="100">
+            <p>
+              <i class="bx bxs-quote-alt-left quote-icon-left"></i>
+              Export tempor illum tamen malis malis eram quae irure esse labore quem cillum quid cillum eram malis quorum velit fore eram velit sunt aliqua noster fugiat irure amet legam anim culpa.
+              <i class="bx bxs-quote-alt-right quote-icon-right"></i>
+            </p>
+            <img src={t1} class="testimonial-img" alt="" />
+            <h3>Sara Wilsson</h3>
+            <h4>Designer</h4>
+          </div>
+
+          <div class="testimonial-item" data-aos="fade-up" data-aos-delay="200">
+            <p>
+              <i class="bx bxs-quote-alt-left quote-icon-left"></i>
+              Enim nisi quem export duis labore cillum quae magna enim sint quorum nulla quem veniam duis minim tempor labore quem eram duis noster aute amet eram fore quis sint minim.
+              <i class="bx bxs-quote-alt-right quote-icon-right"></i>
+            </p>
+            <img src="../../assets/testimonials/testimonials-3.jpg" class="testimonial-img" alt="" />
+            <h3>Jena Karlis</h3>
+            <h4>Store Owner</h4>
+          </div>
+
+          <div class="testimonial-item" data-aos="fade-up" data-aos-delay="300">
+            <p>
+              <i class="bx bxs-quote-alt-left quote-icon-left"></i>
+              Fugiat enim eram quae cillum dolore dolor amet nulla culpa multos export minim fugiat minim velit minim dolor enim duis veniam ipsum anim magna sunt elit fore quem dolore labore illum veniam.
+              <i class="bx bxs-quote-alt-right quote-icon-right"></i>
+            </p>
+            <img src="../../assets/testimonials/testimonials-4.jpg" class="testimonial-img" alt="" />
+            <h3>Matt Brandon</h3>
+            <h4>Freelancer</h4>
+          </div>
+
+          <div class="testimonial-item" data-aos="fade-up" data-aos-delay="400">
+            <p>
+              <i class="bx bxs-quote-alt-left quote-icon-left"></i>
+              Quis quorum aliqua sint quem legam fore sunt eram irure aliqua veniam tempor noster veniam enim culpa labore duis sunt culpa nulla illum cillum fugiat legam esse veniam culpa fore nisi cillum quid.
+              <i class="bx bxs-quote-alt-right quote-icon-right"></i>
+            </p>
+            <img src="../../assets/testimonials/testimonials-5.jpg" class="testimonial-img" alt="" />
+            <h3>John Larson</h3>
+            <h4>Entrepreneur</h4>
+          </div>
+
+        </div>
+
+      </div>
+    </section> */}
 
                 <div className='contact py-5 my-3 d-flex flex-column align-items-center'>
                     <h1 class="display-3 text-md-start text-primary my-4">Contact Us</h1>
@@ -108,8 +181,9 @@ function Home() {
                         </form>
                     </div>
                 </div>
-                <footer class="py-8 py-md-11 bg-gray-200">
-                    <div class="container">
+                <footer class="footer py-8 py-md-11 bg-gray-200">
+                    <p>copyright @2022</p>
+                    {/* <div class="container">
                         <div class="row">
                             <div class="col-12 col-md-4 col-lg-3">
                                 <img src={logo} alt="..." class="footer-brand img-fluid mb-2" />
@@ -268,7 +342,7 @@ function Home() {
 
                             </div>
                         </div>
-                    </div> 
+                    </div>  */}
                 </footer>
             </div>
         </>

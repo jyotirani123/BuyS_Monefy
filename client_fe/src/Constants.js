@@ -32,6 +32,8 @@ export const modeOfPayment = [
 export const sessionConst = {
     userName : "userName",
     loginPwd : "password",
+    userType:"userType",
+    bankAccounts:"bankAccounts",
     
 };
 

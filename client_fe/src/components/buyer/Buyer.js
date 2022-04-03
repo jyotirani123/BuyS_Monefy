@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from 'react-router-dom';
 import axios, { Axios } from 'axios';
+import Header from "../header/Header";
 function Buyer() {
     
     const [transactions, setTransactions] = useState([]);
@@ -12,7 +13,8 @@ function Buyer() {
 
     return (
         <div className="container" >
-            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <Header />
+            {/* <nav class="navbar navbar-expand-lg navbar-light bg-light">
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav mr-auto">
                         <Link to='/PurchaseItem' style={{ textDecoration: 'none' }} >
@@ -25,9 +27,9 @@ function Buyer() {
                     </ul>
 
                 </div>
-            </nav>
+            </nav> */}
             {/* <div>hello</div> */}
-            <div>
+            <div className="d-flex justify-content-center">
                 <table>
                     <tr>
                         <th>Buyer Name</th>&emsp;
