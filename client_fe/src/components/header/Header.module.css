@@ -38,7 +38,7 @@
     color: whitesmoke;
 } */
 
-.navbar{
+.navbar1 {
   padding-top: 0 !important;
 }
 
@@ -46,10 +46,11 @@
   flex-wrap: inherit;
   width: 100%;
   padding: 0 40px;
+  box-shadow: 5px 5px 20px grey;
 }
 
 #logo-img{
-  height: 120px;
+  height: 90px;
   width: 120px;
   object-fit: contain !important;
 }

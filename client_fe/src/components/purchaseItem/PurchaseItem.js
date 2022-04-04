@@ -2,6 +2,7 @@ import React, {useState,useEffect} from 'react';
 // import './PurchaseItem.module.css';
 import axios, { Axios } from 'axios';
 import { sessionConst, modeOfPayment } from '../../Constants';
+import Header from '../header/Header';
 
 let userName = window.sessionStorage.getItem(sessionConst.userName);
 let totalPrice = 0;
@@ -112,6 +113,8 @@ function PurchaseItem() {
   };
 
     return (
+      <>
+      <Header />
         <div className="container">
           <form className="row justify-content-center" method="post">
             <div className="col-5 col-md-8 col-lg-6 col-xl-5">
@@ -127,7 +130,7 @@ function PurchaseItem() {
                   <label className="mx-3" htmlFor="bname">Buyer Name</label>
                 </div>
               </div>
-              <div className="row justify-content-center mt-4 inputBox">
+              <div className="row justify-content-center mt-2 inputBox">
                 <select className="mt-2 form-select" id="ddlUserType" name="itemId" value={user.itemId} onChange={HandleItemChange} required >
                   <option value="0">Select Item</option>
                     {items && items.map((val) => (
@@ -136,7 +139,7 @@ function PurchaseItem() {
                 </select>
               </div>
               
-              <div className="row justify-content-center mt-4 inputBox">
+              <div className="row justify-content-center mt-2 inputBox">
                 <select className="mt-2 form-select" id="ddlUserType" name="sname" value={user.sname} onChange={handleInput} required >
                   <option value="0">Select Supplier Name</option>
                     {/* {supplierMap && supplierMap.forEach((key,value) => {
@@ -152,21 +155,21 @@ function PurchaseItem() {
                 </select>
               </div>
               
-              <div className="row align-items-center inputBox mt-4">
+              <div className="row align-items-center inputBox mt-2">
                 <div className="col form-floating mt-1">
                   <input type="text" className="form-control" id="noOf-items" name="noOfItems" value={user.noOfItems} onChange={handlePriceChange} placeholder="Enter your last name" required/>
                   <label className="mx-3" htmlFor="noOfItems">Number of Purchase Items</label>
                 </div>
               </div>
               
-              <div className="row align-items-center inputBox mt-4">
+              <div className="row align-items-center inputBox mt-2">
                 <div className="col mt-1 form-floating">
                   <input type="text" disabled = 'true' className="form-control" id="total-price" name="totalPrice" value={totalPrice} onChange={handleInput} required />
                   <label className="mx-3" htmlFor="totalPrice">Total Price</label>
                 </div>
               </div>
               
-              <div className="row justify-content-center mt-4 inputBox">
+              <div className="row justify-content-center mt-2 inputBox">
                 <select className="mt-2 form-select" id="ddlUserType" name="modeOfPayment" value={user.modeOfPayment} onChange={handleInput} required >
                   <option value="0">Select mode of payment</option>
                     {modeOfPayment.map((option, index) => (
@@ -175,8 +178,8 @@ function PurchaseItem() {
                 </select>
               </div>
 
-              <div className="row justify-content-start mt-3">
-                <div className="col">
+              <div className="row justify-content-start mt-2">
+                <div className="col d-flex justify-content-center flex-column align-items-center">
                   <div className="form-check">
                     <label className="form-check-label">
                       <input type="checkbox" className="form-check-input" required />
@@ -190,6 +193,7 @@ function PurchaseItem() {
           </div>
         </form>
       </div>
+      </>
     );
 
 }
