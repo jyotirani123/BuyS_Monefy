@@ -43,7 +43,61 @@ class BUYSMONEFY {
             const sqlSelect = "Select * from item_category_details";
             this.db.query(sqlSelect, (err, result) => {
                 for(let i=0; i < result.length ; i++)
-                console.log(result[0].categoryId , result[0].categoryName);
+                console.log(result[i].categoryId , result[i].categoryName);
+                res.send(result);
+            })
+        })
+
+        this.app.get('/api/getAllItemForCategoryId', (req, res) => {
+            const categoryId = req.body.categoryId;
+            const sqlSelect = "Select distinct(itemId) from item_details where categoryId = ?";
+            this.db.query(sqlSelect,[categoryId], (err, result) => {
+                if (err) {
+                    console.log(err);
+                    res.sendStatus(500);
+                }else{
+                    let itemList = [];
+                    for(let i=0; i < result.length ; i++){
+                            itemList[i] = result[i].itemId;
+                    }
+                    const itemSelect = `Select * from item_tbl where itemId in (?)`;
+                    this.db.query(itemSelect, [itemList], (err, result) => {
+                        if (err) {
+                            console.log(err);
+                            res.sendStatus(500);
+                        }
+                        console.log(result);
+                        for(let i=0; i < result.length ; i++)
+                        console.log(result[i].itemId , result[i].itemName);
+                        res.send(result);
+                    })
+                }
+            })
+        })
+
+        this.app.get('/api/getAllBrandListForCategoryItem', (req, res) => {
+            const categoryId = req.body.categoryId;
+            const itemId = req.body.itemId;
+            const sqlSelect = "Select brandName from item_details where categoryId = ? and itemId = ? ";
+            this.db.query(sqlSelect, [categoryId,itemId], (err, result) => {
+                if (err) {
+                    console.log(err);
+                    res.sendStatus(500);
+                }
+                for(let i=0; i < result.length ; i++)
+                console.log(result[i].brandName);
+                res.send(result);
+            })
+        })
+
+        this.app.get('/api/getAllBuyerAndSupplierList', (req, res) => {
+            const userType = req.body.userType;
+            const sqlSelect = "Select * from user_details where userType = ? ";
+            this.db.query(sqlSelect, [userType], (err, result) => {
+                if (err) {
+                    console.log(err);
+                    res.sendStatus(500);
+                }
                 res.send(result);
             })
         })
@@ -62,10 +116,6 @@ class BUYSMONEFY {
             const state = req.body.state;
             const address = req.body.address;
             const pinCode = req.body.pinCode;
-            //Should be in front end not on backend
-            // if(password !== cpassword){
-            //     console.log("password not matched!!");
-            // }
 
             console.log("data user_details insertion start!!");
             let sqlAddress = `INSERT INTO address_details (city, state, address, pinCode) VALUES (?,?,?,?)`;
@@ -80,7 +130,10 @@ class BUYSMONEFY {
                     let addressId = 0;
 
                     this.db.query(addressIdFetchSqlQuery, (err, result) => {
-                        if (err) throw err;
+                         if (err) {
+                    console.log(err);
+                    res.sendStatus(500);
+                }
                         else {
                             addressId = result[0].addressId;
 
@@ -240,6 +293,83 @@ class BUYSMONEFY {
             });
         });
 
+        this.app.post('/api/addSupplierItem', (req, res) => {
+            const categoryId = req.body.categoryId;
+            const itemId = req.body.itemId;
+            const brandName = req.body.brandName;
+            const userId = req.body.userId;
+            const pricePerItem = req.body.pricePerItem;
+            const availableItems = req.body.availableItems;
+            let categorySql = `select itemDetailsId from item_details where categoryId = ? and itemId = ? and brandName = ?`;
+            this.db.query(categorySql, [categoryId, itemId, brandName], (err, result) => {
+                if (err) {
+                    console.log(err);
+                    res.sendStatus(500);
+                }
+                else {
+                    const itemDetailsId = result[0].itemDetailsId;
+                    let supplierSql = `insert into supplier_item_details(itemDetailsId, userId, pricePerItem, availableItems) values(?,?,?,?)`
+                    this.db.query(supplierSql, [itemDetailsId, userId, pricePerItem, availableItems], (err, result) => {
+                        if (err) {
+                            console.log(err);
+                            res.sendStatus(500);
+                        }
+                        else {
+                            console.log("Supplier item details inserted");
+                            res.sendStatus(200);
+                        }
+                    })
+                }
+            })
+        });
+
+        this.app.post('/api/addBuyerItemPurchase', (req, res) => {
+            const categoryId = req.body.categoryId;
+            const itemId = req.body.itemId;
+            const brandName = req.body.brandName;
+            const supplierId = req.body.supplierId;
+            const buyerId = req.body.buyerId;
+            const noOfItems = req.body.noOfItems;
+            const totalPrice = req.body.totalPrice;
+            const modeOfPayment = req.body.modeOfPayment;
+            let categorySql = `select itemDetailsId from item_details where categoryId = ? and itemId = ? and brandName = ?`;
+            this.db.query(categorySql, [categoryId, itemId, brandName], (err, result) => {
+                if (err) {
+                    console.log(err);
+                    res.sendStatus(500);
+                }
+                else {
+                    const itemDetailsId = result[0].itemDetailsId;
+                    let supplierSql = `select supplierItemDetailsId, availableItems from supplier_item_details where itemDetailsId = ? and userId = ? `;
+                    this.db.query(supplierSql, [itemDetailsId, supplierId], (err, result) => {
+                        if (err) {
+                            console.log(err);
+                            res.sendStatus(500);
+                        }
+                        else {
+                            const supplierItemDetailsId = result[0].supplierItemDetailsId;
+                            const availableItems = result[0].availableItems;
+                            if(noOfItems > availableItems){
+                                console.log("User request more than items available");
+                                res.send(400);
+                            }
+                            const paymentDateTime = new Date();
+                            let buyerSql = `insert into buyer_item_purchase(supplierItemDetailsId, userId, noOfItems, modeOfPayment,purchaseDateTime,totalPrice) values(?,?,?,?,?,?)`
+                            this.db.query(buyerSql, [supplierItemDetailsId, buyerId, noOfItems, modeOfPayment, paymentDateTime,totalPrice], (err, result) => {
+                                if (err) {
+                                    console.log(err);
+                                    res.sendStatus(500);
+                                }
+                                else {
+                                    console.log("Buyer item Purchase details inserted");
+                                    res.sendStatus(200);
+                                }
+                            })     
+                        }
+                    })
+                }
+            })
+        });
     }
     listen() {
         this.app.listen(this.port, (err) => {
