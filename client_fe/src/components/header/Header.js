@@ -1,11 +1,19 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styles from './Header.module.css';
-import {Link} from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 import logo from '../../assets/logo.png';
 import {sessionConst } from '../../Constants';
 function Header() {
-  const usertype=sessionStorage.getItem(sessionConst.userType);
+  const [usertype, setUsertype]=useState(sessionStorage.getItem(sessionConst.userType));
   console.log(usertype);
+  const navigate = useNavigate();
+  const logoutHandle = (e) => {
+    e.preventDefault();
+    window.sessionStorage.setItem(sessionConst.userType, null);
+    setUsertype(null);
+    navigate('/');
+    console.log(usertype);
+  }
     return (
         <>
         {/* <div className="home__nav"> */}
@@ -23,7 +31,7 @@ function Header() {
             </div>
             </div> */}
 
-<nav class="navbar navbar-expand-lg navbar-light bg-white">
+<nav class={`navbar navbar-expand-lg navbar-light mb-2 bg-white ${styles["navbar1"]}`}>
 <div className={`d-flex align-items-center justify-content-center ${styles["header-nav-container"]}`}>
 
   <Link  to="/" class="navbar-brand">
@@ -72,7 +80,11 @@ function Header() {
       </li>
     </ul>
 
-   {!usertype && <div className={styles['header-butns']}>
+   {(usertype==2 || usertype == 3 || usertype == 4 || usertype == 1) ? (<div className={styles['header-butns']}>
+    <button class="navbar-btn btn btn-sm btn-primary lift ms-auto mx-2" onClick={logoutHandle} >
+      Logout
+    </button>
+    </div> ) : ( <div className={styles['header-butns']}>
     <Link to="/Login" class="navbar-btn btn btn-sm btn-primary lift ms-auto mx-2"  >
       Login
     </Link>
@@ -82,7 +94,8 @@ function Header() {
     <Link to="/registerb" class="navbar-btn btn btn-sm btn-primary lift ms-auto mx-2" >
       Register Bank
     </Link>
-    </div>}
+    </div>) 
+    }
 
   </div>
 

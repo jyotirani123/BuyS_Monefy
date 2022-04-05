@@ -74,9 +74,8 @@ function CreateAccount() {
 
     return (
       <>
-      
+      <Header />
           <div className="container">
-          <Header />
           <form className="row justify-content-center" method="post">
             <div className="col-12 col-md-8 col-lg-6 col-xl-5">
               <div className="row">
