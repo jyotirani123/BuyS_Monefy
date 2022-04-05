@@ -7,7 +7,6 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const { password } = require('./utilities/credentials');
 
-
 class BUYSMONEFY {
 
     constructor(port, app) {
@@ -15,8 +14,8 @@ class BUYSMONEFY {
         this.port = port;
         this.app = app;
         this.app.use(cors())
-// used to grab frontend infor to backend
-        this.app.use(bodyParser.urlencoded({extended:true}));
+        // used to grab frontend infor to backend
+        this.app.use(bodyParser.urlencoded({ extended: true }));
         this.app.use(express.json())
 
         this.temp = 0;
@@ -26,12 +25,12 @@ class BUYSMONEFY {
 
         //Initialize All The Tables
         new TABLES().initTable();
-        
+
         this.db = mysql.createConnection({
             ...cred,
-            database: 'buysmonefy'
+            database: 'buys_monefy'
         });
-        
+
         // this.loginInsertion = loginInsertion;
 
 
@@ -40,358 +39,216 @@ class BUYSMONEFY {
 
     get() {
 
-        this.app.get('/api/getItems', (req,res) => {
-            const sqlSelect = "Select itemId,itemName from item_details";
-            this.db.query(sqlSelect,(err,result) => {
-                // console.log(result);
-                res.send(result);
-            })
-        })
-
-        this.app.get('/api/getBuyerPurchaseData', (req,res) => {
-            const sqlSelect = "Select bname,sname,itemName,noOfItems,totalPrice,modeOfPayment from buyer_item_purchase natural join item_details";
-            this.db.query(sqlSelect,(err,result) => {
-                console.log(result);
-                res.send(result);
-            })
-        })
-
-        this.app.get('/api/getSupplierItems', (req,res) => {
-            const sqlSelect = "Select itemId,sname,itemPrice,availableItems from supplier_item_transaction";
-            this.db.query(sqlSelect,(err,result) => {
-                // console.log(result);
-                res.send(result);
-            })
-        })
-
-        this.app.get('/api/loginValidate', (req, res) => {
-            
-          
-            const userName = req.query.userName;
-            const password = req.query.password;
-            const userType  = req.query.userType;
-            
-            let sqlSelect = `SELECT * FROM login where userName = '${userName}' and password = '${password}' and type = ${userType}`;
+        this.app.get('/api/getAllCategories', (req, res) => {
+            const sqlSelect = "Select * from item_category_details";
             this.db.query(sqlSelect, (err, result) => {
-
-                if(err){
-                    console.log(err);
-                    console.log("login validate backend");
-                }
-                else
-                    console.log(result);
+                for(let i=0; i < result.length ; i++)
+                console.log(result[0].categoryId , result[0].categoryName);
                 res.send(result);
-            });
-        });
-
-
-        this.app.get('/api/getItem', (req, res) => {
-            let sql = `SELECT * FROM item_details`;
-            this.db.query(sql, (err, result) => {
-                if(err)
-                    console.log(err);
-                else
-                    res.send(result);
-            });
-        });
-
-// Will change all the query later after verification - written just for example
-        //GET LIST OF ALL BUYERS
-        this.app.get('/api/getBuyers', (req, res) => {
-            let sql = `SELECT * FROM login`;
-            this.db.query(sql, (err, result) => {
-                if(err)
-                    console.log(err);
-                else
-                    console.log("Successfully extracted buyers");
-                res.send(result);
-            });
-        });
-
-        this.app.get('/api/createAccount', (req, res) => {
-            let sqlSelect = `SELECT * FROM createaccount`;
-            this.db.query(sqlSelect, (err, result) => {
-                if(err){
-                    console.log(err);
-                 }
-                else
-                    console.log("create Account backend");
-                    console.log(result);
-                    res.send(result);
-                // window.sessionStorage.setItem("accounts",result);
-            });
-       
-        });
-
-        this.app.get('/api/getBuyers/:id', (req, res) => {
-            let sql = `SELECT * FROM buyerSupplierTrns where supplierId = '${req.params.id}'`;
-            this.db.query(sql, (err, result) => {
-                if(err)
-                    console.log(err);
-                else
-                    console.log("Successfully extracted buyers");
-                res.send(result);
-            });
-        });
-
-        //ADD BUYER SUPPLER TRANSACTION
-        this.app.post('/api/addBuyerSupplierTrns', (req, res) => {
-            let sql = `INSERT INTO buyerSupplierTrns(buyerId, supplierId, invoiceId) VALUES (${req.body.bid}, ${req.body.sid}, ${req.body.invId});`;
-
-                for(let i = 0; i < sql.length; i++){
-                    this.db.query(sql[i], (err, result) => {
-                        if(err){
-                            console.log("Couldn't add");
-                            this.temp = 1;
-                        }
-                        else
-                            console.log("Successfully inserted");
-                    });
-                    if(this.temp)
-                        break;
-                }
-        });
-        
-            
-        
+            })
+        })
     }
 
-    
-    
-    post(){
-    
-    this.app.post('/api/submitBuyerPurchase' , (req,res) => {
-        const bname = req.body.bname;
-        const itemId = req.body.itemId;
-        const sname = req.body.sname;
-        const noOfItems = req.body.noOfItems;
-        const totalPrice = req.body.totalPrice;
-        const modeOfPayment = req.body.modeOfPayment;
-        let sql = `Insert into buyer_item_purchase (bname,itemId,sname,noOfItems,totalPrice,modeOfPayment) values (?,?,?,?,?,?)`;
-        this.db.query(sql,[bname,itemId,sname,noOfItems,totalPrice,modeOfPayment],(err,result) => {
-            if(err) throw err;
-            else
-                console.log("record inserted in buyer_item_purchase");
-        })
-    })
-    
-    this.app.post('/api/signup', (req, res) => {
-        const fname = req.body.fname;
-        const lname = req.body.lname;
-        const phn = req.body.phn;
-        const email = req.body.email;
-        const username = req.body.username;
-        const password = req.body.password;
-        const cpassword = req.body.cpassword;
-        const userType = req.body.userType;
-        if(password !== cpassword){
-            console.log("password not matched!!");
-        }
-        else{
-        console.log("data signup inserted!!");
-        let sql = `INSERT INTO signup (fname, lname, phn, email, username, password, cpassword, userType) VALUES (?,?,?,?,?,?,?,?)`;
-        
-        this.db.query(sql, [fname, lname, phn, email, username, password, cpassword, userType], (err, result) => {
-            if(err) throw err;
-            else {
-            console.log('record inserted');
+    post() {
+        this.app.post('/api/signup', (req, res) => {
+            const fname = req.body.fname;
+            const lname = req.body.lname;
+            const phoneNumber = req.body.phoneNumber;
+            const emailAddress = req.body.emailAddress;
+            const userName = req.body.userName;
+            const password = req.body.password;
+            const userType = req.body.userType;
+            const city = req.body.city;
+            const state = req.body.state;
+            const address = req.body.address;
+            const pinCode = req.body.pinCode;
+            //Should be in front end not on backend
+            // if(password !== cpassword){
+            //     console.log("password not matched!!");
+            // }
 
-            let sqlLogin = `INSERT INTO LOGIN (userName,password,type) values (?,?,?)`;
-            this.db.query(sqlLogin, [username,password,userType],(err, result) => {
-                    if(err) res.status(400);
-                    else {
-                    console.log('record inserted in login');
-                    let sqldata = 'Select userName, type from login where userName = ?';
-                    this.db.query(sqldata, [username], (err, data) => {
-                        if(err) res.status(400);
-                        else{
-                            res.send(data);
-                            // res.redirect(307,'/login');
+            console.log("data user_details insertion start!!");
+            let sqlAddress = `INSERT INTO address_details (city, state, address, pinCode) VALUES (?,?,?,?)`;
+
+            this.db.query(sqlAddress, [city, state, address, pinCode], (err, result) => {
+
+                if (err) throw err;
+                else {
+                    console.log('Address record inserted');
+
+                    let addressIdFetchSqlQuery = "SELECT addressId FROM address_details ORDER BY addressId DESC LIMIT 1";
+                    let addressId = 0;
+
+                    this.db.query(addressIdFetchSqlQuery, (err, result) => {
+                        if (err) throw err;
+                        else {
+                            addressId = result[0].addressId;
+
+                            let signSql = `INSERT INTO user_details (fname, lname, phoneNumber, emailAddress, userName, userType, addressId) VALUES (?,?,?,?,?,?,?)`;
+
+                            this.db.query(signSql, [fname, lname, phoneNumber, emailAddress, userName, userType, addressId], (err, result) => {
+
+                                if (err) throw err;
+                                else {
+
+                                    console.log('User Details record inserted');
+                                    let userIdFetchSqlQuery = "SELECT userId FROM user_details ORDER BY userId DESC LIMIT 1";
+                                    let userId = 0;
+
+                                    this.db.query(userIdFetchSqlQuery, (err, result) => {
+
+                                        if (err) throw err;
+                                        else {
+                                            userId = result[0].userId;
+                                            const lastSignedIn = new Date();
+                                            // Make Constants if possible
+                                            let sqlLogin = `INSERT INTO login_details (userId,password,lastSignedIn) values 
+                                                            (?,aes_encrypt(?,"Buys_Monefy"),?)`;
+
+                                            this.db.query(sqlLogin, [userId, password, lastSignedIn], (err, result) => {
+                                                if (err) throw err;
+
+                                                console.log('record inserted in login');
+                                                res.sendStatus(200);
+
+                                            });
+                                        }
+                                    });
+                                }
+                            });
                         }
                     });
                 }
-            })
-            // res.send(result);
-
-            // loginInsertion(username, password, userType);
-            }
-        })
-        // .then( () => {
-        //     res.redirect('/');
-        // })
-        }
-    });
-     //Register bank TABLE...
-     this.app.post('/api/registerbank', (req, res) => {
-        const bankname = req.body.bankname;
-        const bankid = req.body.bankid;
-        const ifsc = req.body.ifsc;
-        const address = req.body.address;
-       const branchcode = req.body.branchcode;
-       const interest=req.body.interest;
-       const password=req.body.password;
-  const userType=req.body.usertype;
-     
-       
-        console.log("ok");
-        let sql = `INSERT INTO RegisterBank (bankname,bankid,ifsc,address,branchCode,interest,password) VALUES (?,?,?,?,?,?,?)`;
-        
-        this.db.query(sql, [bankname, bankid, ifsc, address,branchcode,interest,password], (err, result) => {
-            if(err) throw err;
-            else {res.send(result);
-            console.log('record inserted in registerBank table');
-                }
+            });
         });
 
-        //insert bank details in login table
-        let loginsql = `INSERT INTO login (username,password,type) VALUES (?,?,?)`;
-        
-        this.db.query(loginsql, [bankname,password,userType], (err, result) => {
-            if(err) throw err;
-            else {
-            console.log('record inserted in registerBank table login');
-           
+        this.app.post('/api/loginValidate', (req, res) => {
+            const userName = req.body.userName;
+            const password = req.body.password;
+            const userType = req.body.userType;
+            let userLoggedIdSql = `SELECT userId from user_details where user_details.userName in (?) and user_details.userType in (?)`;
+            this.db.query(userLoggedIdSql, [userName, userType], (err, result) => {
+                if (err) {
+                    console.log(err);
+                    res.sendStatus(500);
                 }
-        });
-     
-    });
+                else {
+                    console.log('fetched id');
+                    console.log(result);
+                    const loggedUserId = result[0].userId;
+                    console.log(loggedUserId);
+                    let loginSql = `SELECT * FROM login_details log where log.userId in (?) and log.password = aes_encrypt(?,"Buys_Monefy")`;
 
-    //create account in bank details
-    this.app.post('/api/createAccount', (req, res) => {
-       
-        const customername = req.body.customername;
-        const accnum = req.body.accnum;
-        const bankname = req.body.bankname;
-        const ifsc = req.body.ifsc;
-        
-        
-        console.log("ok");
-        let sql = `INSERT INTO createAccount (customername,bankname,accnum,ifsc) VALUES (?,?,?,?)`;
-        
-        this.db.query(sql, [customername,bankname,accnum,ifsc], (err, result) => {
-            if(err) throw err;
-            else {res.send(result);
-            console.log('record inserted in createAccount table');
-                }
-        });
-
-     });
-
-    this.app.post('/api/buyer_transaction',(req, res) => {
-        const busername = req.body.busername;
-        const susername = req.body.susername;
-        const item = req.body.item;
-        const itemcount = req.body.itemcount;
-        const amount = req.body.amount;
-        const date = req.body.date;
-        console.log("entered in function");
-        let sql = `INSERT INTO buyer_transaction (busername,susername,item,itemcount,amount,date) VALUES (?,?,?,?,?,?)`;
-        console.log(sql);
-        this.db.query(sql,[busername,susername,item,itemcount,amount,date],(err,result)=>{
-            if(err) throw err;
-            else {
-            console.log('record inserted in buyer_transaction');
-        }
-        })
-    });
-
-    this.app.post('/api/loggedUserDetails', (req, res) => {
-        const userName = req.body.username;
-        let sql = 'SELECT fname, lname, phn, email, userType from signup where username = ?';
-        this.db.query(sql, [userName], (err, data) => {
-            if(err) res.status(400);
-            else{
-                res.send(data);
-            }
-        })
-    });
-
-    this.app.post('/api/newItem', (req, res) => {
-        const itemName = req.body.itemName;
-        let sql =  `SELECT * FROM item_details where itemName = ?`;
-        this.db.query(sql, [itemName], (err, data) => {
-            if(err) res.status(400);
-            else{
-                console.log("data length: "+data.length);
-                if(data.length == 0){
-                    let sql1 = `INSERT INTO item_details(itemName) VALUES (?)`;
-                    this.db.query(sql1, [itemName],(err, result) => {
-                        if(err) res.status(400);
+                    this.db.query(loginSql, [loggedUserId, password], (err, result) => {
+                        if (err) {
+                            console.log(err);
+                            res.sendStatus(500);
+                        } else if(result.length == 0){
+                            res.sendStatus
+                        }
                         else {
-                            console.log('record inserted in item_details');
-                            let sql1 = `SELECT * FROM item_details`;
-                            this.db.query(sql1, (err, result) => {
-                                if(err)
+                            console.log(result);
+                            res.sendStatus(200);
+                        }
+                    })
+
+                }
+            })
+        });
+
+        this.app.post('/api/addCategory', (req, res) => {
+            const categoryName = req.body.categoryName;
+            let categorySql = `insert into item_category_details (categoryName) values (?)`;
+            this.db.query(categorySql, [categoryName], (err, result) => {
+                if (err) {
+                    console.log(err);
+                    res.sendStatus(500);
+                }
+                else {
+                    res.sendStatus(200)
+                }
+            })
+        });
+
+        this.app.post('/api/addItem', (req, res) => {
+            const itemName = req.body.itemName;
+            let categorySql = `insert into item_tbl (itemName) values (?)`;
+            this.db.query(categorySql, [itemName], (err, result) => {
+                if (err) {
+                    console.log(err);
+                    res.sendStatus(500);
+                }
+                else {
+                    res.sendStatus(200)
+                }
+            })
+        });
+
+        this.app.post('/api/addBrand', (req, res) => {
+            const categoryId = req.body.categoryId;
+            const itemId = req.body.itemId;
+            const brandName = req.body.brandName;
+            let categorySql = `insert into item_details (categoryId,itemId, brandName) values (?,?,?)`;
+            this.db.query(categorySql, [categoryId, itemId, brandName], (err, result) => {
+                if (err) {
+                    console.log(err);
+                    res.sendStatus(500);
+                }
+                else {
+                    res.sendStatus(200)
+                }
+            })
+        });
+
+        this.app.post('/api/registerBank', (req, res) => {
+            const bankName = req.body.bankName;
+            const ifscCode = req.body.ifscCode;
+            const city = req.body.city;
+            const state = req.body.state;
+            const address = req.body.address;
+            const pinCode = req.body.pinCode;
+            const branchCode = req.body.branchCode;
+            // let sqlAddress = `INSERT INTO address_details (city, state, address, pinCode) VALUES (?,?,?,?)`;
+            let addressSql = `insert into address_details(city,state,address,pinCode) values (?,?,?,?)`;
+            this.db.query(addressSql, [city,state,address,pinCode], (err,result) => {
+                if(err){
+                    console.log(err);
+                    res.sendStatus(500);
+                }else{
+                    console.log("record in address table inserted");
+                    let addressIdFetchSqlQuery = "SELECT addressId FROM address_details ORDER BY addressId DESC LIMIT 1";
+                    let fetchedAddressId = 0;
+
+                    this.db.query(addressIdFetchSqlQuery, (err, result) => {
+                        if (err) throw err;
+                        else {
+                            fetchedAddressId = result[0].addressId;
+                            let bankSql = `insert into bank_details(bankName, ifscCode, addressId, branchCode) values(?,?,?,?)`
+                            this.db.query(bankSql, [bankName, ifscCode, fetchedAddressId, branchCode], (err, result) => {
+                                if (err) {
                                     console.log(err);
-                                else
-                                    res.send(result);
-                            });
+                                    res.sendStatus(500);
+                                }
+                                else {
+                                    console.log("bank details inserted");
+                                    res.sendStatus(200);
+                                }
+                            })
                         }
                     })
                 }
-            }
+            });
         });
-    })
 
-    this.app.post('/api/itemid', (req, res) => {
-        const selectedItem = req.body.selectedItem;
-        let sql = 'SELECT itemId FROM item_details WHERE itemName = ?';
-        this.db.query(sql, [selectedItem], (err, result) => {
-            if(err)
-                console.log(err);
-            else{
-                console.log(result);
-                res.send(result);
-            }
-        });
-    });
-
-    this.app.post('/api/item', (req, res) => {
-        console.log("hi");
-        const itemid = req.body.itemid;
-        const sname = req.body.sname; 
-        const availableItems = req.body.availableItems;
-        const itemPrice = req.body.itemPrice;
-        const brand = req.body.brand;
-        
-        let sql = `INSERT INTO supplier_item_transaction VALUES (?, ?, ?, ?, ?)`;
-        this.db.query(sql, [itemid, sname, availableItems, itemPrice, brand],(err, result) => {
-            if(err) res.status(400);
-            else {
-                console.log('record inserted in item_details');
-                console.log(result);
-            }
-        })
-    });
-
-    this.app.post('/api/loginValidate', (req, res) => {
-        const username = req.body.userName;
-        const password = req.body.password;
-        const userType = req.body.userType;
-        let sql = `SELECT * FROM login log where log.userName in (?) and log.password in (?) and log.type in (?)`;
-        this.db.query(sql, [username, password, userType], (err, result) => {
-            // if(err) throw err;
-            // also use boolean operator (!!)
-            if(result.length>0) {
-                console.log(result);
-                res.send(result);
-            }
-            else{
-                res.send({ message : 'Wrong username/ password combination'});
-                console.log({ message : 'Wrong username/ password combination'});
-            }
-        });
-    });
-}
+    }
     listen() {
         this.app.listen(this.port, (err) => {
-            if(err)
+            if (err)
                 console.log(err);
             else
                 console.log(`Server Started On ${this.port}`);
         })
     }
-    
 }
 
 let buysmonefy = new BUYSMONEFY(3001, express());

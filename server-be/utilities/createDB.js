@@ -5,7 +5,7 @@ class DATABASE {
     
     constructor(){
         this.db = mysql.createConnection(cred);
-        this.sql = "CREATE DATABASE IF NOT EXISTS buysmonefy";
+        this.sql = "CREATE DATABASE IF NOT EXISTS buys_monefy";
     }
 
     initDB() {
