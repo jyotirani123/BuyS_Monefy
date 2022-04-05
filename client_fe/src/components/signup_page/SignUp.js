@@ -4,6 +4,12 @@ import './SignUp.module.css';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import Header from '../header/Header';
+import {
+	ReasonPhrases,
+	StatusCodes,
+	getReasonPhrase,
+	getStatusCode,
+} from 'http-status-codes';
 
 function SignUp() {
 
@@ -36,25 +42,28 @@ function SignUp() {
   }
   const submitDetails = async(e) => {
     e.preventDefault();
+    if(user.password!==user.cpassword){alert("passwords not matching");}
     let response = await axios.post("http://localhost:3001/api/signup", 
     {
       fname : user.fname , 
       lname : user.lname,
-      phn : user.phn,
-      email : user.email,
-      username : user.username,
+      phoneNumber : user.phn,
+      emailAddress : user.email,
+      userName : user.username,
       password : user.password,
       cpassword : user.cpassword,
       userType : user.userType,
       city:user.city,
       state:user.state,
       address:user.address,
-      pincode:user.pincode
+      pinCode:user.pincode
     },).then((res) => {
         console.log(res.data[0]);
         var loguser = res.data[0].userName;
         var logpass = res.data[0].password;
-        if(res.status === 200){
+        console.log(res);
+        if(res.status(StatusCodes.OK)){
+          console.log("signup");
           // setLoginUser({userlogin : loguser});
           // setLoginUser({passlogin : res.data[0].password});
           navigate('/login');

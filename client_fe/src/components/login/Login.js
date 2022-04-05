@@ -5,6 +5,12 @@ import { useNavigate } from 'react-router-dom';
 import Header from '../header/Header';
 import axios from 'axios';
 import { Link } from "react-router-dom";
+import {
+	ReasonPhrases,
+	StatusCodes,
+	getReasonPhrase,
+	getStatusCode,
+} from 'http-status-codes';
 
 function Login() {
   let navigate = useNavigate();
@@ -26,31 +32,39 @@ function Login() {
   const loginValidate = async (e) => {
     // console.log(login.userName);
     e.preventDefault();
-    const res = await axios.get("http://localhost:3001/api/createAccount")   
-    console.log(res);   
-    window.sessionStorage.setItem(sessionConst.bankAccounts, JSON.stringify(res.data));
+    // const res = await axios.get("http://localhost:3001/api/createAccount")   
+    // console.log(res);   
+    // window.sessionStorage.setItem(sessionConst.bankAccounts, JSON.stringify(res.data));
     // let response = await axios.get("http://localhost:3001/api/loginValidate", )
-    const response = await axios.get("http://localhost:3001/api/loginValidate",
+    const response = await axios.post("http://localhost:3001/api/loginValidate",
       {
-        params: {
+        
           userName: login.userName,
           password: login.password,
           userType: login.userType,
-        }
+        
       })
-      .then((response) => {
+      .then((res) => {
         window.sessionStorage.setItem(sessionConst.userName, login.userName);
         window.sessionStorage.setItem(sessionConst.userType, login.userType);
-        if (login.userType === "2") {
-          navigate("/Buyer")
+        console.log("LOGIN SUCCESSFUL-->>>>>");
+        if(res.status(StatusCodes).OK){
+          // console.log("LOGIN SUCCESSFUL-->>>>>");
+          if (login.userType === "2") {
+            navigate("/Buyer")
+          }
+          if(login.userType === "4"){
+            console.log(response);
+            navigate("/BankDashBoard");
+          }
+          if(login.userType === "3"){
+            navigate('/UserProfile')
+          }
+
+        }else{
+          console.log("login not successful");
         }
-        if(login.userType === "4"){
-          console.log(response);
-          navigate("/BankDashBoard");
-        }
-        if(login.userType === "3"){
-          navigate('/UserProfile')
-        }
+        
       })
       
   };
