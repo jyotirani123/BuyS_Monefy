@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import SupplierHomeNavbar from '../SupplierHome/SupplierHomeNavbar';
 import { sessionConst } from '../../Constants';
 // import './UserProfile.css';
+import Header from '../header/Header';
 import axios from 'axios';
 
 const UserProfile = () => {
@@ -32,8 +33,10 @@ const UserProfile = () => {
   }, [name]);
 
   return (
+
     <div>
-      <SupplierHomeNavbar />
+      {/* <SupplierHomeNavbar /> */}
+      <Header/>
       <div className="u-container d-flex flex-column">
         <div className="wlcm-container">
           <h1>Welcome Back!!</h1>

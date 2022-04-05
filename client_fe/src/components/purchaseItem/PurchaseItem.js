@@ -118,7 +118,7 @@ function PurchaseItem() {
         <div className="container">
           <form className="row justify-content-center" method="post">
             <div className="col-5 col-md-8 col-lg-6 col-xl-5">
-              <div className="row mt-2">
+              <div className="row mt-1">
                 <div className="col text-center">
                   <h1 className="heading">Purchase Item</h1>
                   <p className="text-h3">Please fill in this form to purchase any item</p>
@@ -130,8 +130,8 @@ function PurchaseItem() {
                   <label className="mx-3" htmlFor="bname">Buyer Name</label>
                 </div>
               </div>
-              <div className="row justify-content-center mt-2 inputBox">
-                <select className="mt-2 form-select" id="ddlUserType" name="itemId" value={user.itemId} onChange={HandleItemChange} required >
+              <div className="row justify-content-center mt-1 inputBox">
+                <select className="mt-1 form-select" id="ddlUserType" name="itemId" value={user.itemId} onChange={HandleItemChange} required >
                   <option value="0">Select Item</option>
                     {items && items.map((val) => (
                     <option value={val.itemId}>{val.itemName}</option>
@@ -139,8 +139,8 @@ function PurchaseItem() {
                 </select>
               </div>
               
-              <div className="row justify-content-center mt-2 inputBox">
-                <select className="mt-2 form-select" id="ddlUserType" name="sname" value={user.sname} onChange={handleInput} required >
+              <div className="row justify-content-center mt-1 inputBox">
+                <select className="mt-1 form-select" id="ddlUserType" name="sname" value={user.sname} onChange={handleInput} required >
                   <option value="0">Select Supplier Name</option>
                     {/* {supplierMap && supplierMap.forEach((key,value) => {
                       <option value={key}>{value}</option> 
@@ -155,22 +155,22 @@ function PurchaseItem() {
                 </select>
               </div>
               
-              <div className="row align-items-center inputBox mt-2">
+              <div className="row align-items-center inputBox mt-1">
                 <div className="col form-floating mt-1">
                   <input type="text" className="form-control" id="noOf-items" name="noOfItems" value={user.noOfItems} onChange={handlePriceChange} placeholder="Enter your last name" required/>
                   <label className="mx-3" htmlFor="noOfItems">Number of Purchase Items</label>
                 </div>
               </div>
               
-              <div className="row align-items-center inputBox mt-2">
+              <div className="row align-items-center inputBox mt-1">
                 <div className="col mt-1 form-floating">
                   <input type="text" disabled = 'true' className="form-control" id="total-price" name="totalPrice" value={totalPrice} onChange={handleInput} required />
                   <label className="mx-3" htmlFor="totalPrice">Total Price</label>
                 </div>
               </div>
               
-              <div className="row justify-content-center mt-2 inputBox">
-                <select className="mt-2 form-select" id="ddlUserType" name="modeOfPayment" value={user.modeOfPayment} onChange={handleInput} required >
+              <div className="row justify-content-center mt-1 inputBox">
+                <select className="mt-1 form-select" id="ddlUserType" name="modeOfPayment" value={user.modeOfPayment} onChange={handleInput} required >
                   <option value="0">Select mode of payment</option>
                     {modeOfPayment.map((option, index) => (
                     <option key={index} value={option.mode}>{option.mode}</option>
@@ -178,7 +178,7 @@ function PurchaseItem() {
                 </select>
               </div>
 
-              <div className="row justify-content-start mt-2">
+              <div className="row justify-content-start mt-1">
                 <div className="col d-flex justify-content-center flex-column align-items-center">
                   <div className="form-check">
                     <label className="form-check-label">
@@ -186,7 +186,7 @@ function PurchaseItem() {
                       I Read and Accept <a href="/">Terms and Conditions</a>
                     </label>
                   </div>
-                  <button className="btn btn-primary mt-3" onClick = {(e) => submitDetails(e)}>Purchase Item</button>
+                  <button className="btn btn-primary mt-1" onClick = {(e) => submitDetails(e)}>Purchase Item</button>
                 </div>
               </div>
               

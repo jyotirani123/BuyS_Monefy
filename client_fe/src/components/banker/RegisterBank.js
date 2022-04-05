@@ -69,55 +69,55 @@ axios.post("http://localhost:3001/api/registerbank",
             </div>
           </div>
           <div className="row align-items-center inputBox">
-            <div className="col mt-3 form-floating">
+            <div className="col mt-1  form-floating">
               <input type="text" className="form-control" id="bankname" placeholder='Bank Name' name="bankname" value={user.bankname} onChange={handleInput} required />
               <label className="mx-3" htmlFor="bankname">Bank Name</label>
             </div>
-          </div>
-          <div className="row align-items-center inputBox mt-4">
+         
+          
             <div className="col form-floating mt-1">
               <input type="text" className="form-control" id="bankid" name="bankid" value={user.bankid} onChange={handleInput} placeholder="Bank ID" required/>
               <label className="mx-3" htmlFor="bankid">Bank ID</label>
             </div>
           </div>
-          <div className="row align-items-center inputBox mt-4">
+          <div className="row align-items-center inputBox mt-1">
             <div className="col mt-1 form-floating">
               <input type="text" className="form-control" id="ifsc" name="ifsc" value={user.ifsc} onChange={handleInput} placeholder="IFSC code" required />
               <label className="mx-3" htmlFor="ifsc">IFSC code</label>
             </div>
           </div>
-          <div className="row align-items-center inputBox mt-4">
+          <div className="row align-items-center inputBox mt-1">
             <div className="col mt-1 form-floating">
               <input type="text" className="form-control" id="address" name="address" value={user.address} onChange={handleInput} placeholder="Address" required />
               <label className="mx-3" htmlFor="address">Bank Address</label>
             </div>
           </div>
           <div className="row align-items-center inputBox">
-            <div className="col mt-3 form-floating">
+            <div className="col mt-1 form-floating">
               <input type="text" className="form-control" id="city" name="city" value={user.city} onChange={handleInput} placeholder="Enter city" required />
               <label className="mx-3" htmlFor="city">City</label>
             </div>
-          </div>
-          <div className="row align-items-center inputBox">
-            <div className="col mt-3 form-floating">
+        
+          
+            <div className="col mt-1 form-floating">
               <input type="text" className="form-control" id="state" name="state" value={user.state} onChange={handleInput} placeholder="Enter state" required />
               <label className="mx-3" htmlFor="state">State</label>
             </div>
-          </div>
+         
       
-          <div className="row align-items-center inputBox">
-            <div className="col mt-3 form-floating">
+         
+            <div className="col mt-1 form-floating">
               <input type="text" className="form-control" id="branchcode" placeholder="Branch Code" name="branchcode" value={user.branchcode} onChange={handleInput} required />
               <label className="mx-3" htmlFor="branchcode">Branch Code</label>
             </div>
           </div>
-          <div className="row align-items-center mt-4 inputBox">
+          <div className="row align-items-center mt-1 inputBox">
             <div className="col mt-1 form-floating">
               <input type="number" className="form-control" id="interest" placeholder="interest rate" name="interest" value={user.interest} onChange={handleInput}  required />
               <label className="mx-3" htmlFor="interest">Rate of Interest <small>(% per annum)</small></label>
             </div>
           </div>
-          <div className="row align-items-center inputBox mt-4">
+          <div className="row align-items-center inputBox mt-1">
             <div className="col mt-1 form-floating">
               <input type="password" className="form-control" name="password" value={user.password} onChange={handleInput} id="password" placeholder="password" required />
               <label className="mx-3" htmlFor="password">Password</label>
@@ -125,10 +125,10 @@ axios.post("http://localhost:3001/api/registerbank",
          
           </div>
          
-          <div className="row justify-content-start mt-3">
+          <div className="row justify-content-start mt-1">
             <div className="col  d-flex flex-column justify-content-center align-items-center">
   
-              <button className="btn btn-primary mt-3" onClick={(e) => submitDetails(e)}>Submit</button>
+              <button className="btn btn-primary mt-1" onClick={(e) => submitDetails(e)}>Submit</button>
             </div>
           </div>
       </div>

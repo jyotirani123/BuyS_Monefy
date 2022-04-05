@@ -52,30 +52,40 @@ function Header() {
       <li class="nav-item">
         {usertype==2?<Link to="/Buyer" class={`nav-link ${styles["nav-link"]}`} id="navbarLandings" >
           Buyer Dashboard
-        </Link>:<Link to="/" class={`nav-link ${styles["nav-link"]}`} id="navbarLandings" >
+        </Link>:( usertype == 3 ? (<Link to="/UserProfile" class={`nav-link ${styles["nav-link"]}`} id="navbarLandings" >
+          Profile
+        </Link>) : (usertype==4?(<Link to="/Bankhome" class={`nav-link ${styles["nav-link"]}`} id="navbarLandings" >
           Home
-        </Link>}
+        </Link>):(<Link to="/" class={`nav-link ${styles["nav-link"]}`} id="navbarLandings" >
+          Home
+        </Link>)))}
       </li>
       <li class="nav-item">
         {usertype==2?<Link to="/PurchaseItem" class={`nav-link ${styles["nav-link"]}`} id="navbarPages" >
          Purchase Item
-        </Link>:<Link to="/" class={`nav-link ${styles["nav-link"]}`} id="navbarPages" >
+        </Link>:( usertype == 3 ? (<Link to="/itemDetails" class={`nav-link ${styles["nav-link"]}`} id="navbarLandings" >
+         Item Details
+        </Link>) :(usertype==4?(<Link to="/BankDashboard" class={`nav-link ${styles["nav-link"]}`} id="navbarLandings" >
+          Bank Dashboard
+        </Link>): (<Link to="/" class={`nav-link ${styles["nav-link"]}`} id="navbarLandings" >
           About
-        </Link>}
+        </Link>)))}
       </li>
       <li class="nav-item">
         {usertype==2?<Link to="/createaccount" class={`nav-link ${styles["nav-link"]}`} id="navbarAccount">
           Create Bank Account
-        </Link>:<Link to="/" class={`nav-link ${styles["nav-link"]}`} id="navbarAccount">
-          Services
-        </Link>}
+        </Link>:( usertype == 3 ? (<Link to="/createaccount" class={`nav-link ${styles["nav-link"]}`} id="navbarAccount">
+          Create Bank Account
+        </Link>):(usertype==4?(<></>): (<Link to="/" class={`nav-link ${styles["nav-link"]}`} id="navbarLandings" >
+         Services
+        </Link>)))}
       </li>
       <li class="nav-item">
        { usertype==2?<Link to="/Buyer" class={`nav-link ${styles["nav-link"]}`} id="navbarDocumentation" >
           View Transactions
-        </Link>:<Link to="/" class={`nav-link ${styles["nav-link"]}`} id="navbarAccount">
-          Services
-        </Link>}
+        </Link>:( usertype == 3 ? (<></>):(usertype==4?(<></>):(<Link to="/" class={`nav-link ${styles["nav-link"]}`} id="navbarAccount">
+          Contact
+        </Link>)))}
         
       </li>
     </ul>

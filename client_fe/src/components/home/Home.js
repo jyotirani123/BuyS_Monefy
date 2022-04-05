@@ -182,7 +182,7 @@ function Home() {
                     </div>
                 </div>
                 <footer class="footer py-8 py-md-11 bg-gray-200">
-                    <p>copyright @2022</p>
+                    <p>© Copyright 2022</p>
                     {/* <div class="container">
                         <div class="row">
                             <div class="col-12 col-md-4 col-lg-3">

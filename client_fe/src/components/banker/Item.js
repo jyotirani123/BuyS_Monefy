@@ -10,7 +10,7 @@ function Item({name,accno,ifsc}) {
     }
     return (
         <tr  className='item'>
-            <td>{name.toUpperCase()}</td>  <td>{ifsc}</td> <td>{accno}</td><Link to='/customerInfo' onClick={sendAccountDetails} style={{ textDecoration: 'none',fontWeight:'bolder',color:'black' }}>Customer Details</Link><td></td>
+            <td>{name.toUpperCase()}</td>  <td>{ifsc}</td> <td>{accno}</td><td><Link to='/customerInfo' onClick={sendAccountDetails} style={{ textDecoration: 'none',fontWeight:'bolder',color:'black' }}>Link</Link></td>
 {/*            
            <div>{name.toUpperCase()}</div>
           

@@ -42,25 +42,28 @@
   padding-top: 0 !important;
 }
 
-.header-nav-container{
+.header-nav-container {
   flex-wrap: inherit;
   width: 100%;
   padding: 0 40px;
-  box-shadow: 5px 5px 20px grey;
+  /* box-shadow: 5px 5px 20px grey; */
+  box-shadow: 3px 3px 8px #9d9ba3;
 }
 
-#logo-img{
-  height: 90px;
-  width: 120px;
+#logo-img {
+  height: 50px;
+  width: 80px;
   object-fit: contain !important;
 }
 
-.nav-link{
+.nav-link {
   font-size: 25px;
 }
-.nav-link:hover{
+
+.nav-link:hover {
   color: #000;
 }
-.header-butns{
+
+.header-butns {
   margin-left: auto;
 }

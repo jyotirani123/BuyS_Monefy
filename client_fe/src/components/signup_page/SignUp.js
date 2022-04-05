@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {options} from '../../Constants';
-// import './SignUp.module.css';
+import './SignUp.module.css';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import Header from '../header/Header';
@@ -72,69 +72,72 @@ function SignUp() {
       <>
       <Header />
         <div className="container">
-          <form className="row justify-content-center" method="post">
-            <div className="col-12 col-md-8 col-lg-6 col-xl-5">
+          <form className="row justify-content-center " method="post">
+            <div className="col-12 col-md-8">
               <div className="row">
                 <div className="col text-center">
                   <h1 className="heading">Sign Up</h1>
                   <p className="text-h3">Please fill in this form to create an account.</p>
                 </div>
               </div>
-              <div className="row align-items-center inputBox">
-                <div className="col mt-3 form-floating">
-                  <input type="text" className="form-control" id="f-name" name="fname" value={user.fname} onChange={handleInput} placeholder="Enter your first name" required />
+             <div className="row align-items-center inputBox mt-1">
+                <div className="col mt-1 form-floating ">
+                  <input type="text" className="form-control  " id="f-name" name="fname" value={user.fname} onChange={handleInput} placeholder="Enter your first name" required />
                   <label className="mx-3" htmlFor="fname">First Name</label>
                 </div>
-              </div>
-              <div className="row align-items-center inputBox mt-4">
+          
+              
                 <div className="col form-floating mt-1">
                   <input type="text" className="form-control" id="l-name" name="lname" value={user.lname} onChange={handleInput} placeholder="Enter your last name" required/>
                   <label className="mx-3" htmlFor="lname">Last Name</label>
                 </div>
               </div>
-              <div className="row align-items-center inputBox mt-4">
+              <div className="row align-items-center inputBox mt-1">
                 <div className="col mt-1 form-floating">
                   <input type="text" className="form-control" id="phn-no" name="phn" value={user.phn} onChange={handleInput} placeholder="+91 XXXXX XXXXX" required />
                   <label className="mx-3" htmlFor="phn">Phone Number</label>
                 </div>
-              </div>
-              <div className="row align-items-center inputBox mt-4">
+            
+             
                 <div className="col mt-1 form-floating">
                   <input type="email" className="form-control" id="email-id" name="email" value={user.email} onChange={handleInput} placeholder="Enter your Email-id" required />
                   <label className="mx-3" htmlFor="email">Email Id</label>
                 </div>
               </div>
               <div className="row align-items-center inputBox">
-                <div className="col mt-3 form-floating">
-                  <input type="text" className="form-control" id="city" name="city" value={user.city} onChange={handleInput} placeholder="Enter city" required />
-                  <label className="mx-3" htmlFor="city">City</label>
-                </div>
-              </div>
-              <div className="row align-items-center inputBox">
-                <div className="col mt-3 form-floating">
-                  <input type="text" className="form-control" id="state" name="state" value={user.state} onChange={handleInput} placeholder="Enter state" required />
-                  <label className="mx-3" htmlFor="state">State</label>
-                </div>
-              </div>
-              <div className="row align-items-center inputBox">
-                <div className="col mt-3 form-floating">
+                <div className="col mt-1 form-floating">
                   <input type="text" className="form-control" id="address" name="address" value={user.address} onChange={handleInput} placeholder="Enter address" required />
                   <label className="mx-3" htmlFor="fname">Address</label>
                 </div>
-              </div>
-              <div className="row align-items-center inputBox">
-                <div className="col mt-3 form-floating">
-                  <input type="text" className="form-control" id="pincode" name="pincode" value={user.pincode} onChange={handleInput} placeholder="Enter pincode" required />
-                  <label className="mx-3" htmlFor="fname">Pincode</label>
-                </div>
-              </div>
-              <div className="row align-items-center mt-4 inputBox">
                 <div className="col mt-1 form-floating">
                   <input type="text" className="form-control" id="uname" name="username" value={user.username} onChange={handleInput} placeholder="Enter your username" required />
                   <label className="mx-3" htmlFor="username">Username</label>
                 </div>
+              
               </div>
-              <div className="row align-items-center inputBox mt-4">
+              <div className="row align-items-center inputBox mt-1">
+                <div className="col mt-1 form-floating">
+                  <input type="text" className="form-control" id="city" name="city" value={user.city} onChange={handleInput} placeholder="Enter city" required />
+                  <label className="mx-3" htmlFor="city">City</label>
+                </div>
+             
+              
+                <div className="col mt-1 form-floating">
+                  <input type="text" className="form-control" id="state" name="state" value={user.state} onChange={handleInput} placeholder="Enter state" required />
+                  <label className="mx-3" htmlFor="state">State</label>
+                </div>
+                
+                <div className="col mt-1 form-floating">
+                  <input type="text" className="form-control" id="pincode" name="pincode" value={user.pincode} onChange={handleInput} placeholder="Enter pincode" required />
+                  <label className="mx-3" htmlFor="fname">Pincode</label>
+                </div>
+              </div>
+           
+         
+          
+              
+             
+              <div className="row align-items-center inputBox mt-1">
                 <div className="col mt-1 form-floating">
                   <input type="password" className="form-control" name="password" value={user.password} onChange={handleInput} id="pass" placeholder="password" required />
                   <label className="mx-3" htmlFor="password">Password</label>
@@ -144,23 +147,23 @@ function SignUp() {
                   <label className="mx-3" htmlFor="cpassword">Confirm Password</label>
                 </div>
               </div>
-              <div className="row justify-content-center mt-4 inputBox">
-                <select className="mt-2 form-select" id="ddlUserType" name="userType" value={user.userType} onChange={handleInput} required >
+              <div className="row justify-content-center mt-1 inputBox">
+                <select className="mt-1 form-select" id="ddlUserType" name="userType" value={user.userType} onChange={handleInput} required >
                   <option value="0">select...</option>
                     {options.map((option, index) => (
                     <option key={index} value={option.typeId}>{option.userType}</option>
                   ))}
                 </select>
               </div>
-              <div className="row justify-content-start mt-3">
+              <div className="row justify-content-start mt-1">
                 <div className="col  d-flex flex-column justify-content-center align-items-center">
                   <div className="form-check">
                     <label className="form-check-label">
-                      <input type="checkbox" className="form-check-input" required />
+                      <input type="checkbox" className="form-check-input checkbox" required />
                       I Read and Accept <a href="/">Terms and Conditions</a>
                     </label>
                   </div>
-                  <button className="btn btn-primary mt-3" onClick={submitDetails}>Sign Up</button>
+                  <button className="btn btn-primary mt-1" onClick={submitDetails}>Sign Up</button>
                 </div>
               </div>
           </div>

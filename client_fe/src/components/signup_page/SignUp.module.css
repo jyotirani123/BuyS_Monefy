@@ -17,10 +17,18 @@
     left:0;
     color: rgb(66, 136, 228);   
 }
+
 .inputBox div{
     height: unset !important;
 }
-.inputBox select{
-    height: 57px;
-    width: 526px;
+select{
+    height: 50px !important;
+    width: 455px !important;
 }
+label{
+    padding-top: 0.5rem;
+}
+
+/* .form-check-input{
+    height: 1em !important; */
+/* } */
