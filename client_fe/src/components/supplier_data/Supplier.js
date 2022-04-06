@@ -11,64 +11,131 @@ function Supplier({user}) {
 
   const [itemName, setItemName] = useState('')
   const [selectedItem, setSelectedItem] = useState('')
+  const [selectedCategory, setSelectedCategory] = useState('')
+  const [selectedCategoryName, setSelectedCategoryName] = useState('')
+  const [categoryName, setCategoryName] = useState('')
+  const [selectedCategoryId, setSelectedCategoryId] = useState('')
   const [item, setItem] = useState({
     itemid : 0,
     sname : "",
     availableItems : 1,
     itemPrice : 0,
-    brand : ""
+    brand : "",
   });
 
   const [itemList, setItemList] = useState();
+  const [categoryList, setCategoryList] = useState([]);
 
-  const getItemList = async() => {
-    try{
-      const response = await axios.get("http://localhost:3001/api/getItem");
-        setItemList(response.data);
-        // console.log(itemList);
-      }catch(err) {
-        console.log(err);
-      }
-  }
+  // const getItemList = async() => {
+  //   try{
+  //     const response = await axios.get("http://localhost:3001/api/getItem");
+  //       setItemList(response.data);
+  //     }catch(err) {
+  //       console.log(err);
+  //     }
+  // }
   
   const newItemUpdate = (e) => {
     e.preventDefault();
-    console.log(itemList);
     let list = async () => {
       try{
-        const response = await axios.post("http://localhost:3001/api/newItem", {
+        await axios.post("http://localhost:3001/api/addItem", {
           itemName: itemName
         })
-        setItemList(response.data)
-        // getItemList();
-        // console.log(itemList);
+        setSelectedItem(itemName);
       }catch(err){
         console.log(err);
       }
     }
     list();
-}
-
-const getId = async() => {
-  try{
-    const response = await axios.post("http://localhost:3001/api/itemid", {
-    selectedItem: selectedItem
-  })
-  console.log(response.data);
-  setItem({...item, itemid : response.data[0].itemId})
-  // console.log(item.itemid)
-  }catch(err) {
-    console.log(err);
   }
-}
+
+  const newCatgoryUpdate = (e) => {
+    e.preventDefault();
+    let list = async () => {
+      console.log('category');
+      console.log(categoryName);
+      try{
+        await axios.post('http://localhost:3001/api/addCategory', {
+          categoryName: categoryName
+        })
+      }catch(err){
+        console.log(err)
+      }
+    }
+    list();
+    setCategoryName('');
+    setSelectedCategoryName(categoryName);
+  }
+
+  
+  
+  useEffect(() => {
+    let categoryL = async () => {
+      console.log('list');
+      try{
+        const response = await axios.get('http://localhost:3001/api/getAllCategories');
+        console.log(response.data);
+        let l1 = Array(response.data);
+        setCategoryList(l1)
+        console.log(categoryList)
+
+      }catch(err){
+        console.log(err);
+      }
+    }
+    categoryL();
+  }, [])
+  console.log(categoryList)
 
   useEffect(() => {
-    let n = window.sessionStorage.getItem(sessionConst.userName);
-    setItem({...item, sname : n})
+    console.log(selectedCategoryName)
+    setSelectedCategory((categoryList[0]?.find((c) => {
+      console.log("hi id block")
+      console.log(c.categoryId);
+      return (c.categoryName === selectedCategoryName)
+      
+    })))
+    console.log(selectedCategory);
+  }, [categoryList, selectedCategoryName])
+  console.log(selectedCategory?.categoryId);
+
+  useEffect(() => {
+    let itemL = async () => {
+      console.log('list');
+      try{
+        console.log(selectedCategory?.categoryId + 'hi')
+        const response = await axios.get('http://localhost:3001/api/getAllItemForCategoryId', {
+          categoryId: selectedCategory?.categoryId
+        });
+        console.log(response.data);
+        setItemList(response.data)
+      }catch(err){
+        console.log(err);
+      }
+    }
+    itemL();
+  }, [selectedCategory?.categoryId])
+
+// const getId = async() => {
+//   try{
+//     const response = await axios.post("http://localhost:3001/api/itemid", {
+//     selectedItem: selectedItem
+//   })
+//   console.log(response.data);
+//   setItem({...item, itemid : response.data[0].itemId})
+//   }catch(err) {
+//     console.log(err);
+//   }
+// }
+
+  // useEffect(() => {
+  //   let n = window.sessionStorage.getItem(sessionConst.userName);
+  //   setItem({...item, sname : n})
     
-    getItemList()
-    getId();
-  }, [selectedItem])
+  //   getItemList()
+  //   getId();
+  // }, [selectedItem])
 
   let name, value;
   const handleInput = (e) => {
@@ -84,12 +151,24 @@ const getId = async() => {
     console.log(e.target.value);
     // getId();
   }
+  const handleSelectedCategory = (e) => {
+    setSelectedCategoryName(e.target.value);
+    // console.log(e.target.value);
+    // getId();
+  }
 
   const handleInputNewItem = (e) => {
     console.log(e)
     value = e.target.value;
     setItemName(value);
     console.log(itemName)
+  }
+
+  const handleInputNewCategory = (e) => {
+    console.log(e);
+    value = e.target.value;
+    setCategoryName(value);
+    console.log(categoryName);
   }
 
   const submitDetails = async(e) => {
@@ -123,10 +202,10 @@ const getId = async() => {
               <div className="row align-items-center inputBox mt-1">
                 <div className="col mt-1 form-floating d-flex align-items-center justify-content-between">
                   
-                  <select id="itname iname" className="form-control item_input" value={selectedItem} onChange={handleSelectedItem} required>
+                  <select id="itname iname" className="form-control item_input" value={selectedCategoryName} onChange={handleSelectedCategory} required>
                     <option value='' selected>Select...</option>
-                    {itemList && itemList.map((val) => (
-                      <option key={val.itemId} value={val.itemName}>{val.itemName}</option>
+                    {categoryList[0] && categoryList[0].map((val) => (
+                      <option key={val.categoryId} value={val.categoryName}>{val.categoryName}</option>
                     ))}
                   </select>
                   <label className=" mx-3" htmlFor="itname">Category</label>
@@ -146,15 +225,15 @@ const getId = async() => {
                         <div className="row align-items-center inputBox">
                           <div className="col mt-1 form-floating">
                             
-                            <input type="text" className=" form-control" id="itname" name="itemName" value={itemName} onChange={handleInputNewItem} placeholder="Enter item name" required/>
-                            <label className="mx-3" htmlFor="iname">Category</label>
+                            <input type="text" className=" form-control" id="ctname" name="categoryName" value={categoryName} onChange={handleInputNewCategory} placeholder="Enter category name" required/>
+                            <label className="mx-3" htmlFor="ctname">Category</label>
                           </div>
                         </div>
                       </form>
                       </div>
                       <div className="modal-footer">
                         <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="button" className="btn btn-primary" data-dismiss="modal" onClick={newItemUpdate}>Submit</button>
+                        <button type="button" className="btn btn-primary" data-dismiss="modal" onClick={newCatgoryUpdate}>Submit</button>
                       </div>
                     </div>
                   </div>
@@ -184,7 +263,13 @@ const getId = async() => {
                         </div>
                       <div className="modal-body">
                       <form className="row justify-content-center" method="post">
-                    
+                      <div className="row align-items-center inputBox">
+                          <div className="col mt-1 form-floating">
+                            
+                            <input type="text" className=" form-control" id="itname" name="itemName" value={selectedCategory} required disabled/>
+                            <label className="mx-3" htmlFor="iname">Category Name</label>
+                          </div>
+                        </div>
                         <div className="row align-items-center inputBox">
                           <div className="col mt-1 form-floating">
                             
