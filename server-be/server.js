@@ -49,7 +49,9 @@ class BUYSMONEFY {
         })
 
         this.app.get('/api/getAllItemForCategoryId', (req, res) => {
-            const categoryId = req.body.categoryId;
+            const categoryId = req.query.categoryId;
+
+            console.log("categy id : ", categoryId);
             const sqlSelect = "Select distinct(itemId) from item_details where categoryId = ?";
             this.db.query(sqlSelect,[categoryId], (err, result) => {
                 if (err) {
@@ -60,6 +62,8 @@ class BUYSMONEFY {
                     for(let i=0; i < result.length ; i++){
                             itemList[i] = result[i].itemId;
                     }
+                    console.log("result of query is : ", result);
+                    console.log("after itemList : ", itemList);
                     const itemSelect = `Select * from item_tbl where itemId in (?)`;
                     this.db.query(itemSelect, [itemList], (err, result) => {
                         if (err) {
@@ -76,8 +80,8 @@ class BUYSMONEFY {
         })
 
         this.app.get('/api/getAllBrandListForCategoryItem', (req, res) => {
-            const categoryId = req.body.categoryId;
-            const itemId = req.body.itemId;
+            const categoryId = req.query.categoryId;
+            const itemId = req.query.itemId;
             const sqlSelect = "Select brandName from item_details where categoryId = ? and itemId = ? ";
             this.db.query(sqlSelect, [categoryId,itemId], (err, result) => {
                 if (err) {
@@ -91,7 +95,7 @@ class BUYSMONEFY {
         })
 
         this.app.get('/api/getAllBuyerAndSupplierList', (req, res) => {
-            const userType = req.body.userType;
+            const userType = req.query.userType;
             const sqlSelect = "Select * from user_details where userType = ? ";
             this.db.query(sqlSelect, [userType], (err, result) => {
                 if (err) {
@@ -101,6 +105,30 @@ class BUYSMONEFY {
                 res.send(result);
             })
         })
+
+        this.app.get('/api/getAllBanks', (req, res) => {
+            const bankSelectSql = "Select distinct(bankName) from bank_details";
+            this.db.query(bankSelectSql,(err, result) => {
+                if (err) {
+                    console.log(err);
+                    res.sendStatus(500);
+                }
+                res.send(result);
+            })
+        })
+
+        this.app.get('/api/getAllBranchForBank', (req, res) => {
+            const bankName = req.query.bankName;
+            const sqlSelect = "select distinct(branchCode) from bank_details where bankName = ?";
+            this.db.query(sqlSelect,[bankName],(err, result) => {
+                if (err) {
+                    console.log(err);
+                    res.sendStatus(500);
+                }else
+                    res.send(result);
+            })
+        })
+
     }
 
     post() {
@@ -253,6 +281,25 @@ class BUYSMONEFY {
             })
         });
 
+        this.app.post('/api/addUserAccount', (req, res) => {
+            const userId = req.body.userId;
+            const bankName = req.body.bankName;
+            const branchCode = req.body.branchCode;
+            const amount = req.body.amount;
+            const accountNumber = req.body.accountNumber;
+
+            let userAccountSql = `insert into user_account_details (userId,bankId, amount, accountNumber) values (?,?,?,?)`;
+            this.db.query(userAccountSql, [userId, bankId, amount, accountNumber], (err, result) => {
+                if (err) {
+                    console.log(err);
+                    res.sendStatus(500);
+                }
+                else {
+                    res.sendStatus(200);
+                }
+            })
+        });
+
         this.app.post('/api/registerBank', (req, res) => {
             const bankName = req.body.bankName;
             const ifscCode = req.body.ifscCode;
@@ -261,6 +308,7 @@ class BUYSMONEFY {
             const address = req.body.address;
             const pinCode = req.body.pinCode;
             const branchCode = req.body.branchCode;
+            const rateOfInterest = req.body.rateOfInterest;
             // let sqlAddress = `INSERT INTO address_details (city, state, address, pinCode) VALUES (?,?,?,?)`;
             let addressSql = `insert into address_details(city,state,address,pinCode) values (?,?,?,?)`;
             this.db.query(addressSql, [city,state,address,pinCode], (err,result) => {
@@ -276,8 +324,8 @@ class BUYSMONEFY {
                         if (err) throw err;
                         else {
                             fetchedAddressId = result[0].addressId;
-                            let bankSql = `insert into bank_details(bankName, ifscCode, addressId, branchCode) values(?,?,?,?)`
-                            this.db.query(bankSql, [bankName, ifscCode, fetchedAddressId, branchCode], (err, result) => {
+                            let bankSql = `insert into bank_details(bankName, ifscCode, addressId, branchCode,rateOfInterest) values(?,?,?,?,?)`
+                            this.db.query(bankSql, [bankName, ifscCode, fetchedAddressId, branchCode,rateOfInterest], (err, result) => {
                                 if (err) {
                                     console.log(err);
                                     res.sendStatus(500);
