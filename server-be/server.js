@@ -44,7 +44,16 @@ class BUYSMONEFY {
             })
         })
 
+        this.app.get('/api/getAllTransactions',(req,res) => {
+            const payemntSql = "select * from payment_details";
+            let map1 = [];
+            this.db.query(payemntSql, (err,result) => {
+                
+            })
+        })
+
         this.app.get('/api/getAllItemForCategoryId', (req, res) => {
+            console.log(req);
             const categoryId = req.query.categoryId;
 
             console.log("categy id : ", categoryId);
@@ -55,6 +64,9 @@ class BUYSMONEFY {
                     res.sendStatus(500);
                 }else{
                     let itemList = [];
+                    if(result.length == 0){
+                        res.sendStatus(500);
+                    }else{
                     for(let i=0; i < result.length ; i++){
                             itemList[i] = result[i].itemId;
                     }
@@ -72,6 +84,7 @@ class BUYSMONEFY {
                         res.send(result);
                     })
                 }
+            }
             })
         })
 
@@ -87,6 +100,38 @@ class BUYSMONEFY {
                 for(let i=0; i < result.length ; i++)
                 console.log(result[i].brandName);
                 res.send(result);
+            })
+        })
+
+        // get all supplier names and supplier id corresponding to given itemDetailsId
+        this.app.get('/api/getAllSuppliers',(req,res) => {
+            const categoryId = req.body.categoryId;
+            const itemId = req.body.itemId;
+            const brandName = req.body.brandName;
+            const fetchItemDetailsId = "select itemDetailsId from item_details where categoryId = ? and itemId = ? and brandName = ?";
+            this.db.query(fetchItemDetailsId , [categoryId, itemId, brandName] , (err,result) => {
+                if (err) {
+                    console.log(err);
+                    res.sendStatus(500);
+                }else{
+                    let fetchedItemDetailsId = result[0].itemDetailsId;
+                    const fetchSupplierIds = "select userId from supplier_item_details where itemDetailsId = ?";
+                    this.db.query(fetchSupplierIds,[fetchedItemDetailsId],(err,result) => {
+                        let supplierIdList = [];
+                        for(let i=0; i < result.length ; i++){
+                            supplierIdList[i] = result[i].userId;
+                        }
+                        const supplierNameAndIdSql = `select userId, userName from user_details where userId in (?)`;
+                        this.db.query(supplierNameAndIdSql,[supplierIdList], (err,result) => {
+                            if (err) {
+                                console.log(err);
+                                res.sendStatus(500);
+                            }else{
+                                res.send(result);
+                            }
+                        })
+                    })
+                }
             })
         })
 
@@ -114,7 +159,8 @@ class BUYSMONEFY {
         })
 
         this.app.get('/api/getAllBranchForBank', (req, res) => {
-            const bankName = req.query.bankName;
+            const bankName = req.body.bankName;
+            // console.log(req);
             const sqlSelect = "select distinct(branchCode) from bank_details where bankName = ?";
             this.db.query(sqlSelect,[bankName],(err, result) => {
                 if (err) {
@@ -122,6 +168,20 @@ class BUYSMONEFY {
                     res.sendStatus(500);
                 }else
                     res.send(result);
+            })
+        })
+
+        this.app.get('/api/getUserId',(req,res) => {
+            const userName = req.body.userName;
+            const userType = req.body.userType;
+            let fetchUserIdSql = "select userId from user_details where userName = ? and userType = ?";
+            this.db.query(fetchUserIdSql, [userName,userType],(err,result) => {
+                if (err) {
+                    console.log(err);
+                    res.sendStatus(500);
+                }else{
+                    res.send(result);
+                }
             })
         })
 
@@ -261,6 +321,50 @@ class BUYSMONEFY {
             })
         });
 
+        
+
+        this.app.post('/api/addPaymentTransaction', (req, res) => {
+            const fromBankName = req.body.fromBankName;
+            const fromBranchCode = req.body.fromBranchCode;
+            const fromAccountNumber = req.body.fromAccountNumber;
+            const amountToBePaid = req.body.amountToBePaid;
+            const supplierId = req.body.supplierId;
+            const toBankName = req.body.toBankName;
+            const toBranchCode = req.body.toBranchCode;
+            const toAccountNumber = req.body.toAccountNumber;
+            const modeOfPayment = req.body.modeOfPayment;
+            const timeOfPayment = new Date();
+
+            let accountNumberList = [fromAccountNumber, toAccountNumber]
+            console.log(accountNumberList);
+            let fromUserAccountDetailsId;
+            let toUserAccountDetailsId;
+            const paymentTransactionSql = `select userAccountDetailsId, accountNumber from user_account_details where accountNumber in (?)`;
+            this.db.query(paymentTransactionSql, [accountNumberList], (err,result) => {
+                    console.log(result);
+                    if(result[0].accountNumber === fromAccountNumber){
+                        fromUserAccountDetailsId = result[0].userAccountDetailsId;
+                        toUserAccountDetailsId = result[1].userAccountDetailsId;
+                    }else{
+                        fromUserAccountDetailsId = result[1].userAccountDetailsId;
+                        toUserAccountDetailsId = result[0].userAccountDetailsId;
+                    }
+
+                    const paymentRecordSql = `insert into payment_details(paidAmount, modeOfPayment, timeOfPayment, 
+                                                fromUserAccountDetailsId, toUserAccountDetailsId) values(?,?,?,?,?)`;
+                    this.db.query(paymentRecordSql, [amountToBePaid, modeOfPayment, timeOfPayment, 
+                                    fromUserAccountDetailsId, toUserAccountDetailsId], (err,result) => {
+                        if (err) {
+                            console.log(err);
+                            res.sendStatus(500);
+                        }else{
+                            res.sendStatus(200);
+                        }
+
+                    })
+            })
+        });
+
         this.app.post('/api/addBrand', (req, res) => {
             const categoryId = req.body.categoryId;
             const itemId = req.body.itemId;
@@ -276,6 +380,7 @@ class BUYSMONEFY {
                 }
             })
         });
+
 
         this.app.post('/api/addUserAccount', (req, res) => {
             const userId = req.body.userId;
