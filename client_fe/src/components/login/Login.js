@@ -48,7 +48,7 @@ function Login() {
         window.sessionStorage.setItem(sessionConst.userName, login.userName);
         window.sessionStorage.setItem(sessionConst.userType, login.userType);
         console.log("LOGIN SUCCESSFUL-->>>>>");
-        if(res.status(StatusCodes).OK){
+        if(res.status === 200){
           // console.log("LOGIN SUCCESSFUL-->>>>>");
           if (login.userType === "2") {
             navigate("/Buyer")
