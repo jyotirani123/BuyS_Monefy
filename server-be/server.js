@@ -261,6 +261,20 @@ class BUYSMONEFY {
             })
         });
 
+        this.app.post('/api/addPaymentTransaction', (req, res) => {
+            const itemName = req.body.itemName;
+            let categorySql = `insert into item_tbl (itemName) values (?)`;
+            this.db.query(categorySql, [itemName], (err, result) => {
+                if (err) {
+                    console.log(err);
+                    res.sendStatus(500);
+                }
+                else {
+                    res.sendStatus(200)
+                }
+            })
+        });
+
         this.app.post('/api/addBrand', (req, res) => {
             const categoryId = req.body.categoryId;
             const itemId = req.body.itemId;
@@ -276,7 +290,7 @@ class BUYSMONEFY {
                 }
             })
         });
-
+        
         this.app.post('/api/addUserAccount', (req, res) => {
             const userId = req.body.userId;
             const bankName = req.body.bankName;
