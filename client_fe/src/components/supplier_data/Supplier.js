@@ -79,13 +79,14 @@ function Supplier({user}) {
         let l1 = Array(response.data);
         setCategoryList(l1)
         console.log(categoryList)
+        window.sessionStorage.setItem(sessionConst.cList, JSON.stringify(l1));
 
       }catch(err){
         console.log(err);
       }
     }
     categoryL();
-  }, [])
+  }, [,categoryName])
   console.log(categoryList)
 
   useEffect(() => {
@@ -99,14 +100,18 @@ function Supplier({user}) {
     console.log(selectedCategory);
   }, [categoryList, selectedCategoryName])
   console.log(selectedCategory?.categoryId);
+  window.sessionStorage.setItem(sessionConst.categoryId, selectedCategory?.categoryId);
 
   useEffect(() => {
     let itemL = async () => {
       console.log('list');
       try{
         console.log(selectedCategory?.categoryId + 'hi')
+        console.log(window.sessionStorage.getItem(sessionConst.categoryId) + "id");
         const response = await axios.get('http://localhost:3001/api/getAllItemForCategoryId', {
-          categoryId: selectedCategory?.categoryId
+          params: {
+            categoryId: window.sessionStorage.getItem(sessionConst.categoryId),
+          }
         });
         console.log(response.data);
         setItemList(response.data)
@@ -115,7 +120,7 @@ function Supplier({user}) {
       }
     }
     itemL();
-  }, [selectedCategory?.categoryId])
+  }, selectedCategory)
 
 // const getId = async() => {
 //   try{

@@ -290,7 +290,7 @@ class BUYSMONEFY {
                 }
             })
         });
-        
+
         this.app.post('/api/addUserAccount', (req, res) => {
             const userId = req.body.userId;
             const bankName = req.body.bankName;

@@ -34,6 +34,8 @@ export const sessionConst = {
     loginPwd : "password",
     userType:"userType",
     bankAccounts:"bankAccounts",
+    cList: "cList",
+    categoryId: "categoryId",
     
 };
 
