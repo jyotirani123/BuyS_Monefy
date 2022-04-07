@@ -31,10 +31,6 @@ class BUYSMONEFY {
             database: 'buys_monefy'
         });
 
-        // this.loginInsertion = loginInsertion;
-
-
-
     }
 
     get() {
@@ -288,16 +284,22 @@ class BUYSMONEFY {
             const amount = req.body.amount;
             const accountNumber = req.body.accountNumber;
 
-            let userAccountSql = `insert into user_account_details (userId,bankId, amount, accountNumber) values (?,?,?,?)`;
-            this.db.query(userAccountSql, [userId, bankId, amount, accountNumber], (err, result) => {
-                if (err) {
-                    console.log(err);
-                    res.sendStatus(500);
-                }
-                else {
-                    res.sendStatus(200);
-                }
+            let fetchBankIdSql = "select bankId from bank_details where bankName = ? and branchCode = ?";
+            this.db.query(fetchBankIdSql, [bankName, branchCode], (err,result) => {
+                let fetchBankId = result[0].bankId;
+                console.log(fetchBankId);
+                let userAccountSql = `insert into user_account_details (userId,bankId, amount, accountNumber) values (?,?,?,?)`;
+                this.db.query(userAccountSql, [userId, fetchBankId, amount, accountNumber], (err, result) => {
+                    if (err) {
+                        console.log(err);
+                        res.sendStatus(500);
+                    }
+                    else {
+                        res.sendStatus(200);
+                    }
             })
+            })
+            
         });
 
         this.app.post('/api/registerBank', (req, res) => {
