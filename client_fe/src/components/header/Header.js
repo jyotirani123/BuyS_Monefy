@@ -51,14 +51,16 @@ function Header() {
     <ul class="navbar-nav ms-auto">
       <li class="nav-item">
         {usertype==2?<Link to="/Buyer" class={`nav-link ${styles["nav-link"]}`} id="navbarLandings" >
-          Buyer Dashboard
+          Home
         </Link>:( usertype == 3 ? (<Link to="/UserProfile" class={`nav-link ${styles["nav-link"]}`} id="navbarLandings" >
-          Profile
+          Home
         </Link>) : (usertype==4?(<Link to="/Bankhome" class={`nav-link ${styles["nav-link"]}`} id="navbarLandings" >
+          Home
+        </Link>):(usertype==1?(<Link to="/Admin" class={`nav-link ${styles["nav-link"]}`} id="navbarLandings" >
           Home
         </Link>):(<Link to="/" class={`nav-link ${styles["nav-link"]}`} id="navbarLandings" >
           Home
-        </Link>)))}
+        </Link>))))}
       </li>
       <li class="nav-item">
         {usertype==2?<Link to="/PurchaseItem" class={`nav-link ${styles["nav-link"]}`} id="navbarPages" >
@@ -81,7 +83,7 @@ function Header() {
         </Link>)))}
       </li>
       <li class="nav-item">
-       { usertype==2?<Link to="/Buyer" class={`nav-link ${styles["nav-link"]}`} id="navbarDocumentation" >
+       { usertype==2?<Link to="/ViewTransactions" class={`nav-link ${styles["nav-link"]}`} id="navbarDocumentation" >
           View Transactions
         </Link>:( usertype == 3 ? (<></>):(usertype==4?(<></>):(<Link to="/" class={`nav-link ${styles["nav-link"]}`} id="navbarAccount">
           Contact
@@ -100,9 +102,6 @@ function Header() {
     </Link>
     <Link to="/signup" class="navbar-btn btn btn-sm btn-primary lift ms-auto mx-2" >
       Sign Up
-    </Link>
-    <Link to="/registerb" class="navbar-btn btn btn-sm btn-primary lift ms-auto mx-2" >
-      Register Bank
     </Link>
     </div>) 
     }

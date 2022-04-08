@@ -45,11 +45,57 @@ class BUYSMONEFY {
         })
 
         this.app.get('/api/getAllTransactions',(req,res) => {
-            const payemntSql = "select * from payment_details";
-            let map1 = [];
-            this.db.query(payemntSql, (err,result) => {
-                
+            const paymentSql = "select * from payment_details";
+            let map1 = new Map();
+            let map2 = new Map();
+            let ansMap = new Map();
+            let map3 = new Map();
+            this.db.query(paymentSql, (err,result) => {
+                if (err) {
+                    console.log(err);
+                    res.sendStatus(500);
+                }else{
+                    for(let i = 0;i < result.length; i++){
+                        let key = result[i].fromUserAccountDetailsId+":"+result[i].toUserAccountDetailsId;
+                        let value = result[i].modeOfPayment+"&&"+result[i].timeOfPayment.toLocaleDateString()+"&&"+result[i].paidAmount;
+                        console.log(key, " ", value);
+                        map1.set(key,value);
+                    }
+                }
+                const userSql = "select userName, userId from user_details where userId in(select userId from user_account_details)";
+                this.db.query(userSql,(err,result) => {
+                    if (err) {
+                        console.log(err);
+                        res.sendStatus(500);
+                    }else{
+                        for(let i=0;i<result.length;i++){
+                            map2.set(result[i].userId, result[i].userName);
+                        }
+                    }
+                    const combineUserAccountAndUserId = "select userAccountDetailsId, userId from user_account_details";
+                    this.db.query(combineUserAccountAndUserId,(err,result) => {
+
+                        for(let i =0;i<result.length;i++){
+                            let key = result[i].userAccountDetailsId;
+                            let value = result[i].userId;
+                            map3.set(key,value);
+                        }
+
+                        for (var entry of map1.entries()) {
+                            var key = entry[0];
+                            var value = entry[1];
+                            const fromId = key.split(":")[0]
+                            const toId = key.split(":")[1]
+                            const fromName = map2.get(parseInt(map3.get(parseInt(fromId))));
+                            const toName = map2.get(parseInt(map3.get(parseInt(toId))));
+                            ansMap.set(fromName+":"+toName, map1.get(key));
+                        }
+                        console.log(ansMap);
+                    })
+                    
+                })
             })
+        
         })
 
         this.app.get('/api/getAllItemForCategoryId', (req, res) => {
@@ -86,6 +132,10 @@ class BUYSMONEFY {
                 }
             }
             })
+        })
+
+        this.app.get('/api/getAllItemPurchase',(req,res) => {
+            
         })
 
         this.app.get('/api/getAllBrandListForCategoryItem', (req, res) => {

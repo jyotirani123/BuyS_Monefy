@@ -107,7 +107,7 @@ function Supplier({user}) {
         console.log(selectedCategory?.categoryId + 'hi')
         const response = await axios.get('http://localhost:3001/api/getAllItemForCategoryId', {
         params : {  
-        categoryId: selectedCategory?.categoryId
+          categoryId: selectedCategory?.categoryId
         }
         });
         console.log(response.data);
@@ -117,7 +117,7 @@ function Supplier({user}) {
       }
     }
     itemL();
-  }, [selectedCategory?.categoryId])
+  }, [selectedCategory])
 
 // const getId = async() => {
 //   try{

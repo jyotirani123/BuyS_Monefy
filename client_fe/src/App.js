@@ -12,7 +12,8 @@ import RegisterBank from './components/banker/RegisterBank';
 import BankDashboard from './components/banker/BankDashboard';
 import CustomerInfo from './components/banker/CustomerInfo';
 import CreateAccount from './components/banker/CreateAccount';
-
+import ViewTransactions from './components/buyer/ViewTransactions';
+import Admin from './components/admin/Admin';
 
 function App() {
 
@@ -35,6 +36,8 @@ function App() {
           <Route exact path="/registerb" element={<RegisterBank />} />
           <Route exact path="/login" element={<Login />} />
           <Route exact path="/signup" element={<SignUp />} />
+          <Route exact path="/ViewTransactions" element={<ViewTransactions />} />
+          <Route exact path="/Admin" element={<Admin />} />
         </Routes>
 
 
