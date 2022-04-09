@@ -4,6 +4,7 @@ const DATABASE = require('./utilities/createDB');
 const TABLES = require('./utilities/createTables');
 const cred = require('./utilities/credentials');
 const bodyParser = require('body-parser');
+const multer = require('multer')
 const cors = require('cors');
 const { password } = require('./utilities/credentials');
 
@@ -17,6 +18,8 @@ class BUYSMONEFY {
         // used to grab frontend infor to backend
         this.app.use(bodyParser.urlencoded({ extended: true }));
         this.app.use(express.json())
+        // serving static files
+        this.app.use('/uploads', express.static('uploads'));
 
         this.temp = 0;
 
@@ -44,58 +47,103 @@ class BUYSMONEFY {
             })
         })
 
+        this.app.get('/api/getBankDetails',(req,res) => {
+            const userId = req.query.userId;
+            const bankFetchSql = "select b.bankName,b.branchCode, u.amount, u.accountNumber from user_account_details u, bank_details b where b.bankId = u.bankId and u.userId = ?";
+            this.db.query(bankFetchSql,[userId],(err,result) => {
+                if (err) {
+                    console.log(err);
+                    res.sendStatus(500);
+                }else{
+                    console.log(result);
+                    res.send(result);
+                }
+            })
+        })
+
         this.app.get('/api/getAllTransactions',(req,res) => {
-            const paymentSql = "select * from payment_details";
-            let map1 = new Map();
-            let map2 = new Map();
-            let ansMap = new Map();
-            let map3 = new Map();
+            const paymentSql = "select u.userName as buyerName, u1.userName as supplierName, p.modeOfPayment, p.timeOfPayment, p.paidAmount from payment_details p, user_details u , user_details u1 ,  user_account_details a, user_account_details a1 where p.fromUserAccountDetailsId = a.userAccountDetailsId and p.toUserAccountDetailsId = a1.userAccountDetailsId and a.userId = u.userId and a1.userId = u1.userId";
+            
             this.db.query(paymentSql, (err,result) => {
                 if (err) {
                     console.log(err);
                     res.sendStatus(500);
                 }else{
-                    for(let i = 0;i < result.length; i++){
-                        let key = result[i].fromUserAccountDetailsId+":"+result[i].toUserAccountDetailsId;
-                        let value = result[i].modeOfPayment+"&&"+result[i].timeOfPayment.toLocaleDateString()+"&&"+result[i].paidAmount;
-                        console.log(key, " ", value);
-                        map1.set(key,value);
-                    }
+                   console.log(result);
+                   res.send(result);
                 }
-                const userSql = "select userName, userId from user_details where userId in(select userId from user_account_details)";
-                this.db.query(userSql,(err,result) => {
-                    if (err) {
-                        console.log(err);
-                        res.sendStatus(500);
-                    }else{
-                        for(let i=0;i<result.length;i++){
-                            map2.set(result[i].userId, result[i].userName);
-                        }
-                    }
-                    const combineUserAccountAndUserId = "select userAccountDetailsId, userId from user_account_details";
-                    this.db.query(combineUserAccountAndUserId,(err,result) => {
+            })  
+        })
 
-                        for(let i =0;i<result.length;i++){
-                            let key = result[i].userAccountDetailsId;
-                            let value = result[i].userId;
-                            map3.set(key,value);
-                        }
+        this.app.get('/api/getAlTransactionsForBuyerId',(req,res) => {
+            const reqUserId = req.query.buyerId;
+            const paymentSql = "select u1.userName as supplierName, p.modeOfPayment, p.timeOfPayment, p.paidAmount from payment_details p, user_details u , user_details u1 ,  user_account_details a, user_account_details a1 where p.fromUserAccountDetailsId = a.userAccountDetailsId and p.toUserAccountDetailsId = a1.userAccountDetailsId and a.userId = u.userId and a1.userId = u1.userId and  u.userId = ?";
+            
+            this.db.query(paymentSql,[reqUserId], (err,result) => {
+                if (err) {
+                    console.log(err);
+                    res.sendStatus(500);
+                }else{
+                   console.log(result);
+                   res.send(result);
+                }
+            })  
+        })
 
-                        for (var entry of map1.entries()) {
-                            var key = entry[0];
-                            var value = entry[1];
-                            const fromId = key.split(":")[0]
-                            const toId = key.split(":")[1]
-                            const fromName = map2.get(parseInt(map3.get(parseInt(fromId))));
-                            const toName = map2.get(parseInt(map3.get(parseInt(toId))));
-                            ansMap.set(fromName+":"+toName, map1.get(key));
-                        }
-                        console.log(ansMap);
-                    })
-                    
-                })
+        this.app.get('/api/getAlTransactionsForSupplierId',(req,res) => {
+            const reqUserId = req.query.supplierId;
+            const paymentSql = "select u.userName as buyerName, p.modeOfPayment, p.timeOfPayment, p.paidAmount from payment_details p, user_details u , user_details u1 ,  user_account_details a, user_account_details a1 where p.fromUserAccountDetailsId = a.userAccountDetailsId and p.toUserAccountDetailsId = a1.userAccountDetailsId and a.userId = u.userId and a1.userId = u1.userId and  u1.userId = ?";
+            
+            this.db.query(paymentSql,[reqUserId], (err,result) => {
+                if (err) {
+                    console.log(err);
+                    res.sendStatus(500);
+                }else{
+                   console.log(result);
+                   res.send(result);
+                }
+            })  
+        })
+
+        this.app.get('/api/getAllItemPurchased',(req,res) => {
+            const itemPurchaseSql = " select u.userName as buyerName, u1.userName as supplierName, c.categoryName, i.itemName, i1.brandName, b.noOfItems,b.totalPrice as paidAmount, b.purchaseDateTime from user_details u, user_details u1, item_category_details c, item_tbl i, item_details i1, buyer_item_purchase b, supplier_item_details s where b.supplierItemDetailsId = s.supplierItemDetailsId and s.itemDetailsId = i1.itemDetailsId and b.userId = u.userId and s.userId = u1.userId and i1.itemId = i.itemId and i1.categoryId = c.categoryId";
+            this.db.query(itemPurchaseSql,(err,result) => {
+                if (err) {
+                    console.log(err);
+                    res.sendStatus(500);
+                }else{
+                   console.log(result);
+                   res.send(result);
+                }
             })
-        
+        })
+
+        this.app.get('/api/getAllItemPurchasedBuyerId',(req,res) => {
+            const fetchedBuyerUserId = req.query.buyerId;
+            const itemPurchaseSql = "select u1.userName as supplierName, c.categoryName, i.itemName, i1.brandName, b.noOfItems,b.totalPrice as paidAmount, b.purchaseDateTime from user_details u, user_details u1, item_category_details c, item_tbl i, item_details i1, buyer_item_purchase b, supplier_item_details s where b.supplierItemDetailsId = s.supplierItemDetailsId and s.itemDetailsId = i1.itemDetailsId and b.userId = u.userId and s.userId = u1.userId and i1.itemId = i.itemId and i1.categoryId = c.categoryId and u.userId = ?";
+            this.db.query(itemPurchaseSql,[fetchedBuyerUserId],(err,result) => {
+                if (err) {
+                    console.log(err);
+                    res.sendStatus(500);
+                }else{
+                   console.log(result);
+                   res.send(result);
+                }
+            })
+        })
+
+        this.app.get('/api/getAllItemPurchasedSupplierId',(req,res) => {
+            const fetchedSupplierUserId = req.query.supplierId;
+            const itemPurchaseSql = "select u.userName as buyerName, c.categoryName, i.itemName, i1.brandName, b.noOfItems,b.totalPrice as paidAmount, b.purchaseDateTime from user_details u, user_details u1, item_category_details c, item_tbl i, item_details i1, buyer_item_purchase b, supplier_item_details s where b.supplierItemDetailsId = s.supplierItemDetailsId and s.itemDetailsId = i1.itemDetailsId and b.userId = u.userId and s.userId = u1.userId and i1.itemId = i.itemId and i1.categoryId = c.categoryId and u1.userId = ?";
+            this.db.query(itemPurchaseSql,[fetchedSupplierUserId],(err,result) => {
+                if (err) {
+                    console.log(err);
+                    res.sendStatus(500);
+                }else{
+                   console.log(result);
+                   res.send(result);
+                }
+            })
         })
 
         this.app.get('/api/getAllItemForCategoryId', (req, res) => {
@@ -155,31 +203,26 @@ class BUYSMONEFY {
 
         // get all supplier names and supplier id corresponding to given itemDetailsId
         this.app.get('/api/getAllSuppliers',(req,res) => {
-            const categoryId = req.body.categoryId;
-            const itemId = req.body.itemId;
-            const brandName = req.body.brandName;
+            const categoryId = req.query.categoryId;
+            const itemId = req.query.itemId;
+            const brandName = req.query.brandName;
             const fetchItemDetailsId = "select itemDetailsId from item_details where categoryId = ? and itemId = ? and brandName = ?";
             this.db.query(fetchItemDetailsId , [categoryId, itemId, brandName] , (err,result) => {
                 if (err) {
                     console.log(err);
                     res.sendStatus(500);
                 }else{
+                    console.log(result);
                     let fetchedItemDetailsId = result[0].itemDetailsId;
-                    const fetchSupplierIds = "select userId from supplier_item_details where itemDetailsId = ?";
-                    this.db.query(fetchSupplierIds,[fetchedItemDetailsId],(err,result) => {
-                        let supplierIdList = [];
-                        for(let i=0; i < result.length ; i++){
-                            supplierIdList[i] = result[i].userId;
-                        }
-                        const supplierNameAndIdSql = `select userId, userName from user_details where userId in (?)`;
-                        this.db.query(supplierNameAndIdSql,[supplierIdList], (err,result) => {
+                    console.log(fetchedItemDetailsId)
+                    const fetchSupplierDetails = "select u.userName, s.pricePerItem, s.availableItems from supplier_item_details s,user_details u where s.userId = u.userId and s.itemDetailsId = ?";
+                    this.db.query(fetchSupplierDetails,[fetchedItemDetailsId],(err,result) => {
                             if (err) {
                                 console.log(err);
                                 res.sendStatus(500);
                             }else{
                                 res.send(result);
                             }
-                        })
                     })
                 }
             })
@@ -238,6 +281,45 @@ class BUYSMONEFY {
     }
 
     post() {
+        
+    // handle storage using multer
+let storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+       cb(null, 'uploads');
+    },
+    filename: function (req, file, cb) {
+       cb(null, `${file.fieldname}-${Date.now()}${file.originalname}`);
+    }
+ });
+  
+ var upload = multer({ storage: storage });
+
+ // handle single file upload
+this.app.post('/api/uploadCollateral', upload.single('file'), (req, res, next) => {
+    console.log(req.file)
+    const file = req.file;
+    if (!file) {
+       return res.status(400).send({ message: 'Please upload a file.' });
+    }
+    var sql = "INSERT INTO `collateral_details`(`collateralName`) VALUES ('" + req.file.filename + "')";
+    this.db.query(sql, (err, result) => {
+        if(err){
+            console.log(err);
+            res.sendStatus(500);
+        }else{
+            let collateralQuery = "select collateralId from collateral_details order by collateralId desc limit 1";
+            this.db.query(collateralQuery, (err, result)=>{ 
+                if(err){
+                    console.log(err);
+                    res.sendStatus(500);
+                }else{
+                    console.log("resut" , result);
+                    res.send(result[0]);
+                }
+            })
+        } 
+    });
+ });
         this.app.post('/api/signup', (req, res) => {
             const fname = req.body.fname;
             const lname = req.body.lname;
@@ -575,6 +657,7 @@ class BUYSMONEFY {
                 }
             })
         });
+
     }
     listen() {
         this.app.listen(this.port, (err) => {
