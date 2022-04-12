@@ -131,6 +131,7 @@ const Payment = () => {
       toBranchCode : selectedSupplierBankBranchCode,
       toAccountNumber:user.saccountnumber,
       modeOfPayment: user.modeOfPayment,
+      buyerItemPurchaseId: location.state.buyerItemPurchaseId
     })
     console.log(response)
     }catch(err){

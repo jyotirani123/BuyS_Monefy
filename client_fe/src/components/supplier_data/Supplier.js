@@ -158,6 +158,7 @@ function Supplier({user}) {
     let list = async () => {
       try{
         await axios.post("http://localhost:3001/api/addItem", {
+          categoryId: selectedCategory?.categoryId,
           itemName: itemName
         })
         setSelectedItemName(itemName);

@@ -308,14 +308,15 @@ console.log(mode);
           noOfItems:purchaseItem,
           totalPrice:amount,
           modeOfPayment : mode
-    },).then(() => {
-      console.log("post body");
+    },).then((response) => {
+      const buyerItemPurchaseId =  response.data[0].buyerItemPurchaseId;
+      console.log("response checking" ,  response.data[0].buyerItemPurchaseId);
+      if(mode === '1'){
+        navigate('/payment',{state:{amount:amount, sname:supplierName, modeOfPayment : 1 , buyerItemPurchaseId : buyerItemPurchaseId}});
+      }else if(mode === '2'){
+        navigate('/bankLoan',{state: {amount : amount, modeOfPayment : 2, sname : supplierName}})
+      }
     }).catch((err) => { console.log('Axios Error:', err); })
-    if(mode === '1'){
-      navigate('/payment',{state:{amount:amount, sname:supplierName, modeOfPayment : 1}});
-    }else if(mode === '2'){
-      navigate('/bankLoan',{state: {amount : amount, modeOfPayment : 2, sname : supplierName}})
-    }
   };
 
     return (

@@ -48,17 +48,17 @@ class BUYSMONEFY {
         })
 
         this.app.get('/api/getUpdatedMediaId', (req, res) => {
-           
-        let mediaQuery = "select mediaId from media_details order by mediaId desc limit 1";
-        this.db.query(mediaQuery, (err, result) => {
-            if (err) {
-                console.log(err);
-                res.sendStatus(500);
-            } else {
-                console.log("result", result);
-                res.send(result);
-            }
-        })
+
+            let mediaQuery = "select mediaId from media_details order by mediaId desc limit 1";
+            this.db.query(mediaQuery, (err, result) => {
+                if (err) {
+                    console.log(err);
+                    res.sendStatus(500);
+                } else {
+                    console.log("result", result);
+                    res.send(result);
+                }
+            })
 
         })
 
@@ -87,13 +87,13 @@ class BUYSMONEFY {
                     console.log(result);
                     let obj = []
                     let j = 0
-                    for(let i = 0;i<result.length;i++){
+                    for (let i = 0; i < result.length; i++) {
                         const data = {
-                            buyerName : result[i].buyerName,
-                            supplierName : result[i].supplierName,
-                            modeOfPayment : result[i].modeOfPayment,
-                            timeOfPayment : new Date(result[i].timeOfPayment).toLocaleString(undefined, {timeZone: 'Asia/Kolkata'}),
-                            paidAmount : result[i].paidAmount
+                            buyerName: result[i].buyerName,
+                            supplierName: result[i].supplierName,
+                            modeOfPayment: result[i].modeOfPayment,
+                            timeOfPayment: new Date(result[i].timeOfPayment).toLocaleString(undefined, { timeZone: 'Asia/Kolkata' }),
+                            paidAmount: result[i].paidAmount
                         }
                         obj[j] = data;
                         j++;
@@ -116,12 +116,12 @@ class BUYSMONEFY {
                     console.log(result);
                     let obj = []
                     let j = 0
-                    for(let i = 0;i<result.length;i++){
+                    for (let i = 0; i < result.length; i++) {
                         const data = {
-                            supplierName : result[i].supplierName,
-                            modeOfPayment : result[i].modeOfPayment,
-                            timeOfPayment : new Date(result[i].timeOfPayment).toLocaleString(undefined, {timeZone: 'Asia/Kolkata'}),
-                            paidAmount : result[i].paidAmount
+                            supplierName: result[i].supplierName,
+                            modeOfPayment: result[i].modeOfPayment,
+                            timeOfPayment: new Date(result[i].timeOfPayment).toLocaleString(undefined, { timeZone: 'Asia/Kolkata' }),
+                            paidAmount: result[i].paidAmount
                         }
                         obj[j] = data;
                         j++;
@@ -145,12 +145,12 @@ class BUYSMONEFY {
                     console.log(result);
                     let obj = []
                     let j = 0
-                    for(let i = 0;i<result.length;i++){
+                    for (let i = 0; i < result.length; i++) {
                         const data = {
-                            buyerName : result[i].buyerName,
-                            modeOfPayment : result[i].modeOfPayment,
-                            timeOfPayment : new Date(result[i].timeOfPayment).toLocaleString(undefined, {timeZone: 'Asia/Kolkata'}),
-                            paidAmount : result[i].paidAmount
+                            buyerName: result[i].buyerName,
+                            modeOfPayment: result[i].modeOfPayment,
+                            timeOfPayment: new Date(result[i].timeOfPayment).toLocaleString(undefined, { timeZone: 'Asia/Kolkata' }),
+                            paidAmount: result[i].paidAmount
                         }
                         obj[j] = data;
                         j++;
@@ -162,7 +162,7 @@ class BUYSMONEFY {
         })
 
         this.app.get('/api/getAllItemPurchased', (req, res) => {
-            const itemPurchaseSql = " select u.userName as buyerName, u1.userName as supplierName, c.categoryName, i.itemName, i1.brandName, b.noOfItems,b.totalPrice as paidAmount, b.purchaseDateTime from user_details u, user_details u1, item_category_details c, item_tbl i, item_details i1, buyer_item_purchase b, supplier_item_details s where b.supplierItemDetailsId = s.supplierItemDetailsId and s.itemDetailsId = i1.itemDetailsId and b.userId = u.userId and s.userId = u1.userId and i1.itemId = i.itemId and i1.categoryId = c.categoryId order by b.purchaseDateTime desc";
+            const itemPurchaseSql = " select u.userName as buyerName, u1.userName as supplierName, c.categoryName, i.itemName, i1.brandName, b.noOfItems,b.totalPrice as paidAmount, b.purchaseDateTime from user_details u, user_details u1, item_category_details c, item_tbl i, item_details i1, buyer_item_purchase b, supplier_item_details s where b.supplierItemDetailsId = s.supplierItemDetailsId and s.itemDetailsId = i1.itemDetailsId and b.userId = u.userId and s.userId = u1.userId and i1.itemId = i.itemId and i1.categoryId = c.categoryId and b.status = 1 order by b.purchaseDateTime desc";
             this.db.query(itemPurchaseSql, (err, result) => {
                 if (err) {
                     console.log(err);
@@ -171,17 +171,16 @@ class BUYSMONEFY {
                     console.log(result);
                     let obj = []
                     let j = 0
-                    for(let i = 0;i<result.length;i++){
+                    for (let i = 0; i < result.length; i++) {
                         const data = {
-                            buyerName : result[i].buyerName,
-                            supplierName : result[i].supplierName,
-                            categoryName : result[i].categoryName,
-                            itemName : result[i].itemName,
-                            brandName : result[i].brandName,
-                            noOfItems : result[i].noOfItems,
-                            totalPrice : result[i].totalPrice,
-                            purchaseDateTime : new Date(result[i].purchaseDateTime).toLocaleString(undefined, {timeZone: 'Asia/Kolkata'}),
-                            
+                            buyerName: result[i].buyerName,
+                            supplierName: result[i].supplierName,
+                            categoryName: result[i].categoryName,
+                            itemName: result[i].itemName,
+                            brandName: result[i].brandName,
+                            noOfItems: result[i].noOfItems,
+                            paidAmount: result[i].paidAmount,
+                            purchaseDateTime: new Date(result[i].purchaseDateTime).toLocaleString(undefined, { timeZone: 'Asia/Kolkata' }),
                         }
                         obj[j] = data;
                         j++;
@@ -194,7 +193,7 @@ class BUYSMONEFY {
 
         this.app.get('/api/getAllItemPurchasedBuyerId', (req, res) => {
             const fetchedBuyerUserId = req.query.buyerId;
-            const itemPurchaseSql = "select u1.userName as supplierName, c.categoryName, i.itemName, i1.brandName, b.noOfItems,b.totalPrice as paidAmount, b.purchaseDateTime from user_details u, user_details u1, item_category_details c, item_tbl i, item_details i1, buyer_item_purchase b, supplier_item_details s where b.supplierItemDetailsId = s.supplierItemDetailsId and s.itemDetailsId = i1.itemDetailsId and b.userId = u.userId and s.userId = u1.userId and i1.itemId = i.itemId and i1.categoryId = c.categoryId and u.userId = ? order by b.purchaseDateTime desc";
+            const itemPurchaseSql = "select u1.userName as supplierName, c.categoryName, i.itemName, i1.brandName, b.noOfItems,b.totalPrice as paidAmount, b.purchaseDateTime from user_details u, user_details u1, item_category_details c, item_tbl i, item_details i1, buyer_item_purchase b, supplier_item_details s where b.supplierItemDetailsId = s.supplierItemDetailsId and s.itemDetailsId = i1.itemDetailsId and b.userId = u.userId and s.userId = u1.userId and i1.itemId = i.itemId and i1.categoryId = c.categoryId and b.status = 1 and u.userId = ? order by b.purchaseDateTime desc";
             this.db.query(itemPurchaseSql, [fetchedBuyerUserId], (err, result) => {
                 if (err) {
                     console.log(err);
@@ -203,16 +202,16 @@ class BUYSMONEFY {
                     console.log(result);
                     let obj = []
                     let j = 0
-                    for(let i = 0;i<result.length;i++){
+                    for (let i = 0; i < result.length; i++) {
                         const data = {
-                            supplierName : result[i].supplierName,
-                            categoryName : result[i].categoryName,
-                            itemName : result[i].itemName,
-                            brandName : result[i].brandName,
-                            noOfItems : result[i].noOfItems,
-                            totalPrice : result[i].totalPrice,
-                            purchaseDateTime : new Date(result[i].purchaseDateTime).toLocaleString(undefined, {timeZone: 'Asia/Kolkata'}),
-                            
+                            supplierName: result[i].supplierName,
+                            categoryName: result[i].categoryName,
+                            itemName: result[i].itemName,
+                            brandName: result[i].brandName,
+                            noOfItems: result[i].noOfItems,
+                            paidAmount: result[i].paidAmount,
+                            purchaseDateTime: new Date(result[i].purchaseDateTime).toLocaleString(undefined, { timeZone: 'Asia/Kolkata' }),
+
                         }
                         obj[j] = data;
                         j++;
@@ -225,7 +224,7 @@ class BUYSMONEFY {
 
         this.app.get('/api/getAllItemPurchasedSupplierId', (req, res) => {
             const fetchedSupplierUserId = req.query.supplierId;
-            const itemPurchaseSql = "select u.userName as buyerName, c.categoryName, i.itemName, i1.brandName, b.noOfItems,b.totalPrice as paidAmount, b.purchaseDateTime from user_details u, user_details u1, item_category_details c, item_tbl i, item_details i1, buyer_item_purchase b, supplier_item_details s where b.supplierItemDetailsId = s.supplierItemDetailsId and s.itemDetailsId = i1.itemDetailsId and b.userId = u.userId and s.userId = u1.userId and i1.itemId = i.itemId and i1.categoryId = c.categoryId and u1.userId = ? order by b.purchaseDateTime desc";
+            const itemPurchaseSql = "select u.userName as buyerName, c.categoryName, i.itemName, i1.brandName, b.noOfItems,b.totalPrice as paidAmount, b.purchaseDateTime from user_details u, user_details u1, item_category_details c, item_tbl i, item_details i1, buyer_item_purchase b, supplier_item_details s where b.supplierItemDetailsId = s.supplierItemDetailsId and s.itemDetailsId = i1.itemDetailsId and b.userId = u.userId and s.userId = u1.userId and i1.itemId = i.itemId and i1.categoryId = c.categoryId and b.status = 1 and u1.userId = ? order by b.purchaseDateTime desc";
             this.db.query(itemPurchaseSql, [fetchedSupplierUserId], (err, result) => {
                 if (err) {
                     console.log(err);
@@ -234,16 +233,16 @@ class BUYSMONEFY {
                     console.log(result);
                     let obj = []
                     let j = 0
-                    for(let i = 0;i<result.length;i++){
+                    for (let i = 0; i < result.length; i++) {
                         const data = {
-                            buyerName : result[i].buyerName,
-                            categoryName : result[i].categoryName,
-                            itemName : result[i].itemName,
-                            brandName : result[i].brandName,
-                            noOfItems : result[i].noOfItems,
-                            totalPrice : result[i].totalPrice,
-                            purchaseDateTime : new Date(result[i].purchaseDateTime).toLocaleString(undefined, {timeZone: 'Asia/Kolkata'}),
-                            
+                            buyerName: result[i].buyerName,
+                            categoryName: result[i].categoryName,
+                            itemName: result[i].itemName,
+                            brandName: result[i].brandName,
+                            noOfItems: result[i].noOfItems,
+                            paidAmount: result[i].paidAmount,
+                            purchaseDateTime: new Date(result[i].purchaseDateTime).toLocaleString(undefined, { timeZone: 'Asia/Kolkata' }),
+
                         }
                         obj[j] = data;
                         j++;
@@ -277,34 +276,16 @@ class BUYSMONEFY {
             console.log(req);
             const categoryId = req.query.categoryId;
 
-            console.log("categy id : ", categoryId);
-            const sqlSelect = "Select distinct(itemId) from item_details where categoryId = ?";
+            const sqlSelect = "Select itemId, itemName from item_tbl where categoryId = ?";
             this.db.query(sqlSelect, [categoryId], (err, result) => {
                 if (err) {
                     console.log(err);
                     res.send(Status(500));
                 } else {
-                    let itemList = [];
-                    if (result.length == 0) {
-                        res.send([]);
-                    } else {
-                        for (let i = 0; i < result.length; i++) {
-                            itemList[i] = result[i].itemId;
-                        }
-                        console.log("result of query is : ", result);
-                        console.log("after itemList : ", itemList);
-                        const itemSelect = `Select * from item_tbl where itemId in (?)`;
-                        this.db.query(itemSelect, [itemList], (err, result) => {
-                            if (err) {
-                                console.log(err);
-                                res.sendStatus(500);
-                            }
-                            console.log(result);
-                            for (let i = 0; i < result.length; i++)
-                                console.log(result[i].itemId, result[i].itemName);
-                            res.send(result);
-                        })
-                    }
+                    console.log(result);
+                    for (let i = 0; i < result.length; i++)
+                        console.log(result[i].itemId, result[i].itemName);
+                    res.send(result);
                 }
             })
         })
@@ -421,7 +402,7 @@ class BUYSMONEFY {
         // handle single file upload
         this.app.post('/api/uploadMedia', upload.single('file'), (req, res) => {
             // console.log(req);
-            console.log("file ->",req.file)
+            console.log("file ->", req.file)
             const file = req.file;
             if (!file) {
                 return res.status(200).send({ message: 'Please upload a file.' });
@@ -437,7 +418,7 @@ class BUYSMONEFY {
             });
         });
 
-        
+
         this.app.post('/api/signup', (req, res) => {
             const fname = req.body.fname;
             const lname = req.body.lname;
@@ -559,8 +540,9 @@ class BUYSMONEFY {
 
         this.app.post('/api/addItem', (req, res) => {
             const itemName = req.body.itemName;
-            let categorySql = `insert into item_tbl (itemName) values (?)`;
-            this.db.query(categorySql, [itemName], (err, result) => {
+            const categoryId = req.body.categoryId;
+            let categorySql = `insert into item_tbl (itemName, categoryId) values (?,?)`;
+            this.db.query(categorySql, [itemName, categoryId], (err, result) => {
                 if (err) {
                     console.log(err);
                     res.sendStatus(500);
@@ -570,7 +552,7 @@ class BUYSMONEFY {
                 }
             })
         });
-88
+        88
         this.app.post('/api/addPaymentTransaction', (req, res) => {
             const fromBankName = req.body.fromBankName;
             const fromBranchCode = req.body.fromBranchCode;
@@ -582,7 +564,7 @@ class BUYSMONEFY {
             const toAccountNumber = req.body.toAccountNumber;
             const modeOfPayment = req.body.modeOfPayment;
             const timeOfPayment = new Date();
-
+            const buyerItemPurchaseId = req.body.buyerItemPurchaseId;
             let accountNumberList = [fromAccountNumber, toAccountNumber]
             console.log(accountNumberList);
             let fromUserAccountDetailsId;
@@ -619,14 +601,22 @@ class BUYSMONEFY {
                                             console.log(err);
                                             res.sendStatus(500);
                                         } else {
-                                            // res.send({message: 'transaction successful from your side , amount added to the supplier account and deducted from your account'});
-                                            res.status(200).send({ success: true, message: 'transaction successful from your side , amount added to the supplier account and deducted from your account' });
+                                            const updateBuyerPaymentStatus = "update buyer_item_purchase set status = 1 where buyerItemPurchaseId = ?";
+                                            this.db.query(updateBuyerPaymentStatus, [buyerItemPurchaseId], (err, result) => {
+                                                if (err) {
+                                                    console.log(err);
+                                                    res.sendStatus(500);
+                                                } else {
+                                                    // res.send({message: 'transaction successful from your side , amount added to the supplier account and deducted from your account'});
+                                                    res.status(200).send({ success: true, message: 'transaction successful from your side , amount added to the supplier account and deducted from your account' });
+                                                }
+                                            })
                                         }
                                     })
                                 }
                             })
                         }
-                })
+                    })
             })
         });
 
@@ -660,21 +650,21 @@ class BUYSMONEFY {
                 if (err) {
                     console.log(err);
                     res.sendStatus(500);
-                }else{
-                console.log(result);
-                let fetchBankId = result[0].bankId;
-                console.log(fetchBankId);
-                let userAccountSql = `insert into user_account_details (userId,bankId, amount, accountNumber) values (?,?,?,?)`;
-                this.db.query(userAccountSql, [userId, fetchBankId, amount, accountNumber], (err, result) => {
-                    if (err) {
-                        console.log(err);
-                        res.sendStatus(500);
-                    }
-                    else {
-                        res.sendStatus(200);
-                    }
-                })
-            }
+                } else {
+                    console.log(result);
+                    let fetchBankId = result[0].bankId;
+                    console.log(fetchBankId);
+                    let userAccountSql = `insert into user_account_details (userId,bankId, amount, accountNumber) values (?,?,?,?)`;
+                    this.db.query(userAccountSql, [userId, fetchBankId, amount, accountNumber], (err, result) => {
+                        if (err) {
+                            console.log(err);
+                            res.sendStatus(500);
+                        }
+                        else {
+                            res.sendStatus(200);
+                        }
+                    })
+                }
             })
 
 
@@ -778,7 +768,7 @@ class BUYSMONEFY {
                             res.status(404).send({ success: false, error: { message: 'user account not Found' } });
                         } else {
                             const loanDetailsSql = "insert into loan_details(userAccountDetailsId, loanAmount, mediaIdCollateral, mediaIdLoanPDF , loanDateTime, status, emiMonths, interestAmount, totalAmountToBePaid) values (?,?,?,?,?,?,?,?,?)";
-                            this.db.query(loanDetailsSql, [userAccountDetailsId, loanAmount, mediaIdCollateral, mediaIdLoanPDF , loanDateTime, status, emiMonths, interestAmount, totalAmountToBePaid], (err, result) => {
+                            this.db.query(loanDetailsSql, [userAccountDetailsId, loanAmount, mediaIdCollateral, mediaIdLoanPDF, loanDateTime, status, emiMonths, interestAmount, totalAmountToBePaid], (err, result) => {
                                 if (err) {
                                     console.log(err);
                                     res.sendStatus(500);
@@ -811,7 +801,7 @@ class BUYSMONEFY {
                 }
                 else {
                     const itemDetailsId = result[0].itemDetailsId;
-                    console.log("item is : ",itemDetailsId);
+                    console.log("item is : ", itemDetailsId);
                     let supplierSql = `select supplierItemDetailsId, availableItems from supplier_item_details where itemDetailsId = ? and userId = ? `;
                     this.db.query(supplierSql, [itemDetailsId, supplierId], (err, result) => {
                         if (err) {
@@ -825,8 +815,8 @@ class BUYSMONEFY {
                                 res.status(400).send({ success: false, message: 'stock unavailable' });
                             }
                             const paymentDateTime = new Date();
-                            let buyerSql = `insert into buyer_item_purchase(supplierItemDetailsId, userId, noOfItems, modeOfPayment,purchaseDateTime,totalPrice) values(?,?,?,?,?,?)`
-                            this.db.query(buyerSql, [supplierItemDetailsId, buyerId, noOfItems, modeOfPayment, paymentDateTime, totalPrice], (err, result) => {
+                            let buyerSql = `insert into buyer_item_purchase(supplierItemDetailsId, userId, noOfItems, modeOfPayment,purchaseDateTime,totalPrice, status) values(?,?,?,?,?,?,?)`
+                            this.db.query(buyerSql, [supplierItemDetailsId, buyerId, noOfItems, modeOfPayment, paymentDateTime, totalPrice, 0], (err, result) => {
                                 if (err) {
                                     console.log(err);
                                     res.sendStatus(500);
@@ -834,13 +824,20 @@ class BUYSMONEFY {
                                 else {
                                     console.log("Buyer item Purchase details inserted");
                                     const updateSupplierSql = "update supplier_item_details set availableItems = availableItems - ? where supplierItemDetailsId = ?";
-                                    this.db.query(updateSupplierSql , [noOfItems, supplierItemDetailsId], (err,result) => {
+                                    this.db.query(updateSupplierSql, [noOfItems, supplierItemDetailsId], (err, result) => {
                                         if (err) {
                                             console.log(err);
                                             res.sendStatus(500);
-                                        }else{
-                                            console.log("last")
-                                            res.sendStatus(200);
+                                        } else {
+                                            const getIdSql = " select buyerItemPurchaseId from buyer_item_purchase order by buyerItemPurchaseId desc limit 1;";
+                                            this.db.query(getIdSql, (err, result) => {
+                                                if (err) {
+                                                    console.log(err);
+                                                    res.sendStatus(500);
+                                                } else {
+                                                    res.send(result);
+                                                }
+                                            })
                                         }
                                     })
                                 }
