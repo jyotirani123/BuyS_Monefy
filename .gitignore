@@ -1,2 +1,2 @@
-**/client_fe/node_modules
-**/server-be/node_modules
+node_modules
+/node_modules

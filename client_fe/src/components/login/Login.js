@@ -5,12 +5,6 @@ import { useNavigate } from 'react-router-dom';
 import Header from '../header/Header';
 import axios from 'axios';
 import { Link } from "react-router-dom";
-import {
-	ReasonPhrases,
-	StatusCodes,
-	getReasonPhrase,
-	getStatusCode,
-} from 'http-status-codes';
 
 function Login() {
   let navigate = useNavigate();
@@ -49,7 +43,9 @@ function Login() {
         window.sessionStorage.setItem(sessionConst.userType, login.userType);
         console.log("LOGIN SUCCESSFUL-->>>>>");
         if(res.status === 200){
-          // console.log("LOGIN SUCCESSFUL-->>>>>");
+          if(login.userType === "1"){
+            navigate("/Admin")
+          }
           if (login.userType === "2") {
             navigate("/Buyer")
           }

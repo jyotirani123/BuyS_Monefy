@@ -1,4 +1,4 @@
-body{
+/* body{
 	margin:0;
 	padding:0;
 	background:#fff;
@@ -16,8 +16,8 @@ body{
 	background-position: top;
 	background-size:cover;
 	/*background-attachment: fixed;*/
-	background-repeat: no-repeat;
-}
+	/* background-repeat: no-repeat; */
+/* }  */
 .banner .navbar{
 	margin-top:4%;
 }
@@ -61,4 +61,19 @@ body{
 }
 .banner .info a:hover{
 	background: #e91e63;
+} */
+.video-setting{
+    width: 1000px !important;
+    height: 700px !important;
+}
+.headings{
+    margin-left: 100px;
+}
+.first-heading{
+    font-size: 100px;
+    color: #0d6efd;
+}
+.second-heading{
+    font-size: 90px;
+    color: grey;
 }

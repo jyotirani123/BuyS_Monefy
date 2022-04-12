@@ -41,7 +41,7 @@ const SupplierHomeNavbar = () => {
         <div id="mySidenav" className="sidenav" style={sideNavWidth}>
             <button className="closebtn" onClick={closeNav}>&times;</button>
             <h1 className='heading-nav'>BuySmonefy</h1>
-            <Link exact to='/UserProfile' className={splitLocation[1] === 'UserProfile' ? "active" : ""}>Profile</Link>
+            <Link exact to='/UserProfile' className={splitLocation[1] === 'UserProfile' ? "active" : ""}>Home</Link>
             <Link exact to='/itemDetails' className={splitLocation[1] === 'itemDetails' ? "active" : ""}>Add Item Info</Link>
             <Link exact to='' className={splitLocation[1] === 'bankBalance' ? "active" : ""}>Bank Balance</Link>
             {/* <Link to=''>Contact</Link> */}

@@ -1,23 +1,77 @@
-import React ,{useState} from 'react'
+import React ,{useState, useEffect} from 'react'
 // import './CreateAccount.css';
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
 import {useStateValue} from "./StateProvider";
 import Header from '../header/Header';
+import { sessionConst } from '../../Constants';
 
 
 function CreateAccount() {
-  
+  let navigate = useNavigate();
+  const [bankList, setBankList] = useState([]);
+  const [bankBranchCodeList, setBankBranchCodeList] = useState([]);
+  const [selectedBankName, setSelectedBankName] = useState('');
+  const [selectedBankBranchCode, setSelectedBankBrnachCode] = useState('');
   const [state,dispatch]=useStateValue();
-    let navigate = useNavigate();
+  
+  useEffect(() => {
+    let banklist = async () => {
+      try{
+        const response = await axios.get('http://localhost:3001/api/getAllBanks')
+        setBankList(response.data)
+      }catch(err){
+        console.log(err)
+      }
+    }
+    banklist();
+  }, [])
+
+
+  useEffect(() => {
+    let bankBranchL = async () => {
+      try{
+        console.log("hi")
+        const response = await axios.get('http://localhost:3001/api/getAllBranchForBank', {
+          params: {
+            bankName: selectedBankName,
+          }
+        })
+        console.log(response.data)
+        setBankBranchCodeList(response.data)
+      }catch(err){
+        console.log(err)
+      }
+    }
+    bankBranchL();
+  }, [selectedBankName])
+
+  useEffect(() => {
+    let getUserId = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:3001/api/getUserId",
+          {
+            params: {
+              userName: window.sessionStorage.getItem(sessionConst.userName),
+              userType: window.sessionStorage.getItem(sessionConst.userType),
+            },
+          }
+        );
+        console.log(response.data[0]);
+        window.sessionStorage.setItem(sessionConst.userId, response.data[0].userId);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    getUserId();
+  }, []);
+  const [uname, setUName] = useState(window.sessionStorage.getItem(sessionConst.userName));
     const [user, setUser] = useState({
-            customername:"",
-            accnum:"",    
-            bankname:"",
-            ifsc:"",
-            
-  
-  
+            bankname:"",  
+            branchCode:"",
+            amount: "",
+            accnum:"",  
     });
   
     let name, value;
@@ -29,43 +83,47 @@ function CreateAccount() {
       setUser({...user, [name] : value});
     }
    
-  
+    const handleSelectedBank = (e) => {
+      setSelectedBankName(e.target.value);
+    }
+    const handleSelectedBranchCode = (e) => {
+      setSelectedBankBrnachCode(e.target.value);
+    }
+
   const  submitDetails = (e) => {
     e.preventDefault();
-    //BANK ACCOUNT GENERATED AUTOMATICALLY...
-    // user.accnum=Math.floor(100000000000+Math.random()*900000000000);
-  // console.log(state);
-    // console.log(user.customername,user.accnum,user.bankname,user.ifsc);
-    axios.post("http://localhost:3001/api/createAccount", 
+    console.log(selectedBankName, " ",selectedBankBranchCode)
+    axios.post("http://localhost:3001/api/addUserAccount", 
     {
-          customername : user.customername,
-          accnum:user.accnum,
-          bankname:user.bankname,
-          ifsc : user.ifsc,
+      userId: window.sessionStorage.getItem(sessionConst.userId),
+      bankName: selectedBankName,  
+      branchCode:selectedBankBranchCode,
+      amount: user.amount,
+      accountNumber: user.accnum,  
       },).then((res) => {
 
     console.log("post body");
-   
+   navigate('/UserProfile');
    
   }).catch((err) => { 
       console.log('Axios Error:', err);
  });
- axios.get("http://localhost:3001/api/createAccount", 
-      {customername : user.customername,
-        accnum:user.accnum,
-        bankname:user.bankname,
-        ifsc : user.ifsc,},).then((res) => {
-        //  window.sessionStorage.setItem("bankaccounts",res.data[0]);
-         console.log("FRESH:  ",res.data);
+//  axios.get("http://localhost:3001/api/createAccount", 
+//       {customername : user.customername,
+//         accnum:user.accnum,
+//         bankname:user.bankname,
+//         ifsc : user.ifsc,},).then((res) => {
+//         //  window.sessionStorage.setItem("bankaccounts",res.data[0]);
+//          console.log("FRESH:  ",res.data);
  
-    window.sessionStorage.setItem("acc",JSON.stringify(res.data));
+//     window.sessionStorage.setItem("acc",JSON.stringify(res.data));
     
    
-          navigate("/");
+//           navigate("/");
          
-        }).catch((err) => { 
-            console.log('Axios Error:', err);
-       });
+//         }).catch((err) => { 
+//             console.log('Axios Error:', err);
+//        });
 
      
   
@@ -86,26 +144,40 @@ function CreateAccount() {
               </div>
               <div className="row align-items-center inputBox">
                 <div className="col mt-3 form-floating">
-                  <input type="text" className="form-control" id="customername" name="customername" value={user.customername} onChange={handleInput} placeholder="Enter Full Name" required />
+                  <input type="text" className="form-control" id="uname" name="uname" value={uname} required disabled />
                   <label className="mx-3" htmlFor="cystomername">Full Name</label>
                 </div>
               </div>
               <div className="row align-items-center inputBox mt-4">
                 <div className="col form-floating mt-1">
-                  <input type="text" className="form-control" id="bankname"name="bankname" value={user.bankname} onChange={handleInput} placeholder="Bank Name" required/>
-                  <label className="mx-3" htmlFor="bankname">Bank Name</label>
+                <select id="fbname" className="form-control" value={selectedBankName} onChange={handleSelectedBank} required>
+                    <option value='' selected>Select Bank Name</option>
+                    {bankList && bankList.map((val, index) => (
+                      <option key={index} value={val.bankName}>{val.bankName}</option>
+                    ))}
+                  </select>
                 </div>
               </div>
               <div className="row align-items-center inputBox mt-4">
                 <div className="col mt-1 form-floating">
-                  <input type="text" className="form-control" id="ifsc" name="ifsc" value={user.ifsc}  onChange={handleInput} placeholder="ifsc" required />
-                  <label className="mx-3" htmlFor="ifsc">IFSC code</label>
+                <select id="fbcode" className="form-control" value={selectedBankBranchCode} onChange={handleSelectedBranchCode} required>
+                    <option value='' selected>Select Branch Code</option>
+                    {bankBranchCodeList && bankBranchCodeList.map((val, index) => (
+                      <option key={index} value={val.branchCode}>{val.branchCode}</option>
+                    ))}
+                  </select>
                 </div>
               </div>
               <div className="row align-items-center inputBox mt-4">
                 <div className="col mt-1 form-floating">
                   <input type="email" className="form-control" id="accnum" placeholder="account no." name="accnum" value={user.accnum}  onChange={handleInput}  required />
                   <label className="mx-3" htmlFor="email">Account Number</label>
+                </div>
+              </div>
+              <div className="row align-items-center inputBox mt-4">
+                <div className="col mt-1 form-floating">
+                  <input type="email" className="form-control" id="amount" placeholder="amount" name="amount" value={user.amount}  onChange={handleInput}  required />
+                  <label className="mx-3" htmlFor="amount">Amount</label>
                 </div>
               </div>
         

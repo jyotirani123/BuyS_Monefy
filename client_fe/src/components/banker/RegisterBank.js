@@ -3,20 +3,19 @@ import React ,{useState}from 'react';
 import axios from 'axios';
 
  import { useNavigate } from "react-router-dom";
+import Header from '../header/Header';
 
 function RegisterBank() {
   let navigate = useNavigate();
   const [user, setUser] = useState({
         bankname : "",
-        bankid: "",
         ifsc : "",
+        city: "",
+        state: "",
+        pinCode: "",
         address : "",
         branchcode : "",
         interest:"",
-        password:"",
-        usertype:4,
-
-
   });
 
   let name, value;
@@ -34,20 +33,21 @@ const  submitDetails = (e) => {
   console.log(user.bankname,user.bankid,user.ifsc,user.address,user.branchcode,user.interest,user.password);
 axios.post("http://localhost:3001/api/registerbank", 
     {
-          bankname : user.bankname,
-          bankid: user.bankid,
-          ifsc : user.ifsc,
+          bankName : user.bankname,
+          ifscCode : user.ifsc,
+          city: user.city,
+          state: user.state,
           address :user.address,
-          branchcode : user.branchcode,
-          interest:user.interest,
-          password:user.password,
-          usertype:4,
- 
+          pinCode: user.pinCode,
+          branchCode : user.branchcode,
+          rateOfInterest: user.interest,
     },).then((res) => {
       
     console.log(res);
     console.log("post body");
-    navigate("/");
+    // navigate("/Admin");
+    alert("bank is successfully added");
+    setUser({...user, bankname:'', ifsc:'',city:'',state:'', address:'',pinCode:'',branchcode:'',interest:''})
    
   }).catch((err) => { 
       
@@ -59,6 +59,7 @@ axios.post("http://localhost:3001/api/registerbank",
   };
     return (
       <>
+      <Header />
       <div className="container">
       <form className="row justify-content-center" method="post">
         <div className="col-12 col-md-8 col-lg-6 col-xl-5">
@@ -76,14 +77,18 @@ axios.post("http://localhost:3001/api/registerbank",
          
           
             <div className="col form-floating mt-1">
-              <input type="text" className="form-control" id="bankid" name="bankid" value={user.bankid} onChange={handleInput} placeholder="Bank ID" required/>
-              <label className="mx-3" htmlFor="bankid">Bank ID</label>
+              <input type="text" className="form-control" id="ifsc" name="ifsc" value={user.ifsc} onChange={handleInput} placeholder="IFSC Code" required/>
+              <label className="mx-3" htmlFor="ifsc">IFSC Code</label>
             </div>
           </div>
           <div className="row align-items-center inputBox mt-1">
             <div className="col mt-1 form-floating">
-              <input type="text" className="form-control" id="ifsc" name="ifsc" value={user.ifsc} onChange={handleInput} placeholder="IFSC code" required />
-              <label className="mx-3" htmlFor="ifsc">IFSC code</label>
+              <input type="text" className="form-control" id="city" name="city" value={user.city} onChange={handleInput} placeholder="Enter city" required />
+              <label className="mx-3" htmlFor="city">City</label>
+            </div>
+            <div className="col mt-1 form-floating">
+              <input type="text" className="form-control" id="state" name="state" value={user.state} onChange={handleInput} placeholder="Enter state" required />
+              <label className="mx-3" htmlFor="state">State</label>
             </div>
           </div>
           <div className="row align-items-center inputBox mt-1">
@@ -92,20 +97,11 @@ axios.post("http://localhost:3001/api/registerbank",
               <label className="mx-3" htmlFor="address">Bank Address</label>
             </div>
           </div>
-          <div className="row align-items-center inputBox">
+          <div className="row align-items-center inputBox mt-1">
             <div className="col mt-1 form-floating">
-              <input type="text" className="form-control" id="city" name="city" value={user.city} onChange={handleInput} placeholder="Enter city" required />
-              <label className="mx-3" htmlFor="city">City</label>
+              <input type="text" className="form-control" id="pinCode" name="pinCode" value={user.pinCode} onChange={handleInput} placeholder="Enter Pin Code" required />
+              <label className="mx-3" htmlFor="city">Pincode</label>
             </div>
-        
-          
-            <div className="col mt-1 form-floating">
-              <input type="text" className="form-control" id="state" name="state" value={user.state} onChange={handleInput} placeholder="Enter state" required />
-              <label className="mx-3" htmlFor="state">State</label>
-            </div>
-         
-      
-         
             <div className="col mt-1 form-floating">
               <input type="text" className="form-control" id="branchcode" placeholder="Branch Code" name="branchcode" value={user.branchcode} onChange={handleInput} required />
               <label className="mx-3" htmlFor="branchcode">Branch Code</label>
@@ -116,13 +112,6 @@ axios.post("http://localhost:3001/api/registerbank",
               <input type="number" className="form-control" id="interest" placeholder="interest rate" name="interest" value={user.interest} onChange={handleInput}  required />
               <label className="mx-3" htmlFor="interest">Rate of Interest <small>(% per annum)</small></label>
             </div>
-          </div>
-          <div className="row align-items-center inputBox mt-1">
-            <div className="col mt-1 form-floating">
-              <input type="password" className="form-control" name="password" value={user.password} onChange={handleInput} id="password" placeholder="password" required />
-              <label className="mx-3" htmlFor="password">Password</label>
-            </div>
-         
           </div>
          
           <div className="row justify-content-start mt-1">

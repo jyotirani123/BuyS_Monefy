@@ -13,7 +13,7 @@ function Home() {
             <div className="home">
                 <Header />
                 {/* <h1>Buys Monefy</h1> */}
-                <div className='d-flex align-items-center justify-content-between container pt-4 home-container'>
+                <div id = 'home' className='d-flex align-items-center justify-content-between container pt-4 home-container'>
                     <div className='home-details'>
                         {/* <h1 className="home-details-heading">Welcome to <br /><span>BuyS Monefy</span></h1>
             <h4>A website to settle buyer and supplier payment.</h4> */}
@@ -33,7 +33,7 @@ function Home() {
                     </div>
                     <img src={bgimage} />
                 </div>
-                <div className='about py-5 my-3 d-flex flex-column align-items-center' id="about">
+                <div id = 'about' className='about py-5 my-3 d-flex flex-column align-items-center' id="about">
                     <h1 class="display-3 text-md-start text-primary my-4" >About</h1>
                     <div className='d-flex justify-content-between align-items-center'>
                         <img src={aboutimage} />
@@ -41,7 +41,7 @@ function Home() {
                     </div>
                 </div>
 
-                <div className='service py-5 my-3 d-flex flex-column align-items-center'>
+                <div id = 'services' className='service py-5 my-3 d-flex flex-column align-items-center'>
                     <h1 class="display-3 text-md-start text-primary my-4">Services</h1>
                     <div class="container">
                         <div class="row">
@@ -157,7 +157,7 @@ function Home() {
       </div>
     </section> */}
 
-                <div className='contact py-5 my-3 d-flex flex-column align-items-center'>
+                <div id = 'contact' className='contact py-5 my-3 d-flex flex-column align-items-center'>
                     <h1 class="display-3 text-md-start text-primary my-4">Contact Us</h1>
                     <div className='d-flex justify-content-center align-items-center contact-container'>
                         <img src={contactimage} />
