@@ -29,9 +29,25 @@ export const modeOfPayment = [
     }
 ]
 
+export const mediaForm = [
+    {
+        formOfMedia : "Collateral",
+        formOfMediaId : 1,
+    },
+    {
+        formOfMedia : "Bank Loan Online PDF",
+        formOfMediaId : 2,
+    }
+]
+
 export const sessionConst = {
     userName : "userName",
     loginPwd : "password",
+    userType:"userType",
+    bankAccounts:"bankAccounts",
+    cList: "cList",
+    categoryId: "categoryId",
+    userId: "userId",
     
 };
 

@@ -1,4 +1,4 @@
-.form-control{
+/* .form-control{
     width: 65%;
 }
 .heading{
@@ -16,11 +16,21 @@
     background-color: white;
     width: 60%;
     box-shadow: 5px 5px 20px rgb(34, 36, 33);
+} */
+.item_input{
+    flex: 0.9 !important;
 }
-#iname{
-    width: 44%;
-    margin-right: 10px;
+.form-floating>.form-control:not(:placeholder-shown) {
+    padding-top: 1.3rem !important;
 }
+.btn{
+    width: 160px !important;
+}
+.form-floating>label{
+    padding: 0.6rem 0.75rem !important;
+  }
+
+/* 
 @media screen and (max-width: 992px) {
     .container{
         width: 75%;
@@ -31,4 +41,4 @@
         width: 40%;
         margin-right: 8px;
     }
-}
+} */

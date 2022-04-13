@@ -1,5 +1,5 @@
 import React,{useState} from 'react'
-import './CustomerInfo.css';
+// import './CustomerInfo.css';
 
 function CustomerInfo() {
     const [customer,setcustomer]=useState(JSON.parse(sessionStorage.account));

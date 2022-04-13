@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
-import './Buyer_transaction.css';
+// import './Buyer_transaction.css';
 import axios from 'axios';
+import Header from '../header/Header';
 
 function Buyer_transaction(props) {
   
@@ -48,6 +49,8 @@ function Buyer_transaction(props) {
   };
 
     return (
+      <>
+      <Header />
         <div className="container">
           <form className="row justify-content-center" method="post">
             <div className="col-12 col-md-8 col-lg-6 col-xl-5">
@@ -101,6 +104,7 @@ function Buyer_transaction(props) {
                 </div>           
             </form>
       </div>
+      </>
     );
 
 }
