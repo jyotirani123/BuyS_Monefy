@@ -373,7 +373,7 @@ function Header() {
         {usertype==='2'?<Link to="/PurchaseItem" class={`nav-link ${styles["nav-link"]} ${splitLocation[1] === "PurchaseItem" ? styles["active"] : ""}`} id="navbarPages" >
          Purchase Item
         </Link>:( usertype === '3' ? (<Link to="/ItemDetails" class={`nav-link ${styles["nav-link"]} ${splitLocation[1] === "ItemDetails" ? styles["active"] : ""}`} id="navbarLandings" >
-         Item Details
+         Add Item Details
         </Link>) :(usertype==='4'?(<Link to="/BankDashboard" class={`nav-link ${styles["nav-link"]} ${splitLocation[1] === "BankDashboard" ? styles["active"] : ""}`} id="navbarLandings" >
           Bank Dashboard
         </Link>):(usertype==='1'?(<Link to="/allBuyers" class={`nav-link ${styles["nav-link"]} ${splitLocation[1] === "allBuyers" ? styles["active"] : ""}`} id="navbarLandings" >
@@ -418,7 +418,7 @@ function Header() {
       <li class="nav-item">
        { usertype==='2'?<Link to="/ViewBankDetailsBuyer" class={`nav-link ${styles["nav-link"]} ${splitLocation[1] === "ViewBankDetailsBuyer" ? styles["active"] : ""}`} id="navbarDocumentation" >
           View Bank Details
-        </Link>:(usertype==='3'?(<Link to="/ViewBankDetailsSupplier" class={`nav-link ${styles["nav-link"]} ${splitLocation[1] === "ViewBankDetailsSupplier" ? styles["active"] : ""}`} id="navbarDocumentation" >
+        </Link>:(usertype==='3'?(<Link to="/ViewBankDetailsSupplier" class={`nav-link ${styles["nav-link"]} ${splitLocation[1] === "viewBankDetailsSupplier" ? styles["active"] : ""}`} id="navbarDocumentation" >
         View Bank Details
         </Link>):(<></>))}
         
