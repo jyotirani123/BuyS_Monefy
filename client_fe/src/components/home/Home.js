@@ -33,11 +33,21 @@ function Home() {
                     </div>
                     <img src={bgimage} />
                 </div>
-                <div id = 'about' className='about py-5 my-3 d-flex flex-column align-items-center' id="about">
+                <div id = 'about' className='about py-5 my-3 d-flex flex-column align-items-center'>
                     <h1 class="display-3 text-md-start text-primary my-4" >About</h1>
                     <div className='d-flex justify-content-between align-items-center'>
                         <img src={aboutimage} />
-                        <p className='lead text-center text-md-start text-muted mb-6 mb-lg-8'>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).</p>
+                        <p className='lead text-center text-md-start text-muted mb-6 mb-lg-8'>BuyS Monefy :
+                         As its name indicates it will manage the money transactions between buyers and
+                        suppliers to remove the financial stress from the supplier. In our project 
+                        all the e-commerce sites like amazon, flipkart, myntra etc. are acting as a 
+                        buyer and all the wholesalers/retailers those are registered with these sites 
+                        are acting as a suppliers. When the buyer buy any product in a bulk quantity from the supplier and not able to do the early payment to the supplier but as supplier needs money to purchase raw material for developing product so supplier will take a loan from bank.
+                        Then there will be an agreement between the buyer and supplier that loan will 
+                        be paid off by the buyer. At the time of agreement the bank will take the 
+                        collateral from the buyer so that buyer can’t step back at the time of payment 
+                        of loan.
+                    </p>
                     </div>
                 </div>
 
@@ -53,7 +63,8 @@ function Home() {
                                     Built for Buyers
                                 </h3>
                                 <p class="text-muted mb-6 mb-md-0">
-                                    Landkit is built to make your life easier. Variables, build tooling, documentation, and reusable components.
+                                    Buyer can purchase any item based on his/her choice. He can purchase item from
+                                    any supplier according to his convenient.
                                 </p>
 
                             </div>
@@ -66,7 +77,7 @@ function Home() {
                                     Built for Suppliers
                                 </h3>
                                 <p class="text-muted mb-6 mb-md-0">
-                                    Designed with the latest design trends in mind. Landkit feels modern, minimal, and beautiful.
+                                    Supplier can add any item according to the stock available. He can view his transactions and bank details also.
                                 </p>
 
                             </div>
@@ -79,7 +90,7 @@ function Home() {
                                     Built for Banks
                                 </h3>
                                 <p class="text-muted mb-0">
-                                    We've written extensive documentation for components and tools, so you never have to reverse engineer anything.
+                                    User can create his bank account and bank can view all the accounts related to bank.
                                 </p>
 
                             </div>

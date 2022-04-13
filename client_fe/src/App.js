@@ -23,6 +23,8 @@ import Payment from './components/banker/Payment';
 import BankLoan from './components/banker/BankLoan';
 import SupplierViewTransactions from './components/supplier_data/SupplierViewTransactions';
 import ViewAllTransactions from './components/admin/ViewAllTransactions';
+import ViewBankDetailsSupplier from './components/supplier_data/ViewBankDetailsSupplier';
+import ViewBankDetailsBuyer from './components/buyer/ViewBankDetailsBuyer';
 
 function App() {
 
@@ -56,6 +58,9 @@ function App() {
           <Route exact path="/bankLoan" element={<BankLoan />} />
           <Route exact path="/SupplierViewTransactions" element={<SupplierViewTransactions />} />
           <Route exact path="/viewAllTransactions" element={<ViewAllTransactions />} />
+          <Route exact path="/ViewBankDetailsSupplier" element={<ViewBankDetailsSupplier />} />
+          <Route exact path="/ViewBankDetailsBuyer" element={<ViewBankDetailsBuyer />} />
+          
         </Routes>
 
 

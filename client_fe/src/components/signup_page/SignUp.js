@@ -62,10 +62,8 @@ function SignUp() {
         var loguser = res.data[0].userName;
         var logpass = res.data[0].password;
         console.log(res);
-        if(res.status(StatusCodes.OK)){
+        if(res.status === 200){
           console.log("signup");
-          // setLoginUser({userlogin : loguser});
-          // setLoginUser({passlogin : res.data[0].password});
           navigate('/login');
 
         }

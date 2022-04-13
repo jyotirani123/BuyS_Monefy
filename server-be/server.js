@@ -64,7 +64,7 @@ class BUYSMONEFY {
 
         this.app.get('/api/getBankDetails', (req, res) => {
             const userId = req.query.userId;
-            const bankFetchSql = "select b.bankName,b.branchCode, u.amount, u.accountNumber from user_account_details u, bank_details b where b.bankId = u.bankId and u.userId = ?";
+            const bankFetchSql = "select u1.userName, b.bankName,b.branchCode, u.amount, u.accountNumber from user_account_details u, bank_details b, user_details u1 where b.bankId = u.bankId and u.userId = ? and u.userId = u1.userId";
             this.db.query(bankFetchSql, [userId], (err, result) => {
                 if (err) {
                     console.log(err);

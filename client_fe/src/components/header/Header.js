@@ -393,6 +393,7 @@ function Header() {
          Services
         </Lik>))))}
       </li>
+
       <li class="nav-item">
        { usertype==='2'?<Link to="/ViewTransactions" class={`nav-link ${styles["nav-link"]} ${splitLocation[1] === "ViewTransactions" ? styles["active"] : ""}`} id="navbarDocumentation" >
           View Transactions
@@ -411,8 +412,18 @@ function Header() {
         </Link>:(usertype==='2'?(<Link to="/itemsPurchasedDetails" class={`nav-link ${styles["nav-link"]} ${splitLocation[1] === "itemsPurchasedDetails" ? styles["active"] : ""}`} id="navbarDocumentation" >
           Purchased Items
         </Link>):(<></>))}
+
+      </li>
+
+      <li class="nav-item">
+       { usertype==='2'?<Link to="/ViewBankDetailsBuyer" class={`nav-link ${styles["nav-link"]} ${splitLocation[1] === "ViewBankDetailsBuyer" ? styles["active"] : ""}`} id="navbarDocumentation" >
+          View Bank Details
+        </Link>:(usertype==='3'?(<Link to="/ViewBankDetailsSupplier" class={`nav-link ${styles["nav-link"]} ${splitLocation[1] === "ViewBankDetailsSupplier" ? styles["active"] : ""}`} id="navbarDocumentation" >
+        View Bank Details
+        </Link>):(<></>))}
         
       </li>
+
       <li class="nav-item">
        { usertype==='1'?<Link to="/addBank" class={`nav-link ${styles["nav-link"]} ${splitLocation[1] === "addBank" ? styles["active"] : ""}`} id="navbarDocumentation" >
           Add Bank
@@ -421,6 +432,8 @@ function Header() {
         </Link>):(<></>))}
         
       </li>
+
+
     </ul>
 
    {(usertype==='2' || usertype === '3' || usertype === '4' || usertype === '1') ? (<div className={styles['header-butns']}>
